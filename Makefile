@@ -26,14 +26,14 @@ SUBDIR		=
 all: submake $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) -lreadline -lncurses
 
 submake:
 	$(foreach dir, $(SUBDIR), $(MAKE) -C $(dir);)
 
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES -o $@
+	$(CC) $(CFLAGS) $(INCLUDES)  -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
