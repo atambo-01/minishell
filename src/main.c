@@ -16,7 +16,10 @@ int main(void)
 {
     char *prompt;
 
-    prompt = readline("minishell>");
-    printf("%s\n", prompt);
+    while(1)
+    {
+        prompt = readline("minishell>");
+        printf("%s\n", prompt);
+    }
     return (0);
 }
