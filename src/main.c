@@ -14,12 +14,10 @@
 
 int main(void)
 {
-    char *prompt;
     
     while(1)
     {
-        prompt = readline("minishell$");
-        add_history(prompt);
+        add_history(readline("minishell$"));
     }
     return (0);
 }
