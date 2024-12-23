@@ -15,11 +15,11 @@
 int main(void)
 {
     char *prompt;
-
+    
     while(1)
     {
-        prompt = readline("minishell>");
-        printf("%s\n", prompt);
+        prompt = readline("minishell$");
+        add_history(prompt);
     }
     return (0);
 }
