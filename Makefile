@@ -16,7 +16,8 @@ NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
 
-SOURCES		=	src/main.c
+SOURCES		=	src/main.c \
+			src/parsing.c \
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

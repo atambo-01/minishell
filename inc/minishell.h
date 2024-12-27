@@ -17,4 +17,8 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libft/libft.h"
+
+char	*ft_cutstr(char *str, char c, unsigned int inc);
+char	**ft_get_tokens(char *line);
+
 #endif
