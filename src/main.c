@@ -14,10 +14,9 @@
 
 int main(void)
 {
-    
-    while(1)
-    {
-        add_history(readline("minishell$"));
-    }
-    return (0);
+	while(1)
+	{
+		add_history(readline("minishell> "));
+	}
+	return (0);
 }
