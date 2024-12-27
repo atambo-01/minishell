@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-CC			=	cc
+CC		=	cc
 CFLAGS		=	-Wall -Wextra -Werror -g
 NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
@@ -19,14 +19,15 @@ INCLUDES	=	-Iincludes
 SOURCES		=	src/main.c
 
 OBJS		=	$(SOURCES:.c=.o)
-INCLUDES	=	-Iincludes
+INCLUDES	=	-Iinc -Ilibft
 
-SUBDIR		=	
+SUBDIR		=	./libft
+LIBS		=	-lreadline -lncurses ./libft/libft.a
 
 all: submake $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) -lreadline -lncurses
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBS)
 
 submake:
 	$(foreach dir, $(SUBDIR), $(MAKE) -C $(dir);)
