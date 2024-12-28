@@ -11,7 +11,7 @@
 # **************************************************************************** #
 
 CC		=	cc
-CFLAGS		=	-Wall -Wextra -Werror -g
+CFLAGS		=	-g #-Wall -Wextra -Werror
 NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes

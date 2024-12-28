@@ -18,7 +18,21 @@
 #include <readline/history.h>
 #include "../libft/libft.h"
 
+typedef struct s_list
+{
+	char			*s;
+	struct s_list	*next;
+}					t_list;
+
+typedef struct s_tree
+{
+	char			*cmd;
+	t_list			*opt;
+	t_list			*params;
+	struct s_tree	*next_cmd;
+}					s_tree;
+
 char	*ft_cutstr(char *str, char c, unsigned int inc);
-char	**ft_get_tokens(char *line);
+t_list	*ft_get_token(char *line);
 
 #endif

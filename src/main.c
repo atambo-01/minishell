@@ -12,11 +12,30 @@
 
 #include "../inc/minishell.h" 
 
-int main(void)
+void	ft_token_ls(t_list *token)
 {
-	while(1)
+	if (!token)
+		return;
+	while(token)
 	{
-		add_history(readline("minishell> "));
+		printf("%s->", token->s);
+		token = token->next;
+	}
+	return;
+}
+
+int main(int ac, char **av)
+{
+	if (ac > 1)
+	{
+	char	*line;
+	t_list	*token;
+
+	//	line = readline("minishell> ");
+	//	add_history(line);
+		token = ft_get_token(av[1]);
+		ft_token_ls(token);
+		free(token);
 	}
 	return (0);
 }

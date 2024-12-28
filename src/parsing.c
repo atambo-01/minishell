@@ -10,7 +10,10 @@ char	*ft_cutstr(char *str, char c, unsigned int inc)
 	i = 0;
 	start = NULL;
 	end = NULL;
-	start = ft_strchr(str, c);
+	if (inc = -1)
+		start = str;
+	else
+		start = ft_strchr(str, c);
 	while(start && *(start + 1) == c) start++;
 	if (start)
 		end = ft_strchr(start + 2, c);
@@ -34,130 +37,98 @@ char	*ft_cutstr(char *str, char c, unsigned int inc)
 	return(res);
 }
 
-int	ft_count_tokens_2(char *line, unsigned int *i, unsigned int *k)
+t_list	*ft_get_token(char *line)
 {
-	char *curr = &line[*k];
-	
-	if (*k == 0)
-	{
-		(*i)++;
-		if (ft_strchr(line, ' '))
-		{
-			(*k) = (unsigned int)(ft_strchr(line, ' ') - line);
-			return(1);
-		}
-	}
-	else if (*curr == ' ' && *(curr + 1) != ' ')
-	{ 
-		if (ft_strchr(curr + 1, ' '))
-		{
-			(*i)++;
-			(*k) = (unsigned int)(ft_strchr(curr + 1, ' ') - line);
-			return(1);
-		}
-		if (ft_strchr(curr + 1, '\0'))
-		{
-			(*i)++;
-			(*k) = (unsigned int)(ft_strchr(curr + 1, '\0') - line);
-			return(1);
-		}
-	} 
-	return(0);
-}
-
-unsigned int	ft_count_tokens(char *line)
-{
-	unsigned int	i;
+	char			flag;
+	t_list			*start;	
+	t_list			*token;
 	unsigned int	k;
-	char		flag;	
+	int  i; //debuging del afterwards
 
 	k = 0;
-	i = 0;
-	flag = '"';
+	i = 0; //here
 	if (!line || !*line)
-		return (i);
+			return (start);
+	token = NULL;
+	start = token;
+	flag = '"';
 	while(line[k] == ' ')
 		line++;
 	while(line[k])
 	{
-		if (line[k] == flag && line[k + 1] != (flag || 0) && line[k + 2]) 
-		{	
-			if (ft_strchr(&line[k + 2], flag))
-			{
-				i++;
-				k = (unsigned int)(ft_strchr(&line[k + 2], flag) - &line[k]) + 1;
-			}	
+		printf("k = %d\n%s\n", k, &line[k]);
+		printf("flag = %c\n", flag);
+		if (line[k] == flag)
+				printf("here\n");
+		if (line[k] == flag && line[k + 1] != flag && 
+			ft_strchr(&line[k + 1], flag))
+		{
+			token = malloc(sizeof(t_list*));
+			token->s = ft_cutstr(&line[k], flag, 0);
+			token->next = malloc(sizeof(t_list*));
+			token = token->next;
+			token->next = NULL;
+			k += (unsigned int)(ft_strchr(&line[k + 1], flag) - &line[k]) + 1;
+			i++;
 		}
 		else if (line[k] == flag && line[k + 1] == flag)
-			k = k + 2;
-		else if (flag == '"')
-			flag = '\'';
-		else if (ft_count_tokens_2(line, &i, &k))
 		{
-			
+			printf("skip 2\n");
+			k = k + 2;
 		}
+		else if (flag == '"')
+		{
+			flag = '\'';
+		}	
+		else if (k == 0 && ft_strchr(line, ' '))
+		{
+			token = malloc(sizeof(t_list*));
+			token->s = ft_cutstr(line, ' ', -1);
+			token->next = malloc(sizeof(t_list*));
+			token = token->next;
+			token->next = NULL;
+			k += (unsigned int)(ft_strchr(line, ' ') - line);
+			i++;//here
+			printf("first space\n");
+		}	
 		else
 		{
 			flag = '"';
 			k++;
 		}
-		printf("k = %d\n", k);
-		if (!ft_count_tokens_2(line, &i, &k))
-			k++;
+		printf("token = %d\n--------------\n", i);
 	}
-	return(i);
+	return(start);
 }
 
-/*
-char	**ft_get_tokens(char *line)
-{
-	char	**words;
-	int	i;
-	int	j;
-	int	k;
 
-	i = 0;
-	j = 0;
-	k = 0;
-	if (!line || !*line)
-		return (NULL);
-	words = malloc(sizeof(char **));
-	while(line[k] == ' ' || '\t')
-		line++;
-	while(line[k])
+
+/*	else if (line[k] == ' ' && line[k + 1] != ' ')
+	{ 
+	if (ft_strchr(&line[k + 1], ' '))
 	{
-		if (line[k] == '"' && ft_strchr(&line[k + 1], '"'))
-		{		
-			words[i] = ft_cutstr(&line[k], '"', 0);
-			k = ft_strlen(words[i] + 2);
-			i++;
-		}
-		else if (line[k] == '\'' && ft_strchr(&line[k + 1], '\''))
-		{
-			words[i] = ft_cutstr(&line[k], '\'', 0);
-			k = ft_strlen(words[i] + 2);
-			i++;	
-		}
-		else if (line[k] == ' ' && k == 0)
-		{
-			words[i] = malloc(sizeof(char *) * (ft_strchr(&line[k], ' ') - line + 1));
-			while(line[k] && line[k] != ' ')
-			{
-				words[i][j] = line[k];
-				j++;
-				k++;
-			}
-			words[i][j] = 0;
-			i++;
-		}
-		else if (line[k] == ' ' && ft_strchr(&line[k + 1], ' '))
-		{
-			words[i] = ft_cutstr(&line[k], ' ', 0);
-			k = ft_strlen(words[i] + 2);
-			i++;
-		}
+	token = malloc(sizeof(t_list*));
+	token->s = ft_cutstr(&line[k + 1], ' ', 0);
+	token = token->next;
+	token->next = NULL;
+	k = (unsigned int)(ft_strchr(&line[k + 1], ' ') - line);
 	}
-	words[i] == NULL;
-	return(words);
-}
-*/
+	if (ft_strchr(&line[k + 1], '\0'))
+	{
+	token = malloc(sizeof(t_list*));
+	token->s = ft_cutstr(&line[k + 1], 0, 0);
+	token = token->next;
+	token->next = NULL;
+	k = (unsigned int)(ft_strchr(&line[k + 1], 0) - line);
+	}
+	}	*/
+
+
+
+
+
+
+
+
+
+

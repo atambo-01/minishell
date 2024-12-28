@@ -1,3 +1,3 @@
 [submodule "libft"]
 	path = libft
-	url = git@github.com:atambo-01/libft.git
+	url  = http://github.com/atambo-01/libft
