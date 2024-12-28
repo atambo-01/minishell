@@ -5,7 +5,7 @@ char	*ft_cutstr(char *str, char c, unsigned int inc)
 	char	*res;
 	char	*start;
 	char	*end;
-	int	i;
+	int		i;
 
 	i = 0;
 	start = NULL;
@@ -37,21 +37,30 @@ char	*ft_cutstr(char *str, char c, unsigned int inc)
 int	ft_count_tokens_2(char *line, unsigned int *i, unsigned int *k)
 {
 	char *curr = &line[*k];
-
-	if (*k == 0 && ft_strchr(line, ' '))
+	
+	if (*k == 0)
 	{
 		(*i)++;
-		(*k) = (unsigned int)(ft_strchr(line, ' ') - line) + 1;
-		return(1);
+		if (ft_strchr(line, ' '))
+		{
+			(*k) = (unsigned int)(ft_strchr(line, ' ') - line);
+			return(1);
+		}
 	}
-	else if (*curr == ' ' && *(curr + 1) != (' ' || 0) && *(curr + 2))
+	else if (*curr == ' ' && *(curr + 1) != ' ')
 	{ 
-		if (ft_strchr(curr + 2, ' ') || ft_strchr(curr + 2, '\0'))
+		if (ft_strchr(curr + 1, ' '))
 		{
 			(*i)++;
-			(*k) = (unsigned int)(ft_strchr(curr + 2, ' ') - line) + 1;
+			(*k) = (unsigned int)(ft_strchr(curr + 1, ' ') - line);
+			return(1);
 		}
-		return(1);
+		if (ft_strchr(curr + 1, '\0'))
+		{
+			(*i)++;
+			(*k) = (unsigned int)(ft_strchr(curr + 1, '\0') - line);
+			return(1);
+		}
 	} 
 	return(0);
 }
@@ -70,7 +79,7 @@ unsigned int	ft_count_tokens(char *line)
 	while(line[k] == ' ')
 		line++;
 	while(line[k])
-	{	/*
+	{
 		if (line[k] == flag && line[k + 1] != (flag || 0) && line[k + 2]) 
 		{	
 			if (ft_strchr(&line[k + 2], flag))
@@ -92,7 +101,6 @@ unsigned int	ft_count_tokens(char *line)
 			flag = '"';
 			k++;
 		}
-		 */
 		printf("k = %d\n", k);
 		if (!ft_count_tokens_2(line, &i, &k))
 			k++;
