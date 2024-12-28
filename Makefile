@@ -16,7 +16,7 @@ NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
 
-SOURCES		=	src/main.c
+SOURCES		=	src/main.c src/builtings.c 
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes

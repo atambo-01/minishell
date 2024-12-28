@@ -17,4 +17,6 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 
+void echo(char *phrase);
+
 #endif

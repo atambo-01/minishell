@@ -10,14 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h" 
+#include "../inc/minishell.h"
 
 int main(void)
 {
-    
-    while(1)
+    char *prompt;
+    char *echos = "echo";
+
+    while (1)
     {
-        add_history(readline("minishell$"));
+        prompt = (readline("minishell$"));
+        add_history(prompt);
+        if (echos)
+            echo(prompt);
     }
     return (0);
 }
