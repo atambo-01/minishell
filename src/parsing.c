@@ -34,6 +34,7 @@ char	*ft_cutstr(char *str, char c, unsigned int inc)
 		i++;
 	}
 	res[i] = 0;
+	printf("ft_cutstr sucess\n");
 	return(res);
 }
 
@@ -49,7 +50,7 @@ t_list	*ft_get_token(char *line)
 	i = 0; //here
 	if (!line || !*line)
 			return (start);
-	token = NULL;
+	token = malloc(sizeof(t_list*));
 	start = token;
 	flag = '"';
 	while(line[k] == ' ')
@@ -63,7 +64,6 @@ t_list	*ft_get_token(char *line)
 		if (line[k] == flag && line[k + 1] != flag && 
 			ft_strchr(&line[k + 1], flag))
 		{
-			token = malloc(sizeof(t_list*));
 			token->s = ft_cutstr(&line[k], flag, 0);
 			token->next = malloc(sizeof(t_list*));
 			token = token->next;
@@ -82,7 +82,6 @@ t_list	*ft_get_token(char *line)
 		}	
 		else if (k == 0 && ft_strchr(line, ' '))
 		{
-			token = malloc(sizeof(t_list*));
 			token->s = ft_cutstr(line, ' ', -1);
 			token->next = malloc(sizeof(t_list*));
 			token = token->next;
