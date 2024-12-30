@@ -1,6 +1,6 @@
 #include "../inc/minishell.h"
 
-char	*ft_cutstr(char *str, char c, unsigned int inc)
+char	*ft_cutstr(char *str, char c, int inc)
 {
 	char	*res;
 	char	*start;
@@ -10,11 +10,14 @@ char	*ft_cutstr(char *str, char c, unsigned int inc)
 	i = 0;
 	start = NULL;
 	end = NULL;
-	if (inc = -1)
+	if (inc == -1)
 		start = str;
 	else
+	{
 		start = ft_strchr(str, c);
-	while(start && *(start + 1) == c) start++;
+		while(start && *(start + 1) == c)
+			start++;
+	}		
 	if (start)
 		end = ft_strchr(start + 2, c);
 	if (!str || !*str || !start || !end || end - start < 1 )
@@ -34,7 +37,6 @@ char	*ft_cutstr(char *str, char c, unsigned int inc)
 		i++;
 	}
 	res[i] = 0;
-	printf("ft_cutstr sucess\n");
 	return(res);
 }
 
@@ -59,8 +61,6 @@ t_list	*ft_get_token(char *line)
 	{
 		printf("k = %d\n%s\n", k, &line[k]);
 		printf("flag = %c\n", flag);
-		if (line[k] == flag)
-				printf("here\n");
 		if (line[k] == flag && line[k + 1] != flag && 
 			ft_strchr(&line[k + 1], flag))
 		{

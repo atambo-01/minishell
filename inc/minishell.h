@@ -32,7 +32,7 @@ typedef struct s_tree
 	struct s_tree	*next_cmd;
 }					s_tree;
 
-char	*ft_cutstr(char *str, char c, unsigned int inc);
+char	*ft_cutstr(char *str, char c, int inc);
 t_list	*ft_get_token(char *line);
 
 #endif
