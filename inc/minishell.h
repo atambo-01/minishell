@@ -34,5 +34,6 @@ typedef struct s_tree
 
 char	*ft_cutstr(char *str, char c, int inc);
 t_list	*ft_get_token(char *line);
+char	*ft_get_token_2(char **p_old);
 
 #endif

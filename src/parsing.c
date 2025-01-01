@@ -40,87 +40,104 @@ char	*ft_cutstr(char *str, char c, int inc)
 	return(res);
 }
 
+char	*ft_get_token_2(char **p_old)
+{
+	int		i;
+	int		k;
+	char	*new;
+	char	*old;
+	char	q;
+	
+	i = 0;
+	k = 0;
+	q = '"';
+	old = *p_old;
+	new = malloc(sizeof(char *) * ft_strlen(old) + 1);
+	while(old[i])
+	{
+		if (old[i] == q && ft_strchr(old + i + 1, q))
+		{
+			printf("HERE_1\n");
+			while(old[i + 1] != q)
+			{
+				/*
+				if (q == '"' && (old == '$' || old[k] == '\\') )
+				{
+					ft_expand(old + i, new);
+				}
+				*/
+				new[k] = old[i + 1];
+				k++;
+				i++;
+			}
+			i += 2;;
+		}
+		else if (q == '"')
+			q = '\'';
+		else
+		{
+			new[k] = old[i];
+			k++;
+			q = '"';
+			i++;
+		}
+	}
+	free(old);
+	old = NULL;
+	return(new);
+}
+
 t_list	*ft_get_token(char *line)
 {
-	char			flag;
-	t_list			*start;	
-	t_list			*token;
-	unsigned int	k;
-	int  i; //debuging del afterwards
+	t_list	*token;
+	t_list	*head;
+	int		last;
+	int		k;
+	int		aux;
+	int		q;
 
+	q == 0;
+	aux = 0;
+	last = 0;
 	k = 0;
-	i = 0; //here
-	if (!line || !*line)
-			return (start);
-	token = malloc(sizeof(t_list*));
-	start = token;
-	flag = '"';
-	while(line[k] == ' ')
+	token = malloc(sizeof(t_list *));
+	head = token;
+	while(*line == ' ')
 		line++;
 	while(line[k])
 	{
-		printf("k = %d\n%s\n", k, &line[k]);
-		printf("flag = %c\n", flag);
-		if (line[k] == flag && line[k + 1] != flag && 
-			ft_strchr(&line[k + 1], flag))
+		if (q == 0 && (line[k] == ' ' || line[k + 1] == 0))
 		{
-			token->s = ft_cutstr(&line[k], flag, 0);
+			if (line[k + 1] == 0)
+				aux = 1;
+			token->s = malloc(sizeof(char*) * (k + aux - last + 1));
+			ft_strlcpy(token->s, &line[last], k + aux - last + 1);
 			token->next = malloc(sizeof(t_list*));
 			token = token->next;
 			token->next = NULL;
-			k += (unsigned int)(ft_strchr(&line[k + 1], flag) - &line[k]) + 1;
-			i++;
-		}
-		else if (line[k] == flag && line[k + 1] == flag)
-		{
-			printf("skip 2\n");
-			k = k + 2;
-		}
-		else if (flag == '"')
-		{
-			flag = '\'';
-		}	
-		else if (k == 0 && ft_strchr(line, ' '))
-		{
-			token->s = ft_cutstr(line, ' ', -1);
-			token->next = malloc(sizeof(t_list*));
-			token = token->next;
-			token->next = NULL;
-			k += (unsigned int)(ft_strchr(line, ' ') - line);
-			i++;//here
-			printf("first space\n");
-		}	
-		else
-		{
-			flag = '"';
-			k++;
-		}
-		printf("token = %d\n--------------\n", i);
+			while(line[k + 1] == ' ')
+				k++;
+			last = k + 1;}
+		if		(line[k] == '"' && q == 0)
+			q = 1;
+		else if (line[k] == '"' && q == 1)
+			q = 0;
+		if		(line[k] == '\'' && q == 0)
+			q = 2;
+		else if (line[k] == '\'' && q == 2 )
+			q = 0;
+		k++;
 	}
-	return(start);
+	if (k == 0)
+	{
+		free(head);
+		head = NULL;
+	}
+	return(head);
 }
 
 
 
-/*	else if (line[k] == ' ' && line[k + 1] != ' ')
-	{ 
-	if (ft_strchr(&line[k + 1], ' '))
-	{
-	token = malloc(sizeof(t_list*));
-	token->s = ft_cutstr(&line[k + 1], ' ', 0);
-	token = token->next;
-	token->next = NULL;
-	k = (unsigned int)(ft_strchr(&line[k + 1], ' ') - line);
-	}
-	if (ft_strchr(&line[k + 1], '\0'))
-	{
-	token = malloc(sizeof(t_list*));
-	token->s = ft_cutstr(&line[k + 1], 0, 0);
-	token = token->next;
-	token->next = NULL;
-	k = (unsigned int)(ft_strchr(&line[k + 1], 0) - line);
-	}
-	}	*/
 
 
 

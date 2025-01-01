@@ -12,15 +12,33 @@
 
 #include "../inc/minishell.h" 
 
+int		ft_list_size(t_list *head)
+{
+	int	i;
+
+	i = 0;
+	if (!head)
+		return(0);
+	while(head->next)
+	{
+		i++;
+		head = head->next;
+	}
+	return(i);
+}
+
 void	ft_token_ls(t_list *token)
 {
 	if (!token)
 		return;
-	while(token)
+	while(token->next)
 	{
-		printf("%s -> ", token->s);
+		printf("|%s|", token->s);
 		token = token->next;
+		if (token && token->s)
+			printf("->");
 	}
+	printf("\n");
 	return;
 }
 
@@ -28,16 +46,12 @@ int main(int ac, char **av)
 {
 	if (ac > 1)
 	{
-	char	*line;
-	t_list	*token;// = malloc(sizeof(t_list *));
-//	token->s = ft_cutstr(av[1], '\'', 0);
-//	token->next = NULL;
-	//	line = readline("minishell> ");
-	//	add_history(line);
-		token = ft_get_token(av[1]);
+		printf("%s\n----------------------\n", av[1]);
+		t_list *token = ft_get_token(av[1]);
 		ft_token_ls(token);
-		free(token);
+		printf("%d tokens\n", ft_list_size(token));
+		token->s = ft_get_token_2(&(token->s));
+		printf("tokenized_2 = %s\n", token->s);
 	}
-	printf("\n");
 	return (0);
 }
