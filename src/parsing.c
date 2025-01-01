@@ -57,7 +57,6 @@ char	*ft_get_token_2(char **p_old)
 	{
 		if (old[i] == q && ft_strchr(old + i + 1, q))
 		{
-			printf("HERE_1\n");
 			while(old[i + 1] != q)
 			{
 				/*
@@ -106,7 +105,7 @@ t_list	*ft_get_token(char *line)
 		line++;
 	while(line[k])
 	{
-		if (q == 0 && (line[k] == ' ' || line[k + 1] == 0))
+		if ((q == 0 && line[k] == ' ') || line[k + 1] == 0)
 		{
 			if (line[k + 1] == 0)
 				aux = 1;

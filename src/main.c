@@ -51,7 +51,7 @@ int main(int ac, char **av)
 		ft_token_ls(token);
 		printf("%d tokens\n", ft_list_size(token));
 		token->s = ft_get_token_2(&(token->s));
-		printf("tokenized_2 = %s\n", token->s);
+		ft_token_ls(token);
 	}
 	return (0);
 }
