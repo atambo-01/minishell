@@ -50,7 +50,12 @@ int main(int ac, char **av)
 		t_list *token = ft_get_token(av[1]);
 		ft_token_ls(token);
 		printf("%d tokens\n", ft_list_size(token));
-		token->s = ft_get_token_2(&(token->s));
+		t_list	*curr = token;
+		while(curr->next)
+		{
+			curr->s = ft_get_token_2(&(curr->s));
+			curr = curr->next;
+		}
 		ft_token_ls(token);
 	}
 	return (0);
