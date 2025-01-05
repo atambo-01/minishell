@@ -1,5 +1,5 @@
-/* ************************************************************************** */
 /*                                                                            */
+/* ************************************************************************** */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
@@ -31,9 +31,11 @@ void	ft_token_ls(t_list *token)
 {
 	if (!token)
 		return;
-	while(token->next)
+	int  i = 0;
+	while(token)
 	{
-		printf("|%s|", token->s);
+		if (token && token->s)
+			printf("%s", token->s);
 		token = token->next;
 		if (token && token->s)
 			printf("->");
@@ -46,17 +48,15 @@ int main(int ac, char **av)
 {
 	if (ac > 1)
 	{
+		int i = 3;
 		printf("%s\n----------------------\n", av[1]);
 		t_list *token = ft_get_token(av[1]);
 		ft_token_ls(token);
+		/*		
 		printf("%d tokens\n", ft_list_size(token));
-		t_list	*curr = token;
-		while(curr->next)
-		{
-			curr->s = ft_get_token_2(&(curr->s));
-			curr = curr->next;
-		}
 		ft_token_ls(token);
+		ft_get_token_2(&(token));
+		*/
 	}
 	return (0);
 }

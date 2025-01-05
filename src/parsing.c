@@ -127,7 +127,6 @@ void	ft_get_token_if(char *line, t_list **p_token, t_count **p_c)
 			{
 				c->temp = c->k - c->last + 1;
 				token = add_token(&token, &line[c->last], c->temp);
-				ft_token_ls(token);
 				token = token->next;
 				token->next = NULL;
 			}
@@ -148,7 +147,6 @@ void	ft_get_token_if(char *line, t_list **p_token, t_count **p_c)
 			c->temp = c->k + c->aux - c->last + 1;
 			c->temp = c->k - c->last + 1;
 			token = add_token(&token, &line[c->last], c->temp);
-			ft_token_ls(token);
 			token = token->next;
 			token->next = NULL;
 			while(line[c->k + 1] == ' ')
@@ -175,12 +173,12 @@ t_list	*ft_get_token(char *line)
 	
 	token = malloc(sizeof(t_list));	
 	c = ft_counter();
+	printf("c->k = %d\n", c->k);
 	head = token;
 	line = ft_strtrim(line, " ");
 	while(line[c->k])
-	{
-//		printf("c->k = %d\n", c->k);
-//		ft_get_token_if(line, &token, &c);
+	{	
+	//	ft_get_token_if(line, &token, &c);
 		if (c->q == 0  && line[c->k] == '|')
 		{
 			if (c->k - 1 >= 0 && line[c->k - 1] != ' ')

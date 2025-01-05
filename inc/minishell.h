@@ -32,6 +32,17 @@ typedef struct s_tree
 	struct s_tree	*next_cmd;
 }					s_tree;
 
+typedef struct s_count
+{
+	int	i;
+	int	j;
+	int	k;
+	int	last;
+	int	q;
+	int	temp;
+	int	aux;
+}		t_count;
+
 char	*ft_cutstr(char *str, char c, int inc);
 t_list	*ft_get_token(char *line);
 char	*ft_get_token_2(char **p_old);
