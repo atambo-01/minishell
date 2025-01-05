@@ -86,61 +86,153 @@ char	*ft_get_token_2(char **p_old)
 	return(new);
 }
 
-t_list	*ft_get_token(char *line)
+t_count	*ft_counter(void)
+{
+	t_count	*c;
+
+	c = malloc(sizeof(t_count));
+	c->i = 0;
+	c->j = 0;
+	c->k = 0;
+	c->last = 0;
+	c->q = 0;
+	c->temp	= 0;
+	c->aux = 0;
+	return(c);
+	/*
+ */
+}
+
+t_list	*add_token(t_list **p_token, char *line, int len)
 {
 	t_list	*token;
-	t_list	*head;
-	int		last;
-	int		k;
-	int		aux;
-	int		q;
 
-	q == 0;
-	aux = 0;
-	last = 0;
-	k = 0;
-	token = malloc(sizeof(t_list *));
-	head = token;
-	while(*line == ' ')
-		line++;
-	while(line[k])
-	{
-		if ((q == 0 && line[k] == ' ') || line[k + 1] == 0)
+	token = *p_token;
+	token->s = malloc(sizeof(char*) * (len));
+	ft_strlcpy(token->s, &line[len], len);
+	token->next = malloc(sizeof(t_list*));
+	return(token);	
+}
+
+void	ft_get_token_if(char *line, t_list **p_token, t_count **p_c)
+{
+	t_count	*c;
+	t_list	*token;
+
+	c = *p_c;
+	token = *p_token;
+	if (c->q == 0  && line[c->k] == '|')
 		{
-			if (line[k + 1] == 0)
-				aux = 1;
-			token->s = malloc(sizeof(char*) * (k + aux - last + 1));
-			ft_strlcpy(token->s, &line[last], k + aux - last + 1);
+			if (c->k - 1 >= 0 && line[c->k - 1] != ' ')
+			{
+				c->temp = c->k - c->last + 1;
+				token = add_token(&token, &line[c->last], c->temp);
+				ft_token_ls(token);
+				token = token->next;
+				token->next = NULL;
+			}
+			token->s = malloc(sizeof(char*) * 2);
+			token->s = "|";
 			token->next = malloc(sizeof(t_list*));
 			token = token->next;
 			token->next = NULL;
-			while(line[k + 1] == ' ')
-				k++;
-			last = k + 1;}
-		if		(line[k] == '"' && q == 0)
-			q = 1;
-		else if (line[k] == '"' && q == 1)
-			q = 0;
-		if		(line[k] == '\'' && q == 0)
-			q = 2;
-		else if (line[k] == '\'' && q == 2 )
-			q = 0;
-		k++;
-	}
-	if (k == 0)
-	{
-		free(head);
-		head = NULL;
-	}
-	return(head);
+			(c->k)++;
+			while(line[c->k] == ' ')
+				(c->k)++;
+			c->last = c->k;
+		}
+		else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
+		{
+			if (line[c->k + 1] == 0)
+				c->aux = 1;
+			c->temp = c->k + c->aux - c->last + 1;
+			c->temp = c->k - c->last + 1;
+			token = add_token(&token, &line[c->last], c->temp);
+			ft_token_ls(token);
+			token = token->next;
+			token->next = NULL;
+			while(line[c->k + 1] == ' ')
+				(c->k)++;
+			c->last = c->k + 1;}
+		if		(line[c->k] == '"' && c->q == 0)
+			c->q = 1;
+		else if (line[c->k] == '"' && c->q == 1)
+			c->q = 0;
+		if		(line[c->k] == '\'' && c->q == 0)
+			c->q = 2;
+		else if (line[c->k] == '\'' && c->q == 2)
+			c->q = 0;
+		(c->k)++;
+		return;
 }
 
 
-
-
-
-
-
+t_list	*ft_get_token(char *line)
+{
+	t_count	*c;
+	t_list	*head;
+	t_list	*token;
+	
+	token = malloc(sizeof(t_list));	
+	c = ft_counter();
+	head = token;
+	line = ft_strtrim(line, " ");
+	while(line[c->k])
+	{
+//		printf("c->k = %d\n", c->k);
+//		ft_get_token_if(line, &token, &c);
+		if (c->q == 0  && line[c->k] == '|')
+		{
+			if (c->k - 1 >= 0 && line[c->k - 1] != ' ')
+			{
+				c->temp = c->k - c->last + 1;
+				token->s = malloc(sizeof(char*) * (c->temp));
+				ft_strlcpy(token->s, &line[c->temp], c->temp);
+				token->next = malloc(sizeof(t_list*));
+				token = token->next;
+				token->next = NULL;
+				//return(head);
+			}
+			token->s = malloc(sizeof(char*) * 2);
+			token->s = "|";
+			token->next = malloc(sizeof(t_list*));
+			token = token->next;
+			token->next = NULL;
+			(c->k)++;
+			while(line[c->k] == ' ')
+				(c->k)++;
+			c->last = c->k;
+		}
+		else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
+		{
+			if (line[c->k + 1] == 0)
+				c->aux = 1;
+			c->temp = c->k + c->aux - c->last + 1;
+			token->s = malloc(sizeof(char*) * (c->temp));
+			ft_strlcpy(token->s, &line[c->last], c->temp);
+			token->next = malloc(sizeof(t_list*));
+			token = token->next;
+			token->next = NULL;
+			//return(head);
+			while(line[c->k + 1] == ' ')
+				(c->k)++;
+			c->last = c->k + 1;}
+		if		(line[c->k] == '"' && c->q == 0)
+			c->q = 1;
+		else if (line[c->k] == '"' && c->q == 1)
+			c->q = 0;
+		if		(line[c->k] == '\'' && c->q == 0)
+			c->q = 2;
+		else if (line[c->k] == '\'' && c->q == 2)
+			c->q = 0;
+		(c->k)++;
+	}
+	if (c->q != 0)
+		printf("error. unclosed quotes\n");
+	/*
+	*/	
+	return(head);
+}
 
 
 
