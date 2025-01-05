@@ -103,17 +103,37 @@ t_count	*ft_counter(void)
  */
 }
 
-t_list	*add_token(t_list **p_token, char *line, int len)
+t_list	*add_token(t_list **p_token, char *line, t_count **p_c)
+{
+	t_list	*token;
+	t_list	*res;
+	t_count	*c;
+
+	token = *p_token;
+	c = *p_c;
+	token->s = malloc(sizeof(char*) * (c->temp));
+	ft_strlcpy(token->s, &line[c->last], c->temp);
+//	res = token;
+	token->next = malloc(sizeof(t_list *));
+	token = token->next;
+	token->next = NULL;
+	return(token);
+}
+
+t_list	*add_pipe(t_list **p_token)
 {
 	t_list	*token;
 
 	token = *p_token;
-	token->s = malloc(sizeof(char*) * (len));
-	ft_strlcpy(token->s, &line[len], len);
+	token->s = malloc(sizeof(char*) * 2);
+	token->s = "|";
 	token->next = malloc(sizeof(t_list*));
-	return(token);	
+	token = token->next;
+	token->next = NULL;
+	return(token);
 }
 
+/*
 void	ft_get_token_if(char *line, t_list **p_token, t_count **p_c)
 {
 	t_count	*c;
@@ -163,6 +183,7 @@ void	ft_get_token_if(char *line, t_list **p_token, t_count **p_c)
 		(c->k)++;
 		return;
 }
+*/
 
 
 t_list	*ft_get_token(char *line)
@@ -173,7 +194,6 @@ t_list	*ft_get_token(char *line)
 	
 	token = malloc(sizeof(t_list));	
 	c = ft_counter();
-	printf("c->k = %d\n", c->k);
 	head = token;
 	line = ft_strtrim(line, " ");
 	while(line[c->k])
@@ -184,18 +204,16 @@ t_list	*ft_get_token(char *line)
 			if (c->k - 1 >= 0 && line[c->k - 1] != ' ')
 			{
 				c->temp = c->k - c->last + 1;
-				token->s = malloc(sizeof(char*) * (c->temp));
-				ft_strlcpy(token->s, &line[c->temp], c->temp);
-				token->next = malloc(sizeof(t_list*));
-				token = token->next;
-				token->next = NULL;
-				//return(head);
-			}
+				token = add_token(&token, line, &c);
+				}
+			token = add_pipe(&token);
+			/*
 			token->s = malloc(sizeof(char*) * 2);
 			token->s = "|";
 			token->next = malloc(sizeof(t_list*));
 			token = token->next;
 			token->next = NULL;
+			 */
 			(c->k)++;
 			while(line[c->k] == ' ')
 				(c->k)++;
@@ -206,11 +224,14 @@ t_list	*ft_get_token(char *line)
 			if (line[c->k + 1] == 0)
 				c->aux = 1;
 			c->temp = c->k + c->aux - c->last + 1;
+			token = add_token(&token, line, &c);
+			/*
 			token->s = malloc(sizeof(char*) * (c->temp));
 			ft_strlcpy(token->s, &line[c->last], c->temp);
 			token->next = malloc(sizeof(t_list*));
 			token = token->next;
 			token->next = NULL;
+			 */	
 			//return(head);
 			while(line[c->k + 1] == ' ')
 				(c->k)++;
@@ -227,8 +248,6 @@ t_list	*ft_get_token(char *line)
 	}
 	if (c->q != 0)
 		printf("error. unclosed quotes\n");
-	/*
-	*/	
 	return(head);
 }
 
