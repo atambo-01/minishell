@@ -1,0 +1,1 @@
+The  mistake was that in ft_cutstr i was if( inc =  -1) not a comparison but an assign which caused if (inc == 0) to  never be true T_T
