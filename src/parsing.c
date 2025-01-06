@@ -1,5 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/06 14:20:04 by atambo            #+#    #+#             */
+/*   Updated: 2025/01/06 23:35:13 by atambo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
+/*
 char	*ft_cutstr(char *str, char c, int inc)
 {
 	char	*res;
@@ -40,6 +53,7 @@ char	*ft_cutstr(char *str, char c, int inc)
 	return(res);
 }
 
+
 char	*ft_get_token_2(char **p_old)
 {
 	int		i;
@@ -59,12 +73,10 @@ char	*ft_get_token_2(char **p_old)
 		{
 			while(old[i + 1] != q)
 			{
-				/*
 				if (q == '"' && (old == '$' || old[k] == '\\') )
 				{
 					ft_expand(old + i, new);
 				}
-				*/
 				new[k] = old[i + 1];
 				k++;
 				i++;
@@ -85,6 +97,7 @@ char	*ft_get_token_2(char **p_old)
 	old = NULL;
 	return(new);
 }
+*/
 
 t_count	*ft_counter(void)
 {
@@ -96,14 +109,12 @@ t_count	*ft_counter(void)
 	c->k = 0;
 	c->last = 0;
 	c->q = 0;
-	c->temp	= 0;
+	c->temp = 0;
 	c->aux = 0;
-	return(c);
-	/*
- */
+	return (c);
 }
 
-t_list	*add_token(t_list **p_token, char *line, t_count **p_c)
+t_list	*add_token(char *line, t_list **p_token, t_count **p_c)
 {
 	t_list	*token;
 	t_list	*res;
@@ -111,13 +122,12 @@ t_list	*add_token(t_list **p_token, char *line, t_count **p_c)
 
 	token = *p_token;
 	c = *p_c;
-	token->s = malloc(sizeof(char*) * (c->temp));
+	token->s = malloc(sizeof(char *) * (c->temp));
 	ft_strlcpy(token->s, &line[c->last], c->temp);
-//	res = token;
 	token->next = malloc(sizeof(t_list *));
 	token = token->next;
 	token->next = NULL;
-	return(token);
+	return (token);
 }
 
 t_list	*add_pipe(t_list **p_token)
@@ -125,122 +135,70 @@ t_list	*add_pipe(t_list **p_token)
 	t_list	*token;
 
 	token = *p_token;
-	token->s = malloc(sizeof(char*) * 2);
+	token->s = malloc(sizeof(char *) * 2);
 	token->s = "|";
-	token->next = malloc(sizeof(t_list*));
+	token->next = malloc(sizeof(t_list *));
 	token = token->next;
 	token->next = NULL;
-	return(token);
+	return (token);
 }
 
-/*
-void	ft_get_token_if(char *line, t_list **p_token, t_count **p_c)
+void	skip_spaces(char *line, t_count **p_c)
+{
+	t_count	*c;
+
+	c = *p_c;
+	while (line[c->k] == ' ')
+		(c->k)++;
+}
+
+t_list	*ft_get_token_if(char *line, t_list **p_token, t_count **p_c)
 {
 	t_count	*c;
 	t_list	*token;
 
 	c = *p_c;
 	token = *p_token;
-	if (c->q == 0  && line[c->k] == '|')
+	if (c->q == 0 && line[c->k] == '|')
+	{
+		if (c->k - 1 >= 0 && line[c->k - 1] != ' ')
 		{
-			if (c->k - 1 >= 0 && line[c->k - 1] != ' ')
-			{
-				c->temp = c->k - c->last + 1;
-				token = add_token(&token, &line[c->last], c->temp);
-				token = token->next;
-				token->next = NULL;
-			}
-			token->s = malloc(sizeof(char*) * 2);
-			token->s = "|";
-			token->next = malloc(sizeof(t_list*));
-			token = token->next;
-			token->next = NULL;
-			(c->k)++;
-			while(line[c->k] == ' ')
-				(c->k)++;
-			c->last = c->k;
-		}
-		else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
-		{
-			if (line[c->k + 1] == 0)
-				c->aux = 1;
-			c->temp = c->k + c->aux - c->last + 1;
 			c->temp = c->k - c->last + 1;
-			token = add_token(&token, &line[c->last], c->temp);
-			token = token->next;
-			token->next = NULL;
-			while(line[c->k + 1] == ' ')
-				(c->k)++;
-			c->last = c->k + 1;}
-		if		(line[c->k] == '"' && c->q == 0)
-			c->q = 1;
-		else if (line[c->k] == '"' && c->q == 1)
-			c->q = 0;
-		if		(line[c->k] == '\'' && c->q == 0)
-			c->q = 2;
-		else if (line[c->k] == '\'' && c->q == 2)
-			c->q = 0;
-		(c->k)++;
-		return;
+			token = add_token(line, &token, &c);
+		}
+		token = add_pipe(&token);
+		skip_spaces(line, &c);
+		c->last = c->k;
+	}
+	else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
+	{
+		c->aux = (line[c->k + 1] == 0);
+		c->temp = c->k + c->aux - c->last + 1;
+		token = add_token(line, &token, &c);
+		skip_spaces(line, &c);
+		c->last = c->k + 1;
+	}
+	return (token);
 }
-*/
-
 
 t_list	*ft_get_token(char *line)
 {
 	t_count	*c;
 	t_list	*head;
 	t_list	*token;
-	
-	token = malloc(sizeof(t_list));	
+
+	token = malloc(sizeof(t_list));
 	c = ft_counter();
 	head = token;
 	line = ft_strtrim(line, " ");
-	while(line[c->k])
-	{	
-	//	ft_get_token_if(line, &token, &c);
-		if (c->q == 0  && line[c->k] == '|')
-		{
-			if (c->k - 1 >= 0 && line[c->k - 1] != ' ')
-			{
-				c->temp = c->k - c->last + 1;
-				token = add_token(&token, line, &c);
-				}
-			token = add_pipe(&token);
-			/*
-			token->s = malloc(sizeof(char*) * 2);
-			token->s = "|";
-			token->next = malloc(sizeof(t_list*));
-			token = token->next;
-			token->next = NULL;
-			 */
-			(c->k)++;
-			while(line[c->k] == ' ')
-				(c->k)++;
-			c->last = c->k;
-		}
-		else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
-		{
-			if (line[c->k + 1] == 0)
-				c->aux = 1;
-			c->temp = c->k + c->aux - c->last + 1;
-			token = add_token(&token, line, &c);
-			/*
-			token->s = malloc(sizeof(char*) * (c->temp));
-			ft_strlcpy(token->s, &line[c->last], c->temp);
-			token->next = malloc(sizeof(t_list*));
-			token = token->next;
-			token->next = NULL;
-			 */	
-			//return(head);
-			while(line[c->k + 1] == ' ')
-				(c->k)++;
-			c->last = c->k + 1;}
-		if		(line[c->k] == '"' && c->q == 0)
+	while (line[c->k])
+	{
+		token = ft_get_token_if(line, &token, &c);
+		if (line[c->k] == '"' && c->q == 0)
 			c->q = 1;
 		else if (line[c->k] == '"' && c->q == 1)
 			c->q = 0;
-		if		(line[c->k] == '\'' && c->q == 0)
+		if (line[c->k] == '\'' && c->q == 0)
 			c->q = 2;
 		else if (line[c->k] == '\'' && c->q == 2)
 			c->q = 0;
@@ -248,11 +206,5 @@ t_list	*ft_get_token(char *line)
 	}
 	if (c->q != 0)
 		printf("error. unclosed quotes\n");
-	return(head);
+	return (head);
 }
-
-
-
-
-
-
