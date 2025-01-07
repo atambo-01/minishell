@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2024/12/12 18:50:37 by atambo           ###   ########.fr        #
+#    Updated: 2025/01/07 16:43:00 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,8 +16,9 @@ NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
 
-SOURCES		=	src/main.c \
-			src/parsing.c \
+SOURCES		=	src/main.c\
+				src/parsing.c\
+				src/parsing_plus.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

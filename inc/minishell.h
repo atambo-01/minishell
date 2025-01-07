@@ -6,7 +6,7 @@
 /*   By: eneto <eliandrasibo12@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 19:24:37 by eneto             #+#    #+#             */
-/*   Updated: 2024/12/19 19:24:37 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/07 16:42:33 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,19 @@ typedef struct s_count
 
 char	*ft_cutstr(char *str, char c, int inc);
 t_list	*ft_get_token(char *line);
-char	*ft_get_token_2(char **p_old);
+
+//parsing.c
+void    ft_gt2_a1(char *old, char *new, t_count **p_c);
+char    *ft_get_token_2(char *old, t_count *c);
+t_list  *ft_get_token_if(char *line, t_list **p_token, t_count **p_c);
+t_list  *ft_get_token(char *line);
+
+
+//parsing_plus.c
+t_count *ft_counter(void);
+t_list  *add_token(char *line, t_list **p_token, t_count **p_c);
+t_list  *add_pipe(t_list **p_token);
+void    skip_spaces(char *line, t_count **p_c);
+
 
 #endif
