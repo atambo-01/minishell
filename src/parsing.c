@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:20:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/07 16:44:02 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/07 16:55:25 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	ft_gt2_a1(char *old, char *new, t_count **p_c)
 			(c->k)++;
 			(c->i)++;
 		}
-		c->i += 2;
+		c->i += 1;
 	}
 	else if (c->q == '"')
 		c->q = '\'';
@@ -48,32 +48,7 @@ char	*ft_get_token_2(char *old, t_count *c)
 	c->q = '"';
 	new = ft_malloc(sizeof(char *) * ft_strlen(old) + 1);
 	while (old[c->i])
-	{
 		ft_gt2_a1(old, new, &c);
-/*
-		if (old[c->i] == c->q && ft_strchr(old + c->i + 1, c->q))
-		{
-			while (old[c->i + 1] != c->q)
-			{
-		kip_spaces(char *line, t_count **p_c)if (q == '"' && (old == '$' || old[k] == '\\') )
-				//	ft_expand(old + i, new);
-				new[(c->k)] = old[(c->i) + 1];
-				(c->k)++;
-				(c->i)++;
-			}
-			c->i += 2;
-		}
-		else if (c->q == '"')
-			c->q = '\'';
-		else
-		{
-			new[(c->k)] = old[(c->i)];
-			c->q = '"';
-			(c->k)++;
-			(c->i)++;
-		}
-		*/
-	}	
 	free(old);
 	old = NULL;
 	return (new);
