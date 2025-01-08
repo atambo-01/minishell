@@ -6,7 +6,7 @@
 /*   By: eneto <eliandrasibo12@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 19:24:37 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/07 16:42:33 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/08 15:30:58 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libft/libft.h"
+#include "limits.h"
 
 typedef struct s_list
 {
@@ -51,7 +52,7 @@ void    ft_gt2_a1(char *old, char *new, t_count **p_c);
 char    *ft_get_token_2(char *old, t_count *c);
 t_list  *ft_get_token_if(char *line, t_list **p_token, t_count **p_c);
 t_list  *ft_get_token(char *line);
-
+void	ft_pwd(void);
 
 //parsing_plus.c
 t_count *ft_counter(void);

@@ -6,7 +6,7 @@
 /*   By: eneto <eliandrasibo12@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 18:09:36 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/07 16:04:11 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/08 15:27:07 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_token_ls(t_list *token)
 	printf("\n");
 	return;
 }
-
+/*
 int main(int ac, char **av)
 {
 	if (ac > 1)
@@ -51,12 +51,23 @@ int main(int ac, char **av)
 		int i = 3;
 		printf("%s\n----------------------\n", av[1]);
 		t_list *token = ft_get_token(av[1]);
-		ft_token_ls(token);
-		/*		
+		ft_token_ls(token);		
 		printf("%d tokens\n", ft_list_size(token));
 		ft_token_ls(token);
 		ft_get_token_2(&(token));
-		*/
 	}
 	return (0);
+}
+*/
+int	main(void)
+{
+	char	*line;
+
+	while( ft_strncmp(line, "exit", 4) != 0)
+	{	
+		line = readline("minishell>");
+		add_history(line);
+		if (ft_strncmp(line, "pwd", 3) == 0)
+			ft_pwd();
+	}
 }
