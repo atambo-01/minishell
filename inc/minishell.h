@@ -6,7 +6,7 @@
 /*   By: eneto <eliandrasibo12@gmail.com>           +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 19:24:37 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/08 15:30:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/10 19:19:13 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,14 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-typedef struct s_tree
+typedef struct s_cmd
 {
-	char			*cmd;
-	t_list			*opt;
-	t_list			*params;
-	struct s_tree	*next_cmd;
-}					s_tree;
+	char			*n;
+	char			**opt;
+	char			**params;
+	struct s_cmd	*prev;
+	struct s_cmd	*next;
+}					t_cmd;
 
 typedef struct s_count
 {
@@ -44,8 +45,10 @@ typedef struct s_count
 	int	aux;
 }		t_count;
 
-char	*ft_cutstr(char *str, char c, int inc);
-t_list	*ft_get_token(char *line);
+//get_cmd.c
+t_cmd   *add_cmd(t_list *token, t_cmd *prev);
+t_cmd   *pipe_cmd(t_list *token, t_cmd *cmd) ;
+t_cmd   *get_cmd(t_list *token);
 
 //parsing.c
 void    ft_gt2_a1(char *old, char *new, t_count **p_c);
