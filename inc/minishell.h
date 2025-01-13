@@ -28,7 +28,6 @@ typedef struct s_list
 typedef struct s_cmd
 {
 	char			*n;
-	char			**opt;
 	char			**params;
 	struct s_cmd	*prev;
 	struct s_cmd	*next;

@@ -43,26 +43,30 @@ void	ft_token_ls(t_list *token)
 	printf("\n");
 	return;
 }
-/*
-int main(int ac, char **av)
+
+void	ft_cmd_ls(t_cmd *cmd)
 {
-	if (ac > 1)
+	if (!cmd)
+		return;
+	int  i = 0;
+	while(cmd)
 	{
-		int i = 3;
-		printf("%s\n----------------------\n", av[1]);
-		t_list *token = ft_get_token(av[1]);
-		ft_token_ls(token);		
-		printf("%d tokens\n", ft_list_size(token));
-		ft_token_ls(token);
-		ft_get_token_2(&(token));
+		if (cmd && cmd->n)
+			printf("%s", cmd->n);
+		cmd = cmd->next;
+		if (cmd && cmd->n)
+			printf("->");
 	}
-	return (0);
+	printf("\n");
+	return;
 }
-*/
+
+
 int	main(void)
 {
 	char	*line;
 	t_list	*token;
+    t_cmd   *cmd;
 	while(1)
 	{	
 		line = readline("minishell>");
@@ -70,5 +74,8 @@ int	main(void)
 		token = ft_get_token(line);
 		ft_token_ls(token);
 		add_history(line);
+        cmd = get_cmd(token);
+        //ft_cmd_ls(cmd);
+        //printf("cmd = %s\n", cmd->n);
 	}
 }

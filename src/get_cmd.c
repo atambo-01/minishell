@@ -32,7 +32,6 @@ t_cmd	*add_cmd(t_list *token, t_cmd *prev)
 
 	cmd = ft_malloc(sizeof(t_cmd));
 	cmd->n = ft_strcpy(token->s);
-	cmd->opt = NULL;
 	cmd->params = NULL;
 	cmd->prev = prev;
 	cmd->next = NULL;
@@ -48,28 +47,18 @@ t_cmd	*get_cmd(t_list *token)
 {
 	t_cmd	*cmd;
 	int		p;
-	int		o;
 
 	p = 0;
-	o = 0;
-	cmd = ft_malloc(sizeof(t_cmd));
-	cmd->n = ft_strcpy(token->s);
+	cmd = add_cmd(token, NULL);
+    printf("cmd->n = %s\n", cmd->n);
 	while(token)
 	{
-		if (ft_strcmp(token->s, "|") == 0 || 
-			ft_strcmp(token->s, ">") == 0 ||
-			ft_strcmp(token->s, "<") == 0 ||
-			ft_strcmp(token->s, ">>") == 0 ||
-			ft_strcmp(token->s, "<<") == 0)
+		if (ft_strcmp(token->s, "|") == 0) 
 		{
 			cmd = add_cmd(token, cmd);
 			token = token->next;
 			cmd = cmd->next;
 			cmd = add_cmd(token, cmd);
-		}
-		else if (is_opt())
-		{
-			cmd->opt[o++] = ft_strcpy(token->s);
 		}
 		else
 		{
