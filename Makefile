@@ -21,18 +21,18 @@ SOURCES		=	src/main.c\
 				src/parsing_plus.c\
 				src/ft_pwd.c\
 				src/get_cmd.c\
-SOURCES		=	src/main.c src/builtings.c src/pipe.c
+				src/pipe.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft
 
-SUBDIR		=	./libft
-LIBS		=	-lreadline -lncurses ./libft/libft.a
+SUBDIR		=	inc/libftatambo
+LIBS		=	-lreadline -lncurses inc/libftatambo/libft.a
 
 all: submake $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBS) -lreadline -lncurses
 
 submake:
 	$(foreach dir, $(SUBDIR), $(MAKE) -C $(dir);)
