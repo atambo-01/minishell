@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:06:42 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/15 07:53:48 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/15 12:18:58 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,8 @@ void	verifyp(t_pipe *command)
 		printf("%s%s", "Erro na leitura do comando", command->c0);
 		exit(1);
 	}
-	return;
+	return ;
 }
-
 
 int	pipes(t_pipe *command)
 {
