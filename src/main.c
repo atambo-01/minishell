@@ -40,7 +40,6 @@ void	ft_token_ls(t_list *token)
 		if (token && token->s)
 			printf("->");
 	}
-	printf("\n");
 	return;
 }
 
@@ -49,7 +48,7 @@ void	ft_cmd_ls(t_cmd *cmd)
 	if (!cmd)
 		return;
 	int  i = 0;
-	while(i < 3)
+	while(cmd)
 	{
 		if (cmd && cmd->n)
 		{
@@ -57,10 +56,8 @@ void	ft_cmd_ls(t_cmd *cmd)
 			if (cmd->params)
 			{
 				ft_token_ls(cmd->params);
-				ft_putchar(127);
 			}
-			else
-				printf("\n");
+			printf("\n");
 		}
 		cmd = cmd->nc;
 		i++;
@@ -79,12 +76,11 @@ int	main(void)
     t_cmd   *cmd;
 	while(1)
 	{	
-		line = readline("minishell>");
-		free(line);
-		line = ft_strdup("echo hello | cat dog wolf sheep lion");
+		line = readline("minishell > ");
 		printf("%s\n", line);
 		token = ft_get_token(line);
 		ft_token_ls(token);
+		printf("\n");
 		add_history(line);
         cmd = get_cmd(token);
 		ft_cmd_ls(cmd);
