@@ -6,53 +6,54 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:06:42 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/15 07:53:48 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/15 12:23:35 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	verifyp(t_pipe *command)
+void  ft_pipe(t_cmd *cmd)
 {
-	if (pipe(command->fd) == -1)
+	int 	fd[2];
+	t_pid	pid1;
+	t_pid	pid2;
+
+	if (pipe(fd) == -1)
 	{
-		perror("Erro na criação do pipe");
+		perror("pipe");
 		exit(1);
 	}
-	command->pid = fork();
-	if (command->pid == -1)
+	pid1 = fork();
+	if (pid1 == -1)
 	{
-		printf("%s%s", "Erro na leitura do comando", command->c0);
-		exit(1);
-	}
-	return;
-}
-
-
-int	pipes(t_pipe *command)
-{
-	verifyp(command);
-	if (command->pid == 0)
-	{
-		close(command->fd[1]);
-		dup2(command->fd[0], STDIN_FILENO);
-		close(command->fd[0]);
-		execve(command->c0[0], command->c0, NULL);
-		printf("%s%s", "Erro na leitura do comando", command->c0);
+		perror("fork");
 		exit(EXIT_FAILURE);
 	}
-	else
+	if (pid1 == 0)
 	{
-		close(command->fd[0]);
-		dup2(command->fd[1], STDOUT_FILENO);
-		close(command->fd[1]);
-		execve(command->c1[0], command->c1, NULL);
-		printf("%s%s", "Erro na leitura do comando", command->c1);
+		// Child process 1: Execute the command before the pipe
+		dup2(fd[1], STDOUT_FILENO); // Redirect stdout to the pipe's write end
+		close(fd[0]);              // Close unused read end
+		close(fd[1]);
+		execute(cmd->pc);              // Execute the previous command
+	}
+	pid_t pid2 = fork();
+	if (pid2 == -1)
+	{
+		perror("fork");
 		exit(EXIT_FAILURE);
 	}
-	close(command->fd[0]);
-	close(command->fd[1]);
-	wait(NULL);
-	wait(NULL);
-	return (0);
+	if (pid2 == 0)
+	{
+		// Child process 2: Execute the command after the pipe
+		dup2(fd[0], STDIN_FILENO); // Redirect stdin to the pipe's read end
+		close(fd[1]);              // Close unused write end
+		close(fd[0]);
+		execute(cmd->nc);              // Execute the next command
+	}
+	// Parent process: Close pipe ends and wait for children
+	close(fd[0]);
+	close(fd[1]);
+	waitpid(pid1, NULL, 0);
+	waitpid(pid2, NULL, 0);
 }

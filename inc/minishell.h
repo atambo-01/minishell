@@ -2,14 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: eneto <eliandrasibo12@gmail.com>           +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2024/12/19 19:24:37 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/10 19:19:13 by atambo           ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/15 12:24:43 by atambo            #+#    #+#             */
+/*   Updated: 2025/01/15 12:25:27 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +16,6 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-#include "libftatambo/libft.h"
 #include "limits.h"
 
 typedef struct s_list
