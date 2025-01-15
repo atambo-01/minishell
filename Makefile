@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/01/09 15:31:03 by atambo           ###   ########.fr        #
+#    Updated: 2025/01/15 14:35:27 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,6 @@ SOURCES		=	src/main.c\
 				src/parsing_plus.c\
 				src/ft_pwd.c\
 				src/get_cmd.c\
-				src/pipe.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:06:42 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/15 12:34:06 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/15 14:34:48 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 void  ft_pipe(t_cmd *cmd)
 {
 	int 	fd[2];
-	t_pid	pid1;
-	t_pid	pid2;
+	pid_t	pid1;
+	pid_t	pid2;
 
 	if (pipe(fd) == -1)
 	{
@@ -37,7 +37,7 @@ void  ft_pipe(t_cmd *cmd)
 		close(fd[1]);
 		execute(cmd->pc);              // Execute the previous command
 	}
-	pid_t pid2 = fork();
+	pid2 = fork();
 	if (pid2 == -1)
 	{
 		perror("fork");

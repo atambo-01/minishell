@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/10 19:19:05 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/15 14:25:51 by yourLogin        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int strcmp(const char *s1, const char *s2)
 }
 */
 
-t_cmd	*add_cmd(t_list *token, t_cmd *prev)
+t_cmd	*add_cmd(t_list *token, t_cmd *prev, char **envp)
 {
 	t_cmd	*cmd;
 	
@@ -36,52 +36,37 @@ t_cmd	*add_cmd(t_list *token, t_cmd *prev)
 	cmd->n = ft_strdup (token->s);
 	cmd->params = NULL;
 	cmd->nc = NULL;
+	cmd->envp = envp;
 	if (prev)
 		prev->nc = cmd;
 	return(cmd);
 }
 
-void	add_params(t_list *token, t_list **params)
+void	add_params(t_list *token, char **params)
 {
-	t_list	*curr;
-	t_list	*new;
-
 	if (!token || !params)
 		return;
-	new = malloc(sizeof(t_list));
-	new->s = ft_strdup (token->s);
-	new->next = NULL;
-	if (!*params)
-		*params = new;
-	else
-	{
-		curr = *params;
-		while(curr->next)
-			curr = curr->next;
-		curr->next = new;
-	}
-	return;
+	*params = ft_strjoin(*params, token->s);	
 }
 
 
-t_cmd	*get_cmd(t_list *token)
+t_cmd	*get_cmd(t_list *token, char **envp)
 {
 	t_cmd	*cmd;
 	t_cmd	*head;
 
-	cmd = add_cmd(token, NULL);
+	cmd = add_cmd(token, NULL, envp);
 	head = cmd;
 	token = token->next;
 	while(token && token->s)
 	{
 		if (ft_strcmp(token->s, "|") == 0) 
 		{
-			cmd->nc = add_cmd(token, cmd);
+			cmd->nc = add_cmd(token, cmd, envp);
 			cmd = cmd->nc;
 			token = token->next;
-			cmd->nc = add_cmd(token, cmd);
+			cmd->nc = add_cmd(token, cmd, envp);
 			cmd = cmd->nc;
-
 		}
 		else
 		{
