@@ -9,30 +9,15 @@
 /*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2024/12/19 19:24:37 by eneto             #+#    #+#             */
-/*   Updated: 2024/12/19 19:24:37 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/10 19:19:13 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
-
-typedef struct s_pipe
-{
-	int fd[2];
-	pid_t pid;
-	const char *c0;
-	const char *c1;
-} t_pipe;
-
-int	pipes(t_pipe *command);
-void	echo(char *phrase);
-void	verifyp(t_pipe *command);
+#include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 #endif

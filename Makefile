@@ -6,27 +6,33 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2024/12/12 18:50:37 by atambo           ###   ########.fr        #
+#    Updated: 2025/01/09 15:31:03 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC			=	cc
-CFLAGS		=	-Wall -Wextra -Werror -g
+CC		=	cc
+CFLAGS		=	-g #-Wall -Wextra -Werror
 NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
 
+SOURCES		=	src/main.c\
+				src/parsing.c\
+				src/parsing_plus.c\
+				src/ft_pwd.c\
+				src/get_cmd.c\
 SOURCES		=	src/main.c src/builtings.c src/pipe.c
 
 OBJS		=	$(SOURCES:.c=.o)
-INCLUDES	=	-Iincludes
+INCLUDES	=	-Iinc -Ilibft
 
-SUBDIR		=	
+SUBDIR		=	./libft
+LIBS		=	-lreadline -lncurses ./libft/libft.a
 
 all: submake $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) -lreadline -lncurses
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(NAME) $(OBJS) $(LIBS)
 
 submake:
 	$(foreach dir, $(SUBDIR), $(MAKE) -C $(dir);)
