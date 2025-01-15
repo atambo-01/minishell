@@ -26,8 +26,8 @@ SOURCES		=	src/main.c\
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft
 
-SUBDIR		=	inc/libftatambo
-LIBS		=	-lreadline -lncurses inc/libftatambo/libft.a
+SUBDIR		=	inc/libft
+LIBS		=	-lreadline -lncurses inc/libft/libft.a
 
 all: submake $(NAME)
 
