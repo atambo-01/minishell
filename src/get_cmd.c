@@ -29,42 +29,65 @@ int strcmp(const char *s1, const char *s2)
 t_cmd	*add_cmd(t_list *token, t_cmd *prev)
 {
 	t_cmd	*cmd;
-
+	
+	if (!token)
+		return(NULL);
 	cmd = ft_malloc(sizeof(t_cmd));
-	cmd->n = ft_strcpy(token->s);
+	cmd->n = ft_strdup (token->s);
 	cmd->params = NULL;
-	cmd->prev = prev;
-	cmd->next = NULL;
-	return (cmd);
+	cmd->nc = NULL;
+	if (prev)
+		prev->nc = cmd;
+	return(cmd);
+}
 
-}
-int	is_opt(void)
+void	add_params(t_list *token, t_list **params)
 {
-	return(0);
+	t_list	*curr;
+	t_list	*new;
+
+	if (!token || !params)
+		return;
+	new = malloc(sizeof(t_list));
+	new->s = ft_strdup (token->s);
+	new->next = NULL;
+	if (!*params)
+		*params = new;
+	else
+	{
+		curr = *params;
+		while(curr->next)
+			curr = curr->next;
+		curr->next = new;
+	}
+	return;
 }
+
 
 t_cmd	*get_cmd(t_list *token)
 {
 	t_cmd	*cmd;
-	int		p;
+	t_cmd	*head;
 
-	p = 0;
 	cmd = add_cmd(token, NULL);
-    printf("cmd->n = %s\n", cmd->n);
-	while(token)
+	head = cmd;
+	token = token->next;
+	while(token && token->s)
 	{
 		if (ft_strcmp(token->s, "|") == 0) 
 		{
-			cmd = add_cmd(token, cmd);
+			cmd->nc = add_cmd(token, cmd);
+			cmd = cmd->nc;
 			token = token->next;
-			cmd = cmd->next;
-			cmd = add_cmd(token, cmd);
+			cmd->nc = add_cmd(token, cmd);
+			cmd = cmd->nc;
+
 		}
 		else
 		{
-			cmd->params[p++] = ft_strcpy(token->s);
+			add_params(token, &(cmd->params));
 		}
 		token = token->next;
 	}
-	return (cmd);
+	return (head);
 }

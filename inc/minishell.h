@@ -28,9 +28,9 @@ typedef struct s_list
 typedef struct s_cmd
 {
 	char			*n;
-	char			**params;
-	struct s_cmd	*prev;
-	struct s_cmd	*next;
+	t_list			*params;
+	struct s_cmd	*pc;
+	struct s_cmd	*nc;
 }					t_cmd;
 
 typedef struct s_count
