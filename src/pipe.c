@@ -6,17 +6,18 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:06:42 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/15 12:34:06 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/16 10:58:15 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void  ft_pipe(t_cmd *cmd)
+void	ft_pipe(t_cmd *cmd)
 {
-	int 	fd[2];
-	t_pid	pid1;
-	t_pid	pid2;
+	int		fd[2];
+	pid_t	pid1;
+	pid_t	pid2;
+	pid_t	pid2;
 
 	if (pipe(fd) == -1)
 	{
@@ -33,11 +34,11 @@ void  ft_pipe(t_cmd *cmd)
 	{
 		// Child process 1: Execute the command before the pipe
 		dup2(fd[1], STDOUT_FILENO); // Redirect stdout to the pipe's write end
-		close(fd[0]);              // Close unused read end
+		close(fd[0]);               // Close unused read end
 		close(fd[1]);
-		execute(cmd->pc);              // Execute the previous command
+		execute(cmd->pc); // Execute the previous command
 	}
-	pid_t pid2 = fork();
+	pid2 = fork();
 	if (pid2 == -1)
 	{
 		perror("fork");
@@ -49,7 +50,7 @@ void  ft_pipe(t_cmd *cmd)
 		dup2(fd[0], STDIN_FILENO); // Redirect stdin to the pipe's read end
 		close(fd[1]);              // Close unused write end
 		close(fd[0]);
-		execute(cmd->nc);              // Execute the next command
+		execute(cmd->nc); // Execute the next command
 	}
 	// Parent process: Close pipe ends and wait for children
 	close(fd[0]);

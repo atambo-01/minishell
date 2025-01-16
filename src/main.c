@@ -23,11 +23,11 @@ int	ft_list_size(t_list *head)
 	i = 0;
 	if (!head)
 		return (0);
-	while (head->next)
-	{
-		i++;
-		head = head->next;
-	}
+		while (head->next)
+		{
+			i++;
+			head = head->next;
+		}
 	return (i);
 }
 
