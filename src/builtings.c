@@ -6,39 +6,47 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 16:31:03 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/16 10:59:35 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/17 11:26:38 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	echo(char *phrase)
+void	echo(t_cmd *cmd)
 {
-	char	*ech;
+	int	n;
 
-	ech = "echo";
-	while (phrase == ech)
-		phrase++;
-	if (phrase != ech)
+	n = 0;
+	if (!cmd || !cmd->n)
+		return ;
+	if (ft_strncmp("-n ", cmd->params) == 0)
 	{
-		printf("%s%s%s", " ", phrase, "\n");
+		n = 1;
+		cmd->params += 3;
 	}
+	printf("%s", cmd->params);
+	if (n)
+		printf("\n");
 	return ;
 }
-int	ft_call_functions(char *function)
+
+void	ft_builtin(t_cmd *cmd)
 {
-	if (function == "echo")
+	if (ft_strcmp("echo", cmd->n) == 0)
 		ft_echo();
-	else if (function == "cd")
+
+	else if (ft_strcmp("cd", cmd->n) == 0)
 		ft_cd();
-	else if (function == "pwd")
+
+	else if (ft_strcmp("pwd", cmd->n) == 0)
 		ft_pwd();
-	else if (function == "export")
+
+	else if (ft_strcmp("export", cmd->n) == 0)
 		ft_export();
-	else if (function == "unset")
+
+	else if (ft_strcmp("unset", cmd->n) == 0)
 		ft_unset();
-	else if (function == "env")
+
+	else if (ft_strcmp("env", cmd->n) == 0)
 		ft_env();
-	else if (function == "|")
-		ft_pipe();
 }

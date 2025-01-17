@@ -59,7 +59,11 @@ void	ft_cmd_ls(t_cmd *cmd)
 			printf("cmd_ls = %s\t: ", cmd->n);
 			if (cmd->params)
 			{
-				ft_token_ls(cmd->params);
+				while(cmd->params[i])
+				{
+					printf("%s\n", cmd->params[i]);
+					i++;
+				}
 			}
 			printf("\n");
 		}
