@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 16:31:03 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/17 13:55:50 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/17 23:53:12 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,16 @@ void	echo(t_cmd *cmd)
 	if (n)
 		printf("\n");
 	return ;
+}
+int	ft_cd(char *path)
+{
+	chdir(path);
+	if(!path)
+	{
+		perror("Erro ao abrir pasta/dir");
+		return(-1);
+	}
+	return (0);
 }
 
 void	ft_builtin(t_cmd *cmd)
