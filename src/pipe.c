@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 10:06:42 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/17 12:08:44 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/17 14:37:11 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_pipe(t_cmd *cmd)
 		dup2(fd[1], STDOUT_FILENO); // Redirect stdout to the pipe's write end
 		close(fd[0]);               // Close unused read end
 		close(fd[1]);
-		execute(cmd->pc); // Execute the previous command
+	//	execute(cmd->pc); // Execute the previous command
 	}
 	pid2 = fork();
 	if (pid2 == -1)
@@ -49,7 +49,7 @@ void	ft_pipe(t_cmd *cmd)
 		dup2(fd[0], STDIN_FILENO); // Redirect stdin to the pipe's read end
 		close(fd[1]);              // Close unused write end
 		close(fd[0]);
-		execute(cmd->nc); // Execute the next command
+	//	execute(cmd->nc); // Execute the next command
 	}
 	// Parent process: Close pipe ends and wait for children
 	close(fd[0]);

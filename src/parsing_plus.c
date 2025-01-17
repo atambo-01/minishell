@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/09 07:33:25 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/17 21:41:51 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,15 @@ t_list	*add_token(char *line, t_list **p_token, t_count **p_c)
 {
 	t_list	*token;
 	t_count	*c;
+	char	*process;
 
 	token = *p_token;
 	c = *p_c;
 	token->s = ft_malloc(sizeof(char *) * (c->temp));
 	ft_strlcpy(token->s, &line[c->last], c->temp);
-	token->s = ft_get_token_2(token->s, c);
-	token->next = ft_malloc(sizeof(t_list *));
+	process = ft_get_token_2(token->s, c);
+	token->s = process;
+	token->next = ft_malloc(sizeof(t_list));
 	token = token->next;
 	token->next = NULL;
 	return (token);
@@ -48,9 +50,9 @@ t_list	*add_pipe(t_list **p_token)
 	t_list	*token;
 
 	token = *p_token;
-	token->s = ft_malloc(sizeof(char *) * 2);
-	token->s = "|";
-	token->next = ft_malloc(sizeof(t_list *));
+	token->s = ft_malloc(sizeof(char) * 2);
+	ft_strlcpy(token->s, "|", 2);
+	token->next = ft_malloc(sizeof(t_list));
 	token = token->next;
 	token->next = NULL;
 	return (token);

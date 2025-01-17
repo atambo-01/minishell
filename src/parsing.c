@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:20:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/09 13:40:31 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/17 21:26:20 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_get_token_2(char *old, t_count *c)
 
 	c = ft_counter();
 	c->q = '"';
-	new = ft_malloc(sizeof(char *) * ft_strlen(old) + 1);
+	new = ft_malloc(sizeof(char) * ft_strlen(old) + 1);
 	while (old[c->i])
 		ft_gt2_a1(old, new, &c);
 	free(old);

@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/01/09 15:31:03 by atambo           ###   ########.fr        #
+#    Updated: 2025/01/17 14:41:40 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,7 @@ OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft
 
 SUBDIR		=	./libft
-LIBS		=	-lreadl i0                                                                                                                                                                                                                                           ne -lncurses ./libft/libft.a
+LIBS		=	-lreadline  ./libft/libft.a
 
 all: submake $(NAME)
 
