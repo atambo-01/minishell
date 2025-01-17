@@ -3,28 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   get_cmd.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/10 19:19:05 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/17 14:21:51 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-/*
-int strcmp(const char *s1, const char *s2)
-{
-	while (*s1 && *s2)
-	{   
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	return (0);
-}
-*/
 
 t_cmd	*add_cmd(t_list *token, t_cmd *prev)
 {
@@ -41,26 +27,30 @@ t_cmd	*add_cmd(t_list *token, t_cmd *prev)
 	return(cmd);
 }
 
-void	add_params(t_list *token, t_list **params)
+t_list	*add_params(t_list *token, t_cmd *cmd)
 {
+	int		i;
+	char	**m;
 	t_list	*curr;
-	t_list	*new;
 
-	if (!token || !params)
-		return;
-	new = malloc(sizeof(t_list));
-	new->s = ft_strdup (token->s);
-	new->next = NULL;
-	if (!*params)
-		*params = new;
-	else
+	i = 0;
+	if(!token)
+		return(NULL);
+	curr = token;
+	while(curr && (ft_strcmp(curr->s, "|") == 0))
 	{
-		curr = *params;
-		while(curr->next)
-			curr = curr->next;
-		curr->next = new;
+		i++;
+		curr->next;
 	}
-	return;
+	cmd->params = ft_malloc(sizeof(char **) * i + 1);
+	i = 0;
+	while(token && (ft_strcmp(token->s, "|")) == 0)
+	{
+		cmd->params[i] = ft_strdup(token->s);
+		i++;
+		token = token->next; 
+	}
+	return(token);
 }
 
 
@@ -85,7 +75,7 @@ t_cmd	*get_cmd(t_list *token)
 		}
 		else
 		{
-			add_params(token, &(cmd->params));
+			token = add_params(token, cmd);
 		}
 		token = token->next;
 	}

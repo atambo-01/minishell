@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/25 16:31:03 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/17 11:26:38 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/17 13:55:50 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	echo(t_cmd *cmd)
 	n = 0;
 	if (!cmd || !cmd->n)
 		return ;
-	if (ft_strncmp("-n ", cmd->params) == 0)
+	if (ft_strcmp("-n ", cmd->params) == 0)
 	{
 		n = 1;
 		cmd->params += 3;

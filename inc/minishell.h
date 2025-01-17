@@ -42,13 +42,13 @@ typedef struct s_list
 
 typedef struct s_cmd
 {
-	char 			*n;
-	char			*params;
-	struct s_cmd 	*pc;
-	struct s_cmd	*nc;
-	char 			**envp;
+	char *n;
+	char **params;
+	struct s_cmd *pc;
+	struct s_cmd *nc;
+	char **envp;
+	struct s_list *next;
 } t_cmd;
-
 
 typedef struct s_count
 {
@@ -78,5 +78,7 @@ t_count	*ft_counter(void);
 t_list	*add_token(char *line, t_list **p_token, t_count **p_c);
 t_list	*add_pipe(t_list **p_token);
 void	skip_spaces(char *line, t_count **p_c);
+
+int	ft_execute(t_cmd *cmd, int fd);
 
 #endif

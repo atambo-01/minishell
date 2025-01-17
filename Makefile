@@ -27,7 +27,7 @@ OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft
 
 SUBDIR		=	./libft
-LIBS		=	-lreadline -lncurses ./libft/libft.a
+LIBS		=	-lreadl i0                                                                                                                                                                                                                                           ne -lncurses ./libft/libft.a
 
 all: submake $(NAME)
 
