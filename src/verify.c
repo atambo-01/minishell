@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 12:44:20 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/18 15:14:16 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/18 16:01:38 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,17 @@ int ft_execute(t_cmd *cmd, int p)
         {
             if (ft_get_path(cmd))
             {
+				int i = 0;
+				while(cmd->params[i])
+				{
+					printf("cmd->params[%d] = %s\n", i, cmd->params[i]);
+					i++;
+				}
                 if (execve(cmd->n, cmd->params, cmd->envp) == -1)
                 {
-                    ft_putstr_fd(cmd->n, 2);
-                    ft_putstr_fd(": ", 2);
-                    ft_putstr_fd("command not found\n", 2);
+                    ft_putstr_fd(cmd->n, 1);
+                    ft_putstr_fd(": ", 1);
+                    ft_putstr_fd("command not found\n", 1);
                     exit(127); // Command not found
                 }
             }

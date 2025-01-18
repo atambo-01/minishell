@@ -42,12 +42,11 @@ typedef struct s_list
 
 typedef struct s_cmd
 {
-	char *n;
-	char **params;
-	struct s_cmd *pc;
-	struct s_cmd *nc;
-	char **envp;
-	struct s_list *next;
+	char			*n;
+	char			**params;
+	struct s_cmd	*pc;
+	struct s_cmd	*nc;
+	struct s_list 	*next;
 } t_cmd;
 
 typedef struct s_count
