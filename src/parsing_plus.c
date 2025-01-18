@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/17 21:41:51 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/17 23:55:10 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,7 @@ t_list	*add_pipe(t_list **p_token)
 	t_list	*token;
 
 	token = *p_token;
-	token->s = ft_malloc(sizeof(char) * 2);
-	ft_strlcpy(token->s, "|", 2);
+	token->s = ft_strdup("|");
 	token->next = ft_malloc(sizeof(t_list));
 	token = token->next;
 	token->next = NULL;

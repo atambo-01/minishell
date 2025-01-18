@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/21 09:43:40 by atambo            #+#    #+#             */
-/*   Updated: 2024/05/21 10:49:33 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/18 12:12:02 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static size_t	ft_count(const char *s, char c)
 	return (num_palavras);
 }
 
-static char	*ft_strcpy(char *dest, const char *s, size_t i, size_t word_len)
+static char	*ft_strcpy_s(char *dest, const char *s, size_t i, size_t word_len)
 {
 	size_t	j;
 
@@ -80,7 +80,7 @@ static char	**ft_alloc(const char *s, char c, char **split, size_t num_word)
 		split[word] = (char *)malloc(sizeof(char) * (word_len + 1));
 		if (!split)
 			return (free_split(split, word));
-		ft_strcpy(split[word], s, i, word_len);
+		ft_strcpy_s(split[word], s, i, word_len);
 		word_len = 0;
 		word++;
 	}

@@ -1,20 +1,18 @@
-/*                                                                            */
 /* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: eneto <eliandrasibo12@gmail.com>           +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2024/12/19 18:09:36 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/09 14:10:26 by atambo           ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
+/*   Updated: 2025/01/18 15:14:44 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+int	g_exit = 0;
 
 int	ft_list_size(t_list *head)
 {
@@ -52,7 +50,6 @@ void	ft_cmd_ls(t_cmd *cmd)
 	if (!cmd)
 		return ;
 	int i = 0;
-	printf("HERE!\n");
 	while (cmd)
 	{
 		if (cmd && cmd->n)
@@ -83,15 +80,22 @@ int	main(void)
 	char *line;
 	t_list *token;
 	t_cmd *cmd;
+
+	line = ft_strdup("i rock");
+	g_exit = 0;
 	while (1)
 	{
 		line = readline("minishell > ");
-
-		token = ft_get_token(line);
-		ft_token_ls(token);
-		printf("\n");
-//		cmd = get_cmd(token);
-//		ft_cmd_ls(cmd);
-	//	printf("params = %s\n", cmd->params->s);
+		if (ft_strlen(line) > 0)
+		{
+			add_history(line);
+			token = ft_get_token(line);
+		//	ft_token_ls(token);
+		//	printf("\n");
+			cmd = get_cmd(token);
+		//	ft_cmd_ls(cmd);
+			ft_execute(cmd, 0);
+		}
 	}
+	ft_free_p((void **)&line);
 }

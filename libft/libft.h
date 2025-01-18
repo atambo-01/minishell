@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/16 10:54:27 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/09 16:47:27 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/18 08:23:33 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int		ft_strlen(char const *str);
 int		ft_strcmp(const char *s1, const char *s2);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_atoi(const char *nptr);
+int		ft_strcpy(char *src, char *dest);
 char	*ft_itoa(int n);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*ft_strtrim(char const *s1, char const *set);
@@ -40,7 +41,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_strnstr(const char *big, const char *little, size_t len);
-char	*ft_strcpy(char *src);
 char	**ft_split(const char *s, char c);
 size_t	ft_strlcpy(char *dst, const char *src, size_t size);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
@@ -58,6 +58,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n);
 void	*ft_memchr(const void *s, int c, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 void	*ft_malloc(size_t size);
-void	ft_free(void **ptr);
+void	ft_free_p(void **ptr);
+void	ft_free_pp(void ***ptr);
 
 #endif

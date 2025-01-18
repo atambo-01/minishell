@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/08 15:28:38 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/08 15:40:08 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/18 11:22:25 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,5 @@ void	ft_pwd(void)
 	buff = ft_malloc(PATH_MAX);
 	getcwd(buff, PATH_MAX);
 	printf("%s\n", buff);
-	ft_free((void**)&buff);
+	ft_free_p((void**)&buff);
 }

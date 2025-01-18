@@ -61,6 +61,8 @@ typedef struct s_count
 	int aux;
 } t_count;
 
+extern int	g_exit;
+
 // get_cmd.c
 t_cmd	*add_cmd(t_list *token, t_cmd *prev);
 t_cmd	*pipe_cmd(t_list *token, t_cmd *cmd);
@@ -79,6 +81,8 @@ t_list	*add_token(char *line, t_list **p_token, t_count **p_c);
 t_list	*add_pipe(t_list **p_token);
 void	skip_spaces(char *line, t_count **p_c);
 
-int	ft_execute(t_cmd *cmd, int fd);
+void	ft_pipe(t_cmd *cmd);
+int		ft_builtin(t_cmd *cmd);
+int		ft_execute(t_cmd *cmd, int p);
 
 #endif
