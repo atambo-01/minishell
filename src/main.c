@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/18 17:43:39 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 11:29:25 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,27 @@ int	ft_list_size(t_list *head)
 	i = 0;
 	if (!head)
 		return (0);
-		while (head->next)
-		{
-			i++;
-			head = head->next;
-		}
+	while (head->next)
+	{
+		i++;
+		head = head->next;
+	}
 	return (i);
 }
 
 void	ft_token_ls(t_list *token)
 {
-	if (!token)
+	int i;
+
+	i = 0;
+	if (!token || !token->s)
 		return ;
-	int i = 0;
-	while (token)
+	i = ft_list_size(token);
+	while (i-- > 0)
 	{
-		if (token && token->s)
-			printf("%s", token->s);
+		printf("%s", token->s);
+		printf("->");
 		token = token->next;
-		if (token && token->s)
-			printf("->");
 	}
 	return ;
 }
@@ -79,15 +80,15 @@ void	ft_free_token(t_list **p_token)
 {
 	t_list	*token;
 
-	token = *p_token;
 	if (!token || !token->s)
 		return;
+	token = *p_token;
 	while(token->next)
 	{
-		ft_free((void **)&token);
+		ft_free_p((void **)&token);
 		token = token->next;
 	}
-	ft_free((void **)&token);
+	ft_free_p((void **)&token);
 }
 
 void	ft_free_cmd(t_cmd **p_cmd)
@@ -102,7 +103,6 @@ void	ft_free_cmd(t_cmd **p_cmd)
 	{
 		next = cmd->nc;
 		ft_free_pp((void ***)&(cmd->params));
-		ft_free_pp((void ***)&(cmd->envp));
 		ft_free_p((void **)&(cmd->n));
 		ft_free_p((void **)&(cmd->pc));
 		cmd = cmd->nc;
@@ -114,61 +114,71 @@ void	ft_free_cmd(t_cmd **p_cmd)
 
 char **ft_envp_copy(char **envp)
 {
-    int i = 0;
-    char **copy;
-
-    // Count the number of environment variables
-    while (envp[i])
-        i++;
-
-    // Allocate memory for the copy
-    copy = malloc((i + 1) * sizeof(char *));
+    int i;
+	int	count;
+	char **copy;
+	
+	if (!envp || !*envp)
+		return(NULL);
+	count = 0;
+    while (envp[count])
+        count++;
+    copy = malloc(sizeof(char *) * (count + 1));
     if (!copy)
         return NULL;
-
-    // Duplicate each environment variable
-    for (i = 0; envp[i]; i++)
+	i = 0;
+   	while(i < count)
     {
         copy[i] = ft_strdup(envp[i]);
         if (!copy[i])
         {
-            // Free already allocated strings on failure
             while (--i >= 0)
                 free(copy[i]);
             free(copy);
             return NULL;
         }
+		i++;
     }
-    copy[i] = NULL; // Null-terminate the array
+    copy[i] = NULL;
     return copy;
 }
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
-	char	*line;
 	t_list	*token;
 	t_cmd	*cmd;
-
-	line = ft_strdup("i rock");
+	char	*line;
+	char	**ft_envp;
+	
 	g_exit = 0;
-	while (1)
+	ft_envp = ft_envp_copy(envp); 
+	line = ft_strdup("echo hello world | cat");
+	int i = 0;
+	while (i == 0)
 	{
-		line = readline("minishell > ");
+	//	line = readline("minishell > ");
 		if (ft_strlen(line) > 0)
 		{
+			
 			if (ft_strcmp(line, "exit") == 0)
 				break;
-			add_history(line);
+		//	add_history(line);
 			token = ft_get_token(line);
 		//	ft_token_ls(token);
-		//	printf("\n");
-			cmd = get_cmd(token);
+			printf("\n");
+		//	cmd = get_cmd(token, ft_envp);
 		//	ft_cmd_ls(cmd);
-			ft_execute(cmd, 0);
-			ft_free_p((void **)&line);
+		//	ft_execute(cmd, 0);
+		//ft_free_p((void **)&line);
 		}
+		i++;
 	}
+	/*
+	ft_free_token(&token);
+	ft_free_cmd(&cmd);
+	line = NULL;
 	ft_free_p((void **)&line);
-	ft_free_token(token);
-	ft_free_cmd(cmd);
+	rl_clear_history();
+	 */
+	ft_free_pp((void ***)&(ft_envp));
 }

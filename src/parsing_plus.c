@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/17 23:55:10 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 11:54:12 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,18 @@ t_list	*add_token(char *line, t_list **p_token, t_count **p_c)
 	t_list	*token;
 	t_count	*c;
 	char	*process;
-
-	token = *p_token;
+	
+	if (!line || !p_c)
+		return(NULL);
+	if (!p_token)
+		token = ft_malloc(sizeof(t_list));
+	else
+		token = *p_token;
 	c = *p_c;
-	token->s = ft_malloc(sizeof(char *) * (c->temp));
-	ft_strlcpy(token->s, &line[c->last], c->temp);
+	token->s = ft_malloc(sizeof(char *) * (c->temp + 1));
+	ft_strlcpy(token->s, &line[c->last], c->temp + 1);
 	process = ft_get_token_2(token->s, c);
+	ft_free_p((void **)&(token->>s));
 	token->s = process;
 	token->next = ft_malloc(sizeof(t_list));
 	token = token->next;
@@ -49,8 +55,11 @@ t_list	*add_pipe(t_list **p_token)
 {
 	t_list	*token;
 
+	if(!p_token || !*p_token)
 	token = *p_token;
 	token->s = ft_strdup("|");
+	if (!token->s)
+		return(NULL);
 	token->next = ft_malloc(sizeof(t_list));
 	token = token->next;
 	token->next = NULL;
@@ -60,7 +69,9 @@ t_list	*add_pipe(t_list **p_token)
 void	skip_spaces(char *line, t_count **p_c)
 {
 	t_count	*c;
-
+	
+	if (!line || !p_c || !*p_c)
+		return;
 	c = *p_c;
 	while (line[c->k] == ' ')
 		(c->k)++;

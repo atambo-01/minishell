@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 17:36:07 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/07 12:53:44 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 11:48:47 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,6 @@ void	*ft_malloc(size_t size)
 		ft_putstr_fd("ft_malloc error.\ncould'nt allocate memory.", 2);
 		exit(1);
 	}
+	ptr = NULL;
 	return (ptr);
 }

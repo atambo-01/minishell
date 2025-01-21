@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/19 16:56:50 by atambo            #+#    #+#              #
-#    Updated: 2025/01/18 12:10:12 by atambo           ###   ########.fr        #
+#    Updated: 2025/01/20 13:59:41 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,6 +27,10 @@ SRCS =		ft_atoi.c\
 			ft_memmove.c\
 			ft_memset.c\
 			ft_putstr.c\
+			ft_putlines.c\
+			ft_putchar_fd.c\
+			ft_putstr_fd.c\
+			ft_putendl_fd.c\
 			ft_strchr.c\
 			ft_strcmp.c\
 			ft_strcpy.c\
@@ -48,9 +52,6 @@ SRCS =		ft_atoi.c\
 			ft_itoa.c\
 			ft_strmapi.c\
 			ft_striteri.c\
-			ft_putchar_fd.c\
-			ft_putstr_fd.c\
-			ft_putendl_fd.c\
 			ft_putnbr_fd.c\
 			ft_malloc.c\
 			ft_free_p.c\

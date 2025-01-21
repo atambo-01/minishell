@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 12:44:20 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/18 16:01:38 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/20 14:17:34 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,12 @@ int	ft_get_path(t_cmd *cmd)
         full_path = ft_strjoin_path(paths[i], cmd->n);
         if (!full_path)
             break;
+	//	printf("full path = %s\n", full_path);
         if (access(full_path, F_OK | X_OK) == 0) // Check if command is executable
         {
             ft_free_pp((void ***)&paths); // Free the split PATH
 			ft_free_p((void **)&cmd->n);
-            cmd->n = full_path;
+            cmd->path = full_path;
 			return(1);
         }
         free(full_path);
@@ -87,21 +88,24 @@ int ft_execute(t_cmd *cmd, int p)
         }
         if (pid == 0) // Child process
         {
-            if (ft_get_path(cmd))
+		//	printf("child process...\n");
+			int i = ft_get_path(cmd);
+		//	printf("ft_get_path = %d = %s\n", i, cmd->path) ;
+            if (i)
             {
-				int i = 0;
-				while(cmd->params[i])
-				{
-					printf("cmd->params[%d] = %s\n", i, cmd->params[i]);
-					i++;
-				}
-                if (execve(cmd->n, cmd->params, cmd->envp) == -1)
+				printf("execve\n");
+				printf("cmd->path = %s\n", cmd->path);
+                ft_putlines(cmd->params);
+				ft_putstr("\n");
+				/*	
+				 */
+				if (execve(cmd->path, cmd->params, cmd->ft_envp) == -1)
                 {
                     ft_putstr_fd(cmd->n, 1);
                     ft_putstr_fd(": ", 1);
                     ft_putstr_fd("command not found\n", 1);
                     exit(127); // Command not found
-                }
+                }	
             }
             exit(1); // If ft_get_path fails
         }

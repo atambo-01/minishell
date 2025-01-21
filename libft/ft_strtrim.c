@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/15 17:24:41 by atambo            #+#    #+#             */
-/*   Updated: 2024/05/21 18:08:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 09:05:29 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	in_set(char c, char const *set)
 	{
 		if (c == *set)
 			return (1);
-		set ++;
+		set++;
 	}
 	return (0);
 }

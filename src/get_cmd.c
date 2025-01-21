@@ -6,13 +6,13 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/18 00:04:06 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/20 14:12:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_cmd	*add_cmd(t_list *token, t_cmd *prev)
+t_cmd	*add_cmd(t_list *token, t_cmd *prev, char **ft_envp)
 {
 	t_cmd	*cmd;
 	
@@ -22,6 +22,7 @@ t_cmd	*add_cmd(t_list *token, t_cmd *prev)
 	cmd->n = ft_strdup (token->s);
 	cmd->params = NULL;
 	cmd->nc = NULL;
+	cmd->ft_envp = ft_envp;
 	if (prev)
 		prev->nc = cmd;
 	return(cmd);
@@ -59,24 +60,22 @@ t_list	*add_params(t_list *token, t_cmd *cmd)
 }
 
 
-t_cmd	*get_cmd(t_list *token)
+t_cmd	*get_cmd(t_list *token, char **ft_envp)
 {
 	t_cmd	*cmd;
 	t_cmd	*head;
-	/*	
-	 */
 
-	cmd = add_cmd(token, NULL);
+	cmd = add_cmd(token, NULL, ft_envp);
 	head = cmd;
 	token = token->next;
 	while(token && token->s)
 	{
 		if (ft_strcmp(token->s, "|") == 0) 
 		{
-			cmd->nc = add_cmd(token, cmd);
+			cmd->nc = add_cmd(token, cmd, ft_envp);
 			cmd = cmd->nc;
 			token = token->next;
-			cmd->nc = add_cmd(token, cmd);
+			cmd->nc = add_cmd(token, cmd, ft_envp);
 			cmd = cmd->nc;
 			token = token->next;
 		}

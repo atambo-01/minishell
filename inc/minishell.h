@@ -2,14 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2025/01/15 12:24:43 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/15 12:25:27 by atambo           ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
+/*   Updated: 2025/01/21 11:41:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +40,8 @@ typedef struct s_list
 typedef struct s_cmd
 {
 	char			*n;
+	char			*path;
+	char			**ft_envp;
 	char			**params;
 	struct s_cmd	*pc;
 	struct s_cmd	*nc;
@@ -63,16 +62,17 @@ typedef struct s_count
 extern int	g_exit;
 
 // get_cmd.c
-t_cmd	*add_cmd(t_list *token, t_cmd *prev);
+void 	ft_process_quotes(char ch, t_count *c);
+t_list	*ft_handle_pipe(char *line, t_list *token, t_count *c);
+t_cmd	*add_cmd(t_list *token, t_cmd *prev, char **ft_envp);
 t_cmd	*pipe_cmd(t_list *token, t_cmd *cmd);
-t_cmd	*get_cmd(t_list *token);
+t_cmd	*get_cmd(t_list *token, char **ft_envp);
 
 // parsing.c
-void	ft_gt2_a1(char *old, char *new, t_count **p_c);
-char	*ft_get_token_2(char *old, t_count *c);
-t_list	*ft_get_token_if(char *line, t_list **p_token, t_count **p_c);
+
+t_list *ft_handle_space_or_end(char *line, t_list *token, t_count *c);
+t_list	*ft_get_token_if(char *line, t_list *p_token, t_count *c);
 t_list	*ft_get_token(char *line);
-void	ft_pwd(void);
 
 // parsing_plus.c
 t_count	*ft_counter(void);
