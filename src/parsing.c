@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:20:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/21 15:53:34 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 18:56:16 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,8 @@ t_list *ft_handle_pipe(char *line, t_list *token, t_count *c)
 
 t_list *ft_handle_space_or_end(char *line, t_list *token, t_count *c)
 {
-    c->aux = (line[c->k + 1] == 0);
-    c->temp = c->k + c->aux - c->last + 1;
+    c->end = (line[c->k + 1] == 0);
+    c->temp = c->k + c->end - c->last + 1;
     token = add_token(line, &token, &c);
     skip_spaces(line, &c);
     c->last = c->k;
@@ -155,41 +155,48 @@ t_list *ft_handle_space_or_end(char *line, t_list *token, t_count *c)
 
 t_list *ft_get_token_if(char *line, t_list *token, t_count *c)
 {
+//	printf("line[c->k] = %s\n", line[c->k]);
     if (c->q == 0 && line[c->k] == '|')
+	{
         return (ft_handle_pipe(line, token, c));
+	}
     else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
-        return (ft_handle_space_or_end(line, token, c));
+    {
+		return (ft_handle_space_or_end(line, token, c));
+	}    
     return (token);
 }
 
 t_list *ft_get_token(char *line)
 {
-	t_list	*head;
 	t_count *c;
+	t_list 	*token;
+	t_list	*head;
+	int i = 1;
 	
-	head = NULL;
+	token = NULL;
 	c = ft_counter();
-	t_list *token = ft_malloc(sizeof(t_list));
-	token->next = NULL;
-	token->s = NULL;
-	head = token;
-	/* 
 	char *trimmed = ft_strtrim(line, " ");
-
 	line = trimmed;
 	while (line[c->k])
 	{
 		token = ft_get_token_if(line, token, c);
-		ft_process_quotes(line[c->k], c);
+		if (i == 1 && token != NULL)
+		{	
+			head = token;
+			i = 0;
+		}
 		(c->k)++;
+		/* 
+		   ft_process_quotes(line[c->k], c);
+		 */
 	}
 	if (c->q != 0)
 		printf("error: unclosed quotes\n");
-	free(trimmed);
-	trimmed = NULL;
-	*/
-	free(c);
-	c = NULL;
+	/*
+	 */
+	ft_free_p((void **)&(trimmed));
+	ft_free_p((void **)&c);
 	line = NULL;
 	return (head);
 }

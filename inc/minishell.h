@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/21 12:18:12 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 18:16:16 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ typedef struct s_count
 	int last;
 	int q;
 	int temp;
-	int aux;
+	int end;
 } t_count;
 
 extern int	g_exit;
