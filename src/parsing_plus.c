@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/21 11:54:12 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 15:23:51 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ t_count	*ft_counter(void)
 	t_count	*c;
 
 	c = ft_malloc(sizeof(t_count));
+	if (!c)
+		return(NULL);
 	c->i = 0;
 	c->j = 0;
 	c->k = 0;
@@ -24,8 +26,13 @@ t_count	*ft_counter(void)
 	c->q = 0;
 	c->temp = 0;
 	c->aux = 0;
+	/*
+	free(c);
+	c = NULL;
+	 */
 	return (c);
 }
+
 
 t_list	*add_token(char *line, t_list **p_token, t_count **p_c)
 {
@@ -43,7 +50,7 @@ t_list	*add_token(char *line, t_list **p_token, t_count **p_c)
 	token->s = ft_malloc(sizeof(char *) * (c->temp + 1));
 	ft_strlcpy(token->s, &line[c->last], c->temp + 1);
 	process = ft_get_token_2(token->s, c);
-	ft_free_p((void **)&(token->>s));
+	ft_free_p((void **)&(token->s));
 	token->s = process;
 	token->next = ft_malloc(sizeof(t_list));
 	token = token->next;

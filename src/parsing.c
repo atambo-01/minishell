@@ -6,12 +6,11 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:20:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/21 11:36:50 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 15:53:34 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-/*
 void	ft_gt2_a1(char *old, char *new, t_count **p_c)
 {
 	t_count	*c;
@@ -39,7 +38,6 @@ void	ft_gt2_a1(char *old, char *new, t_count **p_c)
 		(c->i)++;
 	}
 }
-
 char	*ft_get_token_2(char *old, t_count *c)
 {
 	char	*new;
@@ -53,6 +51,7 @@ char	*ft_get_token_2(char *old, t_count *c)
 	old = NULL;
 	return (new);
 }
+/*
 
 t_list	*ft_get_token_if(char *line, t_list **p_token, t_count **p_c)
 {
@@ -165,23 +164,33 @@ t_list *ft_get_token_if(char *line, t_list *token, t_count *c)
 
 t_list *ft_get_token(char *line)
 {
-    t_count *c = ft_counter();
-    t_list *head = NULL;
-    t_list *token = ft_malloc(sizeof(t_list));
-    char *trimmed = ft_strtrim(line, " ");
+	t_list	*head;
+	t_count *c;
+	
+	head = NULL;
+	c = ft_counter();
+	t_list *token = ft_malloc(sizeof(t_list));
+	token->next = NULL;
+	token->s = NULL;
+	head = token;
+	/* 
+	char *trimmed = ft_strtrim(line, " ");
 
-    free(line);
-    line = trimmed;
-    head = token;
-    while (line[c->k])
-    {
-        token = ft_get_token_if(line, token, c);
-        ft_process_quotes(line[c->k], c);
-        (c->k)++;
-    }
-    if (c->q != 0)
-        printf("error: unclosed quotes\n");
-    free(line);
-    return (head);
+	line = trimmed;
+	while (line[c->k])
+	{
+		token = ft_get_token_if(line, token, c);
+		ft_process_quotes(line[c->k], c);
+		(c->k)++;
+	}
+	if (c->q != 0)
+		printf("error: unclosed quotes\n");
+	free(trimmed);
+	trimmed = NULL;
+	*/
+	free(c);
+	c = NULL;
+	line = NULL;
+	return (head);
 }
 

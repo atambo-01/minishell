@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/21 11:29:25 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 15:39:41 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,16 +79,20 @@ void	ft_cmd_ls(t_cmd *cmd)
 void	ft_free_token(t_list **p_token)
 {
 	t_list	*token;
+	t_list	*next;
 
-	if (!token || !token->s)
+	if (!p_token || !*p_token || !(*p_token)->s)
 		return;
 	token = *p_token;
-	while(token->next)
+	while(token)
 	{
-		ft_free_p((void **)&token);
-		token = token->next;
+		next = token->next;
+		free(token->s);
+		token->s = NULL;
+		free(token);
+		token = NULL;
+		token = next;
 	}
-	ft_free_p((void **)&token);
 }
 
 void	ft_free_cmd(t_cmd **p_cmd)
@@ -169,12 +173,12 @@ int	main(int ac, char **av, char **envp)
 		//	cmd = get_cmd(token, ft_envp);
 		//	ft_cmd_ls(cmd);
 		//	ft_execute(cmd, 0);
-		//ft_free_p((void **)&line);
+			ft_free_p((void **)&line);
 		}
 		i++;
 	}
-	/*
 	ft_free_token(&token);
+	/*
 	ft_free_cmd(&cmd);
 	line = NULL;
 	ft_free_p((void **)&line);

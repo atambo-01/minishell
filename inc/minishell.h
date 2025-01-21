@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/21 11:41:56 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/21 12:18:12 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,9 @@ t_list	*ft_get_token_if(char *line, t_list *p_token, t_count *c);
 t_list	*ft_get_token(char *line);
 
 // parsing_plus.c
+char    *ft_get_token_2(char *old, t_count *c);
 t_count	*ft_counter(void);
+void	ft_counter_free(t_count **c);
 t_list	*add_token(char *line, t_list **p_token, t_count **p_c);
 t_list	*add_pipe(t_list **p_token);
 void	skip_spaces(char *line, t_count **p_c);
