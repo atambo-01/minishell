@@ -8,6 +8,8 @@
 !inc/*.h
 !Makefile
 !.gitignore
-!sup_*
 !libft
 !libft/*
+
+#Allow push_ files explicitly
+!push_*
