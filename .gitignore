@@ -9,4 +9,5 @@
 !Makefile
 !.gitignore
 !sup_*
-
+!libft
+!libft/*
