@@ -6,51 +6,64 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/20 14:12:56 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 00:04:39 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_cmd	*add_cmd(t_list *token, t_cmd *prev, char **ft_envp)
+t_cmd	*get_tail_cmd(t_cmd *cmd)
 {
-	t_cmd	*cmd;
-	
-	if (!token)
+	if (!cmd)
 		return(NULL);
-	cmd = ft_malloc(sizeof(t_cmd));
-	cmd->n = ft_strdup (token->s);
-	cmd->params = NULL;
-	cmd->nc = NULL;
-	cmd->ft_envp = ft_envp;
-	if (prev)
-		prev->nc = cmd;
+	while(cmd->nc)
+		cmd = cmd->nc;
 	return(cmd);
 }
 
-t_list	*add_params(t_list *token, t_cmd *cmd)
+void	add_cmd(t_list *token, t_cmd **cmd, char **ft_envp)
+{	
+	t_cmd	*curr;
+	t_cmd	*new;
+	
+	if (!token || !cmd)
+		return ;
+	new = ft_malloc(sizeof(t_cmd));
+	new->n = ft_strdup (token->s);
+	new->params = NULL;
+	new->ft_envp = ft_envp;
+	new->nc = NULL;
+	new->pc = NULL;
+	if (!*cmd)
+		*cmd = new;
+	else
+	{
+		curr = get_tail_cmd(*cmd);
+		curr->nc = new;
+		new->pc = curr;
+	}
+}
+
+t_list	*add_params(t_list *token, t_cmd *p_cmd)
 {
 	int		i;
 	t_list	*curr;
+	t_cmd	*cmd;
 
 	i = 0;
-	if(!token)
-		return(NULL);
+	if(!token || !cmd)
+		return (NULL);
 	curr = token;
-	while(curr && curr->s) 
+	while(curr && (ft_strcmp(curr->s, "|") != 0))
 	{
-		if (ft_strcmp(curr->s, "|") == 0)
-			break;
-	//	printf("HERE! curr->s = %s\n", curr->s);
 		i++;
 		curr = curr->next;
 	}
+	cmd = get_tail_cmd(p_cmd);
 	cmd->params = ft_malloc(sizeof(char *) * i + 1);
 	i = 0;
-	while(token && token->s)
+	while(token && (ft_strcmp(token->s, "|") != 0))
 	{
-		if (ft_strcmp(token->s, "|") == 0)
-			break;
 		cmd->params[i] = token->s;
 		i++;
 		token = token->next;
@@ -63,26 +76,20 @@ t_list	*add_params(t_list *token, t_cmd *cmd)
 t_cmd	*get_cmd(t_list *token, char **ft_envp)
 {
 	t_cmd	*cmd;
-	t_cmd	*head;
-
-	cmd = add_cmd(token, NULL, ft_envp);
-	head = cmd;
+	
+	add_cmd(token, &cmd, ft_envp);
 	token = token->next;
 	while(token && token->s)
 	{
 		if (ft_strcmp(token->s, "|") == 0) 
 		{
-			cmd->nc = add_cmd(token, cmd, ft_envp);
-			cmd = cmd->nc;
+			add_cmd(token, &cmd, ft_envp);
 			token = token->next;
-			cmd->nc = add_cmd(token, cmd, ft_envp);
-			cmd = cmd->nc;
+			add_cmd(token, &cmd, ft_envp);
 			token = token->next;
 		}
 		else
-		{
 			token = add_params(token, cmd);
-		}
 	}
-	return (head);
+	return (cmd);
 }

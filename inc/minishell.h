@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/23 20:49:09 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/23 23:24:04 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ extern int	g_exit;
 // get_cmd.c
 void 	ft_process_quotes(char ch, t_count *c);
 void	ft_handle_pipe(char *line, t_list **token, t_count *c);
-t_cmd	*add_cmd(t_list *token, t_cmd *prev, char **ft_envp);
+void	add_cmd(t_list *token, t_cmd **cmd, char **ft_envp);
 t_cmd	*pipe_cmd(t_list *token, t_cmd *cmd);
 t_cmd	*get_cmd(t_list *token, char **ft_envp);
 

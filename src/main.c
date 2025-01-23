@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/23 20:54:29 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 00:04:48 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ int	main(int ac, char **av, char **envp)
 	
 	g_exit = 0;
 	ft_envp = ft_envp_copy(envp); 
-	line = ft_strdup("echo hello world|cat");
+	line = ft_strdup("echo hello | cat --no-mads | grep all that");
 	int i = 0;
 	while (i == 0)
 	{
@@ -169,8 +169,9 @@ int	main(int ac, char **av, char **envp)
 			token = ft_get_token(line);
 			ft_token_ls(token);
 			printf("\n");
-		//	cmd = get_cmd(token, ft_envp);
-		//	ft_cmd_ls(cmd);
+			cmd = get_cmd(token, ft_envp);
+			printf("\n");
+			ft_cmd_ls(cmd);
 		//	ft_execute(cmd, 0);
 			ft_free_p((void **)&line);
 		}
