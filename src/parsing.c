@@ -6,17 +6,14 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/06 14:20:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/23 17:21:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/23 20:53:28 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_gt2_a1(char *old, char *new, t_count **p_c)
+void	ft_gt2_a1(char *old, char *new, t_count *c)
 {
-	t_count	*c;
-
-	c = *p_c;
 	if (old[c->i] == c->q && ft_strchr(old + c->i + 1, c->q))
 	{
 		while (old[c->i + 1] != c->q)
@@ -40,17 +37,21 @@ void	ft_gt2_a1(char *old, char *new, t_count **p_c)
 	}
 }
 
-char	*ft_get_token_2(char *old, t_count *c)
+char	*ft_get_token_2(char *old)
 {
 	char	*new;
+	t_count	*c;
 
-	c = ft_counter();
+	c = ft_malloc(sizeof(t_count));
+	ft_counter(&c);
 	c->q = '"';
 	new = ft_malloc(sizeof(char) * ft_strlen(old) + 1);
 	while (old[c->i])
-		ft_gt2_a1(old, new, &c);
+		ft_gt2_a1(old, new, c);
 	free(old);
 	old = NULL;
+	free(c);
+	c = NULL;
 	return (new);
 }
 
@@ -71,10 +72,10 @@ void	ft_handle_pipe(char *line, t_list **token, t_count *c)
     if (c->k >= 1 && line[c->k - 1] != ' ')
     {
         c->temp = c->k - c->last + 1;
-        add_token(line, token, &c);
+        add_token(line, token, c);
     }
     add_pipe(token);
-    skip_spaces(line, &c);
+    skip_spaces(line, c);
     c->last = c->k + 1;
 }
 
@@ -82,14 +83,13 @@ void	ft_handle_space_or_end(char *line, t_list **token, t_count *c)
 {
     c->end = (line[c->k + 1] == 0);
     c->temp = c->k + c->end - c->last + 1;
-    add_token(line, token, &c);
-    skip_spaces(line, &c);
+    add_token(line, token, c);
+    skip_spaces(line, c);
     c->last = c->k;
 }
 
 void	ft_get_token_if(char *line, t_list **token, t_count *c)
 {
-	printf("line[c->k] = _%s_\n", &line[c->k]);
     if (c->q == 0 && line[c->k] == '|')
 	{
         (ft_handle_pipe(line, token, c));
@@ -106,22 +106,22 @@ t_list *ft_get_token(char *line)
 	t_list 	*token;
 	
 	token = NULL;
-	c = ft_counter();
+	c = ft_malloc(sizeof(t_count));
+	ft_counter(&c);
 	char *trimmed = ft_strtrim(line, " ");
+
 	line = trimmed;
 	while (line[c->k])
 	{
 		ft_get_token_if(line, &token, c);
+	//	ft_process_quotes(line[c->k], c);
 		(c->k)++;
-		/* 
-		   ft_process_quotes(line[c->k], c);
-		 */
 	}
 	if (c->q != 0)
 		printf("error: unclosed quotes\n");
 	ft_free_p((void **)&(trimmed));
-	ft_free_p((void **)&c);
-	line = NULL;
+	free(c);
+	c = NULL;
 	return (token);
 }
 

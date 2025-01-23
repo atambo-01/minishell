@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/23 18:05:56 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/23 20:54:29 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,8 +155,6 @@ int	main(int ac, char **av, char **envp)
 	char	**ft_envp;
 	
 	g_exit = 0;
-	token = NULL;
-	cmd = NULL;
 	ft_envp = ft_envp_copy(envp); 
 	line = ft_strdup("echo hello world|cat");
 	int i = 0;
@@ -164,8 +162,7 @@ int	main(int ac, char **av, char **envp)
 	{
 	//	line = readline("minishell > ");
 		if (ft_strlen(line) > 0)
-		{
-			
+		{	
 			if (ft_strcmp(line, "exit") == 0)
 				break;
 		//	add_history(line);
@@ -175,7 +172,7 @@ int	main(int ac, char **av, char **envp)
 		//	cmd = get_cmd(token, ft_envp);
 		//	ft_cmd_ls(cmd);
 		//	ft_execute(cmd, 0);
-//			ft_free_p((void **)&line);
+			ft_free_p((void **)&line);
 		}
 		i++;
 	}
@@ -186,7 +183,7 @@ int	main(int ac, char **av, char **envp)
 	ft_free_p((void **)&line);
 	rl_clear_history();
 	 */
-//	ft_free_pp((void ***)&(ft_envp));
+	ft_free_pp((void ***)&(ft_envp));
 }
 
 
