@@ -1,0 +1,12 @@
+# Ignore everything
+*
+
+# Do not ignore these exceptions
+!src/
+!src/*.c
+!inc/
+!inc/*.h
+!Makefile
+!.gitignore
+!sup_*
+
