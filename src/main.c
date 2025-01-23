@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/21 18:52:12 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/23 18:05:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	ft_token_ls(t_list *token)
 	if (!token || !token->s)
 		return ;
 	i = ft_list_size(token);
-	while (i-- > 0)
+	while (i-- > -1)
 	{
 		printf("%s", token->s);
 		printf("->");
@@ -127,7 +127,7 @@ char **ft_envp_copy(char **envp)
 	count = 0;
     while (envp[count])
         count++;
-    copy = malloc(sizeof(char *) * (count + 1));
+    copy = ft_malloc(sizeof(char *) * (count + 1));
     if (!copy)
         return NULL;
 	i = 0;
@@ -155,8 +155,10 @@ int	main(int ac, char **av, char **envp)
 	char	**ft_envp;
 	
 	g_exit = 0;
+	token = NULL;
+	cmd = NULL;
 	ft_envp = ft_envp_copy(envp); 
-	line = ft_strdup("echo hello world | cat");
+	line = ft_strdup("echo hello world|cat");
 	int i = 0;
 	while (i == 0)
 	{
@@ -168,7 +170,6 @@ int	main(int ac, char **av, char **envp)
 				break;
 		//	add_history(line);
 			token = ft_get_token(line);
-			printf("token->s = %s\n", token->s);
 			ft_token_ls(token);
 			printf("\n");
 		//	cmd = get_cmd(token, ft_envp);
@@ -178,7 +179,7 @@ int	main(int ac, char **av, char **envp)
 		}
 		i++;
 	}
-//	ft_free_token(&token);
+	ft_free_token(&token);
 	/*
 	ft_free_cmd(&cmd);
 	line = NULL;

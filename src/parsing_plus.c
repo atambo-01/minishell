@@ -6,11 +6,20 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/21 18:50:22 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/23 17:16:29 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+t_list	*ft_get_tail(t_list *node)
+{
+	if (!node)
+		return(NULL);
+	while(node->next)
+		node = node->next;
+	return(node);
+}
 
 t_count	*ft_counter(void)
 {
@@ -34,47 +43,51 @@ t_count	*ft_counter(void)
 }
 
 
-t_list	*add_token(char *line, t_list **p_token, t_count **p_c)
+void	add_token(char *line, t_list **p_token, t_count **p_c)
 {
-	t_list	*token;
 	t_count	*c;
+	t_list	*token;
 	char	*process;
+	t_list	*curr;
 	
 	token = NULL;
 	if (!line || !p_c)
-		return(NULL);
-	if (!*p_token)
-	{
-		token = ft_malloc(sizeof(t_list));
-	}
-	else
-		token = *p_token;
+		return ;
 	c = *p_c;
+	token = ft_malloc(sizeof(t_list));
 	token->s = ft_malloc(sizeof(char *) * (c->temp + 1));
-	printf("HERE - 2!\n");
-	ft_strlcpy(token->s, &line[c->last], c->temp + 1);
+	ft_strlcpy(token->s, &line[c->last], c->temp); //it was + 1 before, removing it worked but why ??
 	process = ft_get_token_2(token->s, c);
-//	ft_free_p((void **)&(token->s));
 	token->s = process;
-	token->next = ft_malloc(sizeof(t_list));
-	token = token->next;
 	token->next = NULL;
-	return (token);
+	if (!*p_token)
+		*p_token = token;
+	else
+	{
+		curr = ft_get_tail(*p_token);
+		curr->next = token;
+	}
+	printf("add_token = _%s_\n", token->s);
 }
 
-t_list	*add_pipe(t_list **p_token)
-{
+void	add_pipe(t_list **p_token)
+{	
+	t_list	*curr;
 	t_list	*token;
 
 	if(!p_token || !*p_token)
-	token = *p_token;
+		return;
+	token = ft_malloc(sizeof(t_list));
 	token->s = ft_strdup("|");
-	if (!token->s)
-		return(NULL);
-	token->next = ft_malloc(sizeof(t_list));
-	token = token->next;
 	token->next = NULL;
-	return (token);
+	printf("add_pipe = _%s_\n", token->s);
+	if (!*p_token)
+		*p_token = token;
+	else
+	{
+		curr = ft_get_tail(*p_token);
+		curr->next = token;
+	}
 }
 
 void	skip_spaces(char *line, t_count **p_c)
