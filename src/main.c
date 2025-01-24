@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 15:11:37 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 15:35:52 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,11 +162,11 @@ int	main(int ac, char **av, char **envp)
 	while (i == 0)
 	{
 		line = readline("minishell > ");
+		add_history(line);
 		if (ft_strlen(line) > 0)
 		{	
 			if (ft_strcmp(line, "exit") == 0)
 				break;
-			add_history(line);
 			if (token = ft_get_token(line))
 			{
 				if (cmd = get_cmd(token, ft_envp));

@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 11:11:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 11:45:40 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 15:36:32 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,33 +63,15 @@ int	ft_get_path(t_cmd *cmd)
 	path_env = getenv("PATH");
 	if (!path_env || !cmd || !cmd->n)
 		return (-1);
-	paths = ft_split(path_env, ':'); // Split PATH into directories
+	paths = ft_split(path_env, ':');
 	if (!paths)
 		return (-2);
 	if (ft_test_paths(cmd, &paths) == 1)
 	{
 		ft_free_pp((void ***)&paths); // Free the split PATH
 		ft_free_p((void **)&cmd->n);
-		return(1);
+		return (1);
 	}	
-	/*
-	i = 0;
-	while (paths[i])
-	{
-		full_path = ft_strjoin_path(paths[i], cmd->n);
-		if (!full_path)
-			break;
-		if (access(full_path, F_OK | X_OK) == 0) // Check if command is executable
-		{
-			ft_free_pp((void ***)&paths); // Free the split PATH
-			ft_free_p((void **)&cmd->n);
-			cmd->path = full_path;
-			return(1);
-		}
-		free(full_path);
-		i++;
-	}
-	 */
 	ft_free_pp((void ***)&paths); // Free the split PATH
 	return (-3);		// Command not found
 }
@@ -134,13 +116,13 @@ int ft_execute(t_cmd *cmd, int p)
 		}
 		else
 		{
-			waitpid(pid, &status, 0); // Wait for the child process
+			waitpid(pid, &status, 0);
 			if (WIFEXITED(status))
-				g_exit = WEXITSTATUS(status); // Capture the child's exit status
+				g_exit = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
-				g_exit = 128 + WTERMSIG(status); // Signal termination status
+				g_exit = 128 + WTERMSIG(status);
 		}
-		cmd = cmd->nc; // Move to the next command
-	}
+		cmd = cmd->nc;
+		}
 	return (g_exit);
 }
