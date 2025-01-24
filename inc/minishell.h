@@ -91,9 +91,11 @@ void	ft_pipe(t_cmd *cmd);
 //builtin
 void	ft_echo(t_cmd *cmd);
 void    ft_env(t_cmd *env);
+void	ft_cd(t_cmd *path);
 
 
 //execute
+void	ft_pwd(void);
 int		ft_builtin(t_cmd *cmd);
 int		ft_execute(t_cmd *cmd, int p);
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 10:45:25 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 16:50:48 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,15 @@ void	ft_echo(t_cmd *cmd)
 		printf("\n");
 	return ;
 }
+void	ft_cd(t_cmd *path)
+{
+	chdir(path->n);
+	if (!path->n)
+	{
+		ft_putstr_fd("Erro ao abrir pasta/dir", 2);
+		return ;
+	}
+}
 
 int	ft_builtin(t_cmd *cmd)
 {
@@ -40,16 +49,16 @@ int	ft_builtin(t_cmd *cmd)
 		ft_echo(cmd);
 		return (0);
 	}
-	/*
-	else if (ft_strcmp("cd", cmd->n) == 0) {
+	else if (ft_strcmp("cd", cmd->n) == 0)
+	{
 		ft_cd(cmd);
 		return (0);
 	}
 	else if (ft_strcmp("pwd", cmd->n) == 0) {
-		ft_pwd(cmd);
+		ft_pwd();
 		return (0);
 	}
-	else if (ft_strcmp("export", cmd->n) == 0) {
+	/*else if (ft_strcmp("export", cmd->n) == 0) {
 		ft_export(cmd);
 		return (0);
 	}
