@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/01/18 11:27:42 by atambo           ###   ########.fr        #
+#    Updated: 2025/01/24 11:09:31 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,12 @@ INCLUDES	=	-Iincludes
 SOURCES		=	src/main.c\
 				src/parsing.c\
 				src/parsing_plus.c\
-				src/ft_pwd.c\
+				src/pwd.c\
 				src/get_cmd.c\
-				src/ft_pipe.c\
-				src/verify.c\
+				src/pipe.c\
+				src/execute.c\
 				src/builtins.c\
+				src/get_subtoken.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

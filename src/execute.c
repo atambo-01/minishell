@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   verify.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/15 12:44:20 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/24 12:59:04 by eneto            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../inc/minishell.h"
 
 char	*ft_strjoin_path(const char *dir, const char *name)
@@ -49,11 +37,11 @@ int	ft_get_path(t_cmd *cmd)
 		if (!full_path)
 			break ;
 		if (access(full_path, F_OK | X_OK) == 0)
-		// Check if command is executable
+			// Check if command is executable
 		{
 			ft_free_pp((void ***)&paths); // Free the split PATH
 			ft_free_p((void **)&cmd->n);
-			cmd->n = full_path;
+			cmd->path = full_path;
 			return (1);
 		}
 		free(full_path);
@@ -67,7 +55,6 @@ int	ft_execute(t_cmd *cmd, int p)
 {
 	pid_t	pid;
 	int		status;
-	int		i;
 
 	if (!cmd)
 		return (0);
@@ -80,35 +67,33 @@ int	ft_execute(t_cmd *cmd, int p)
 	{
 		if (ft_builtin(cmd) == 0)
 		{
-			cmd = cmd->nc; // Move to the next command after a built-in
+			cmd = cmd->nc;
 			continue ;
 		}
 		else if ((pid = fork()) == -1)
 		{
 			perror("fork");
-			return (1); // Fork failed
+			return (1);
 		}
-		if (pid == 0) // Child process
+		if (pid == 0)
 		{
 			if (ft_get_path(cmd))
 			{
-				i = 0;
-				while (cmd->params[i])
-				{
-					printf("cmd->params[%d] = %s\n", i, cmd->params[i]);
-					i++;
-				}
-				if (execve(cmd->n, cmd->params, cmd->ft_envp) == -1)
+				printf("execve\n");
+				printf("cmd->path = %s\n", cmd->path);
+				ft_putlines(cmd->params);
+				ft_putstr("\n");
+				if (execve(cmd->path, cmd->params, cmd->ft_envp) == -1)
 				{
 					ft_putstr_fd(cmd->n, 1);
 					ft_putstr_fd(": ", 1);
 					ft_putstr_fd("command not found\n", 1);
-					exit(127); // Command not found
+					exit(127);
 				}
 			}
-			exit(1); // If ft_get_path fails
+			exit(1);
 		}
-		else // Parent process
+		else
 		{
 			waitpid(pid, &status, 0); // Wait for the child process
 			if (WIFEXITED(status))

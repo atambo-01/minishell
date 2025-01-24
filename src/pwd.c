@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/16 18:52:54 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/10 19:19:28 by atambo           ###   ########.fr       */
+/*   Created: 2025/01/24 09:35:20 by atambo            #+#    #+#             */
+/*   Updated: 2025/01/24 10:48:41 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../inc/minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+void	ft_pwd(void)
 {
-	while (*s1 && *s2)
-	{
-		if (*s1 != *s2)
-			return (*s1 - *s2);
-		s1++;
-		s2++;
-	}
-	return (0);
+	char	*buff;
+
+	buff = ft_malloc(PATH_MAX);
+	getcwd(buff, PATH_MAX);
+	printf("%s\n", buff);
+	ft_free_p((void **)&buff);
 }
