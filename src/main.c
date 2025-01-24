@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 07:11:23 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 08:05:42 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,14 +106,15 @@ void	ft_free_cmd(t_cmd **p_cmd)
 	while(cmd)
 	{
 		next = cmd->nc;
-		ft_free_pp((void ***)&(cmd->params));
+		ft_free_p((void **)&(cmd->params));
 		ft_free_p((void **)&(cmd->n));
-		ft_free_p((void **)&(cmd->pc));
-		cmd = cmd->nc;
-		if (cmd->pc)
-			ft_free_p((void **)&(cmd->pc));
+		cmd->params = NULL;
+		cmd->pc = NULL;	
+		cmd->ft_envp = NULL;
+		cmd->nc = NULL;
+		ft_free_p((void **)&(cmd));
+		cmd = next;
 	}
-	ft_free_p((void **)&cmd);
 }
 
 char **ft_envp_copy(char **envp)
@@ -183,7 +184,7 @@ int	main(int ac, char **av, char **envp)
 	ft_free_p((void **)&line);
 	rl_clear_history();
 	 */
-//	ft_free_cmd(&cmd);
+	ft_free_cmd(&cmd);
 	ft_free_pp((void ***)&(ft_envp));
 }
 
