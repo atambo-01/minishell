@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
 /*   Updated: 2025/01/18 17:43:39 by atambo           ###   ########.fr       */
 /*                                                                            */
@@ -12,7 +15,8 @@
 
 #include "../inc/minishell.h"
 
-int	g_exit = 0;
+
+int		g_exit = 0;
 
 int	ft_list_size(t_list *head)
 {
@@ -21,11 +25,11 @@ int	ft_list_size(t_list *head)
 	i = 0;
 	if (!head)
 		return (0);
-		while (head->next)
-		{
-			i++;
-			head = head->next;
-		}
+	while (head->next)
+	{
+		i++;
+		head = head->next;
+	}
 	return (i);
 }
 
@@ -58,7 +62,7 @@ void	ft_cmd_ls(t_cmd *cmd)
 			if (cmd->params)
 			{
 				i = 0;
-				while(cmd->params[i])
+				while (cmd->params[i])
 				{
 					printf("%s ", cmd->params[i]);
 					i++;
@@ -77,12 +81,12 @@ void	ft_cmd_ls(t_cmd *cmd)
 
 void	ft_free_token(t_list **p_token)
 {
-	t_list	*token;
+	t_list *token;
 
 	token = *p_token;
 	if (!token || !token->s)
-		return;
-	while(token->next)
+		return ;
+	while (token->next)
 	{
 		ft_free((void **)&token);
 		token = token->next;
@@ -92,13 +96,13 @@ void	ft_free_token(t_list **p_token)
 
 void	ft_free_cmd(t_cmd **p_cmd)
 {
-	t_cmd	*cmd;
-	t_cmd	*next;
+	t_cmd *cmd;
+	t_cmd *next;
 
 	if (!p_cmd || !*p_cmd)
 		return ;
 	cmd = *p_cmd;
-	while(cmd)
+	while (cmd)
 	{
 		next = cmd->nc;
 		ft_free_pp((void ***)&(cmd->params));
@@ -112,42 +116,42 @@ void	ft_free_cmd(t_cmd **p_cmd)
 	ft_free_p((void **)&cmd);
 }
 
-char **ft_envp_copy(char **envp)
+char	**ft_envp_copy(char **envp)
 {
-    int i = 0;
-    char **copy;
+	int i = 0;
+	char **copy;
 
-    // Count the number of environment variables
-    while (envp[i])
-        i++;
+	// Count the number of environment variables
+	while (envp[i])
+		i++;
 
-    // Allocate memory for the copy
-    copy = malloc((i + 1) * sizeof(char *));
-    if (!copy)
-        return NULL;
+	// Allocate memory for the copy
+	copy = malloc((i + 1) * sizeof(char *));
+	if (!copy)
+		return (NULL);
 
-    // Duplicate each environment variable
-    for (i = 0; envp[i]; i++)
-    {
-        copy[i] = ft_strdup(envp[i]);
-        if (!copy[i])
-        {
-            // Free already allocated strings on failure
-            while (--i >= 0)
-                free(copy[i]);
-            free(copy);
-            return NULL;
-        }
-    }
-    copy[i] = NULL; // Null-terminate the array
-    return copy;
+	// Duplicate each environment variable
+	for (i = 0; envp[i]; i++)
+	{
+		copy[i] = ft_strdup(envp[i]);
+		if (!copy[i])
+		{
+			// Free already allocated strings on failure
+			while (--i >= 0)
+				free(copy[i]);
+			free(copy);
+			return (NULL);
+		}
+	}
+	copy[i] = NULL; // Null-terminate the array
+	return (copy);
 }
 
 int	main(void)
 {
-	char	*line;
-	t_list	*token;
-	t_cmd	*cmd;
+	char *line;
+	t_list *token;
+	t_cmd *cmd;
 
 	line = ft_strdup("i rock");
 	g_exit = 0;
@@ -157,13 +161,13 @@ int	main(void)
 		if (ft_strlen(line) > 0)
 		{
 			if (ft_strcmp(line, "exit") == 0)
-				break;
+				break ;
 			add_history(line);
 			token = ft_get_token(line);
-		//	ft_token_ls(token);
-		//	printf("\n");
+			//	ft_token_ls(token);
+			//	printf("\n");
 			cmd = get_cmd(token);
-		//	ft_cmd_ls(cmd);
+			//	ft_cmd_ls(cmd);
 			ft_execute(cmd, 0);
 			ft_free_p((void **)&line);
 		}

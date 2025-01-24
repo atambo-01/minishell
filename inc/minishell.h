@@ -42,11 +42,11 @@ typedef struct s_list
 
 typedef struct s_cmd
 {
-	char			*n;
-	char			**params;
-	struct s_cmd	*pc;
-	struct s_cmd	*nc;
-	struct s_list 	*next;
+	char *n;
+	char **params;
+	struct s_cmd *pc;
+	struct s_cmd *nc;
+	struct s_list *next;
 } t_cmd;
 
 typedef struct s_count
@@ -60,7 +60,7 @@ typedef struct s_count
 	int aux;
 } t_count;
 
-extern int	g_exit;
+extern int g_exit;
 
 // get_cmd.c
 t_cmd	*add_cmd(t_list *token, t_cmd *prev);
@@ -81,7 +81,7 @@ t_list	*add_pipe(t_list **p_token);
 void	skip_spaces(char *line, t_count **p_c);
 
 void	ft_pipe(t_cmd *cmd);
-int		ft_builtin(t_cmd *cmd);
-int		ft_execute(t_cmd *cmd, int p);
+int	ft_builtin(t_cmd *cmd);
+int	ft_execute(t_cmd *cmd, int p);
 
 #endif
