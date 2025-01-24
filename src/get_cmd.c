@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 00:04:39 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 07:21:51 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_list	*add_params(t_list *token, t_cmd *p_cmd)
 	t_cmd	*cmd;
 
 	i = 0;
-	if(!token || !cmd)
+	if(!token || !p_cmd)
 		return (NULL);
 	curr = token;
 	while(curr && (ft_strcmp(curr->s, "|") != 0))
@@ -60,7 +60,7 @@ t_list	*add_params(t_list *token, t_cmd *p_cmd)
 		curr = curr->next;
 	}
 	cmd = get_tail_cmd(p_cmd);
-	cmd->params = ft_malloc(sizeof(char *) * i + 1);
+	cmd->params = ft_malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while(token && (ft_strcmp(token->s, "|") != 0))
 	{
@@ -76,7 +76,8 @@ t_list	*add_params(t_list *token, t_cmd *p_cmd)
 t_cmd	*get_cmd(t_list *token, char **ft_envp)
 {
 	t_cmd	*cmd;
-	
+
+	cmd = NULL;
 	add_cmd(token, &cmd, ft_envp);
 	token = token->next;
 	while(token && token->s)
