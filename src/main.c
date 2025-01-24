@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 08:09:03 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 08:26:08 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,16 +173,13 @@ int	main(int ac, char **av, char **envp)
 			cmd = get_cmd(token, ft_envp);
 			printf("\n");
 			ft_cmd_ls(cmd);
-		//	ft_execute(cmd, 0);
+	//		ft_execute(cmd, 0);
 			ft_free_p((void **)&line);
 		}
 		i++;
 	}
 	ft_free_token(&token);
 	line = NULL;
-	/*
-	ft_free_p((void **)&line);
-	 */
 	rl_clear_history();
 	ft_free_cmd(&cmd);
 	ft_free_pp((void ***)&(ft_envp));

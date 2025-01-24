@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/23 20:53:49 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 10:41:14 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,10 @@
 t_list	*ft_get_tail(t_list *node)
 {
 	if (!node)
-		return(NULL);
-	while(node->next)
+		return (NULL);
+	while (node->next)
 		node = node->next;
-	return(node);
+	return (node);
 }
 
 void	ft_counter(t_count **c)
@@ -34,20 +34,19 @@ void	ft_counter(t_count **c)
 	(*c)->end = 0;
 }
 
-
 void	add_token(char *line, t_list **p_token, t_count *c)
 {
-	t_list	*token;
 	char	*process;
+	t_list	*token;
 	t_list	*curr;
-	
+
 	token = NULL;
 	if (!line || !c)
 		return ;
 	token = ft_malloc(sizeof(t_list));
 	token->s = ft_malloc(sizeof(char *) * (c->temp + 1));
-	ft_strlcpy(token->s, &line[c->last], c->temp); //it was + 1 before, removing it worked but why ??
-	process = ft_get_token_2(token->s);
+	ft_strlcpy(token->s, &line[c->last], c->temp);
+	process = ft_get_subtoken(token->s);
 	token->s = process;
 	token->next = NULL;
 	if (!*p_token)
@@ -60,12 +59,12 @@ void	add_token(char *line, t_list **p_token, t_count *c)
 }
 
 void	add_pipe(t_list **p_token)
-{	
+{
 	t_list	*curr;
 	t_list	*token;
 
-	if(!p_token || !*p_token)
-		return;
+	if (!p_token || !*p_token)
+		return ;
 	token = ft_malloc(sizeof(t_list));
 	token->s = ft_strdup("|");
 	token->next = NULL;
@@ -80,9 +79,8 @@ void	add_pipe(t_list **p_token)
 
 void	skip_spaces(char *line, t_count *c)
 {
-	
-	if (!line || !c )
-		return;
+	if (!line || !c)
+		return ;
 	while (line[c->k] == ' ')
 		(c->k)++;
 }
