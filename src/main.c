@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 08:05:42 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 08:09:03 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,18 +155,18 @@ int	main(int ac, char **av, char **envp)
 	char	*line;
 	char	**ft_envp;
 	
+	line = NULL;
 	g_exit = 0;
 	ft_envp = ft_envp_copy(envp); 
-	line = ft_strdup("echo hello | cat --no-mads | grep all that");
 	int i = 0;
 	while (i == 0)
 	{
-	//	line = readline("minishell > ");
+		line = readline("minishell > ");
 		if (ft_strlen(line) > 0)
 		{	
 			if (ft_strcmp(line, "exit") == 0)
 				break;
-		//	add_history(line);
+			add_history(line);
 			token = ft_get_token(line);
 			ft_token_ls(token);
 			printf("\n");
@@ -179,11 +179,11 @@ int	main(int ac, char **av, char **envp)
 		i++;
 	}
 	ft_free_token(&token);
-	/*
 	line = NULL;
+	/*
 	ft_free_p((void **)&line);
-	rl_clear_history();
 	 */
+	rl_clear_history();
 	ft_free_cmd(&cmd);
 	ft_free_pp((void ***)&(ft_envp));
 }
