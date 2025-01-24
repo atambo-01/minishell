@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 10:47:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 14:46:26 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,18 @@ void    ft_subtoken_handle_quotes(char *old, char *new, t_count *c);
 char    *ft_get_subtoken(char *old);
 
 // get_cmd.c
-void 	ft_process_quotes(char ch, t_count *c);
+t_cmd   *get_tail_cmd(t_cmd *cmd);
 void	add_cmd(t_list *token, t_cmd **cmd, char **ft_envp);
-t_cmd	*pipe_cmd(t_list *token, t_cmd *cmd);
+int     ft_count_params(t_list *token);
+t_list  *add_params(t_list *token, t_cmd *p_cmd);
 t_cmd	*get_cmd(t_list *token, char **ft_envp);
 
 // pipe.c
 void	ft_pipe(t_cmd *cmd);
 
-//execute
+// execute
 int		ft_builtin(t_cmd *cmd);
 int		ft_execute(t_cmd *cmd, int p);
-
+// utils.c
+int     ft_ctrl_operator(char *str);
 #endif

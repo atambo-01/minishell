@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/24 11:11:22 by atambo            #+#    #+#             */
+/*   Updated: 2025/01/24 11:45:40 by atambo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
 char *ft_strjoin_path(const char *dir, const char *name)
@@ -15,20 +27,52 @@ char *ft_strjoin_path(const char *dir, const char *name)
 	return (full_path);
 }
 
+int	ft_test_paths(t_cmd *cmd, char ***p_paths)
+{
+	int		i;
+	char	*full_path;
+	char	**paths;
+
+	if (!p_paths || !*p_paths)
+		return (0);
+	i = 0;
+	paths = *p_paths;
+	while (paths[i])
+	{
+		full_path = ft_strjoin_path(paths[i], cmd->n);
+		if (!full_path)
+			break;
+		if (access(full_path, F_OK | X_OK) == 0) // Check if command is executable
+		{
+			cmd->path = full_path;
+			return(1);
+		}
+		free(full_path);
+		i++;
+	}
+	return(-1);
+}
+
 int	ft_get_path(t_cmd *cmd)
 {
-	char *path_env = getenv("PATH");
-	char **paths;
-	char *full_path;
-	int i;
+	int		i;
+	char	*path_env;
+	char	**paths;
+	char	*full_path;
 
+	path_env = getenv("PATH");
 	if (!path_env || !cmd || !cmd->n)
 		return (-1);
-
 	paths = ft_split(path_env, ':'); // Split PATH into directories
 	if (!paths)
 		return (-2);
-
+	if (ft_test_paths(cmd, &paths) == 1)
+	{
+		ft_free_pp((void ***)&paths); // Free the split PATH
+		ft_free_p((void **)&cmd->n);
+		return(1);
+	}	
+	/*
 	i = 0;
 	while (paths[i])
 	{
@@ -45,6 +89,7 @@ int	ft_get_path(t_cmd *cmd)
 		free(full_path);
 		i++;
 	}
+	 */
 	ft_free_pp((void ***)&paths); // Free the split PATH
 	return (-3);		// Command not found
 }
@@ -52,7 +97,7 @@ int	ft_get_path(t_cmd *cmd)
 int ft_execute(t_cmd *cmd, int p)
 {
 	pid_t   pid;
-	int	 status;
+	int		status;
 	
 	if (!cmd)
 		return (0);
@@ -77,11 +122,7 @@ int ft_execute(t_cmd *cmd, int p)
 		{	
 			if (ft_get_path(cmd))
 			{
-				printf("execve\n");
-				printf("cmd->path = %s\n", cmd->path);
-				ft_putlines(cmd->params);
-				ft_putstr("\n");
-				if (execve(cmd->path, cmd->params, cmd->ft_envp) == -1)
+				if (execve(cmd->path, (cmd->params)++, cmd->ft_envp) == -1)
 				{
 					ft_putstr_fd(cmd->n, 1);
 					ft_putstr_fd(": ", 1);

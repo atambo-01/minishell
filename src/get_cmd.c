@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 10:26:06 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/24 14:44:46 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,21 @@ void	add_cmd(t_list *token, t_cmd **cmd, char **ft_envp)
 	}
 }
 
+int	ft_count_params(t_list *token)
+{
+	int	i;
+
+	i = 0;
+	if (!token)
+		return (0);
+	while (token && (ft_ctrl_operator(token->s) != 0))
+	{
+		i++;
+		token = token->next;
+	}
+	return (i);
+}
+
 t_list	*add_params(t_list *token, t_cmd *p_cmd)
 {
 	int		i;
@@ -53,15 +68,11 @@ t_list	*add_params(t_list *token, t_cmd *p_cmd)
 	i = 0;
 	if (!token || !p_cmd)
 		return (NULL);
-	curr = token;
-	while (curr && (ft_strcmp(curr->s, "|") != 0))
-	{
-		i++;
-		curr = curr->next;
-	}
+	i = ft_count_params(token);
 	cmd = get_tail_cmd(p_cmd);
-	cmd->params = ft_malloc(sizeof(char *) * (i + 1));
-	i = 0;
+	cmd->params = ft_malloc(sizeof(char *) * (i + 2));
+	cmd->params[0] = ft_strdup(cmd->n);
+	i = 1;
 	while (token && (ft_strcmp(token->s, "|") != 0))
 	{
 		cmd->params[i] = token->s;

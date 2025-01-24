@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/01/24 11:09:31 by atambo           ###   ########.fr        #
+#    Updated: 2025/01/24 14:45:57 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,8 @@ SOURCES		=	src/main.c\
 				src/pipe.c\
 				src/execute.c\
 				src/builtins.c\
-				src/get_subtoken.c
+				src/get_subtoken.c\
+				src/utils.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft
