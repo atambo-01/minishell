@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 14:46:26 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/25 18:06:13 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+extern int	g_exit;
 
 typedef struct s_pipe
 {
@@ -59,7 +61,13 @@ typedef struct s_count
 	int end;
 }	t_count;
 
-extern int	g_exit;
+typedef struct s_main_vars
+{
+	t_list	*token;
+	t_cmd	*cmd;
+	char	*line;
+	char	**ft_envp;
+}	t_main_vars;
 
 // parsing.c
 void    ft_process_quotes(char ch, t_count *c);

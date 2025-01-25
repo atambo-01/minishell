@@ -15,3 +15,12 @@
    fun:add_history
    ...
 }
+{
+    <Readline>
+    Memcheck:Leak
+    match-leak-kinds: all
+    fun:readline
+    fun:xmalloc
+    fun:malloc
+    ...
+}

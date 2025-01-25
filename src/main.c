@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 15:35:52 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/26 00:54:45 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,39 +148,47 @@ char **ft_envp_copy(char **envp)
     return copy;
 }
 
+static void	ft_minishell_init(t_main_vars *mv)
+{
+	g_exit = 0;
+	mv->token = NULL;
+	mv->cmd = NULL;
+	mv->line = NULL;
+	mv->ft_envp = NULL;	
+}
+
+static void ft_minishell_exit(t_main_vars *mv)
+{
+	rl_clear_history();
+	ft_free_token(&(mv->token));
+	ft_free_cmd(&(mv->cmd));
+	ft_free_pp((void ***)&(mv->ft_envp));
+	ft_free_p((void **)&mv);
+}
+
 int	main(int ac, char **av, char **envp)
 {
-	t_list	*token;
-	t_cmd	*cmd;
-	char	*line;
-	char	**ft_envp;
+	t_main_vars	*mv;
 	
-	line = NULL;
-	g_exit = 0;
-	ft_envp = ft_envp_copy(envp); 
-	int i = 0;
-	while (i == 0)
+	mv = ft_malloc(sizeof(t_main_vars));
+	ft_minishell_init(mv);
+	mv->ft_envp = ft_envp_copy(envp); 
+	while (1)
 	{
-		line = readline("minishell > ");
-		add_history(line);
-		if (ft_strlen(line) > 0)
+		mv->line = readline("minishell > ");
+		add_history(mv->line);
+		if (ft_strlen(mv->line) > 0)
 		{	
-			if (ft_strcmp(line, "exit") == 0)
+			if (ft_strcmp(mv->line, "exit") == 0)
 				break;
-			if (token = ft_get_token(line))
+			if (mv->token = ft_get_token(mv->line))
 			{
-				if (cmd = get_cmd(token, ft_envp));
-				{
-					ft_execute(cmd, 0);
-				}
+				if (mv->cmd = get_cmd(mv->token, mv->ft_envp));
+					ft_execute(mv->cmd, 0);
 			}
-			ft_free_p((void **)&line);
+			ft_free_p((void **)&(mv->line));
+			mv->line = NULL;
 		}
-	//	i++;
 	}
-	ft_free_token(&token);
-	line = NULL;
-	rl_clear_history();
-	ft_free_cmd(&cmd);
-	ft_free_pp((void ***)&(ft_envp));
+	ft_minishell_exit(mv);
 }
