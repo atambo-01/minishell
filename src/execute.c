@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
+/*																			*/
+/*														:::	  ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 11:11:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 15:36:32 by atambo           ###   ########.fr       */
-/*                                                                            */
+/*													+:+ +:+		 +:+	 */
+/*   By: atambo <alex.tambo.15432@gmail.com>		+#+  +:+	   +#+		*/
+/*												+#+#+#+#+#+   +#+		   */
+/*   Created: 2025/01/24 11:11:22 by atambo			#+#	#+#			 */
+/*   Updated: 2025/01/26 15:50:07 by atambo           ###   ########.fr       */
+/*																			*/
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
@@ -68,12 +68,32 @@ int	ft_get_path(t_cmd *cmd)
 		return (-2);
 	if (ft_test_paths(cmd, &paths) == 1)
 	{
-		ft_free_pp((void ***)&paths); // Free the split PATH
-		ft_free_p((void **)&cmd->n);
 		return (1);
 	}	
 	ft_free_pp((void ***)&paths); // Free the split PATH
 	return (-3);		// Command not found
+}
+
+int	ft_execve(t_cmd *cmd)
+{
+	pid_t pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (1);
+	}
+	if (pid == 0)
+	{
+		if (execve(cmd->path, cmd->params, cmd->ft_envp) == -1)
+		{
+			perror("execve");
+			return (2);
+		}
+	}
+	else
+		waitpid(pid, NULL, 0);
 }
 
 int ft_execute(t_cmd *cmd, int p)
@@ -102,15 +122,14 @@ int ft_execute(t_cmd *cmd, int p)
 		}
 		if (pid == 0)
 		{	
-			if (ft_get_path(cmd))
+			if (ft_get_path(cmd) == 1)
+				ft_execve(cmd);
+			else
 			{
-				if (execve(cmd->path, (cmd->params)++, cmd->ft_envp) == -1)
-				{
-					ft_putstr_fd(cmd->n, 1);
-					ft_putstr_fd(": ", 1);
-					ft_putstr_fd("command not found\n", 1);
-					exit(127);
-				}
+				ft_putstr_fd(cmd->n, 1);
+				ft_putstr_fd(": ", 1);
+				ft_putstr_fd("command not found\n", 1);
+				exit(127);
 			}
 			exit(1);
 		}
@@ -123,6 +142,6 @@ int ft_execute(t_cmd *cmd, int p)
 				g_exit = 128 + WTERMSIG(status);
 		}
 		cmd = cmd->nc;
-		}
+	}
 	return (g_exit);
 }

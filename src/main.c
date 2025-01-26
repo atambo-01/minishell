@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/26 00:54:45 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/26 16:11:08 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,13 +157,22 @@ static void	ft_minishell_init(t_main_vars *mv)
 	mv->ft_envp = NULL;	
 }
 
-static void ft_minishell_exit(t_main_vars *mv)
+static void ft_minishell_exit(t_main_vars **p_mv)
 {
-	rl_clear_history();
-	ft_free_token(&(mv->token));
-	ft_free_cmd(&(mv->cmd));
-	ft_free_pp((void ***)&(mv->ft_envp));
-	ft_free_p((void **)&mv);
+	t_main_vars	*mv;
+	
+	if (!p_mv || !*p_mv)
+		return;
+	mv = *p_mv;
+	if (mv->cmd)
+		ft_free_cmd(&(mv->cmd));
+	if (mv->token)
+		ft_free_token(&(mv->token));
+	if (mv->line)
+		ft_free_p((void **)&(mv->line));
+	if (mv->ft_envp)
+		ft_free_pp((void ***)&(mv->ft_envp));
+	ft_free_p((void **)&(*p_mv));
 }
 
 int	main(int ac, char **av, char **envp)
@@ -172,23 +181,32 @@ int	main(int ac, char **av, char **envp)
 	
 	mv = ft_malloc(sizeof(t_main_vars));
 	ft_minishell_init(mv);
-	mv->ft_envp = ft_envp_copy(envp); 
+	mv->ft_envp = ft_envp_copy(envp);
 	while (1)
 	{
 		mv->line = readline("minishell > ");
-		add_history(mv->line);
 		if (ft_strlen(mv->line) > 0)
-		{	
+		{
 			if (ft_strcmp(mv->line, "exit") == 0)
 				break;
-			if (mv->token = ft_get_token(mv->line))
+			else if ((mv->token = ft_get_token(mv->line)) != NULL)
 			{
-				if (mv->cmd = get_cmd(mv->token, mv->ft_envp));
+				if ((mv->cmd = get_cmd(mv->token, mv->ft_envp)) != NULL);
 					ft_execute(mv->cmd, 0);
+				//ft_minishell_exit(mv);
+				ft_free_cmd(&(mv->cmd));
 			}
-			ft_free_p((void **)&(mv->line));
-			mv->line = NULL;
+			add_history(mv->line);
+			ft_free_token(&(mv->token));
 		}
+		ft_free_p((void **)&(mv->line));
 	}
-	ft_minishell_exit(mv);
+	rl_clear_history();
+	ft_free_cmd(&(mv->cmd));
+//	ft_free_token(&(mv->token));
+//	ft_free_p((void **)&(mv->line));
+//	ft_free_pp((void ***)&(mv->ft_envp));
+//	ft_free_p((void **)&(mv));
+	printf("here!!!!!!!!!!!!!!!\n");
+//	ft_minishell_exit(&mv);
 }
