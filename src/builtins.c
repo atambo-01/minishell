@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 10:45:25 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/29 17:24:12 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void	ft_echo(t_cmd *cmd)
 {
 	int	n;
 
-	n = 0;
+	n = 1;
 	if (!cmd || !cmd->n)
 		return ;
 	if (ft_strcmp("-n ", cmd->params[0]) == 0)
-		n = 1;
+		n = 2;
 	while (cmd->params[n])
 	{
 		printf("%s", cmd->params[n]);

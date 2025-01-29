@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 09:51:03 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 09:51:04 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/29 17:42:41 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ void	ft_subtoken_handle_quotes(char *old, char *new, t_count *c)
 {
 	if (old[c->i] == c->q && ft_strchr(old + c->i + 1, c->q))
 	{
-		while (old[c->i + 1] != c->q)
+		c->i += 1;
+		while (old[c->i] != c->q)
 		{
 			//  if (q == '"' && (old == '$' || old[k] == '\\') )
 			//  ft_expand(old + i, new);
-			new[(c->k)] = old[(c->i) + 1];
+			new[(c->k)] = old[(c->i)];
 			(c->k)++;
 			(c->i)++;
 		}
