@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/25 18:06:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/29 16:48:47 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_cmd
 	char			**params;
 	struct s_cmd	*pc;
 	struct s_cmd	*nc;
-	struct s_list 	*next;
 }	t_cmd;
 
 typedef struct s_count
@@ -69,6 +68,7 @@ typedef struct s_main_vars
 	char	**ft_envp;
 }	t_main_vars;
 
+void    ft_free_cmd(t_cmd **p_cmd);
 // parsing.c
 void    ft_process_quotes(char ch, t_count *c);
 void	ft_handle_pipe(char *line, t_list **token, t_count *c);
@@ -100,6 +100,8 @@ void	ft_pipe(t_cmd *cmd);
 // execute
 int		ft_builtin(t_cmd *cmd);
 int		ft_execute(t_cmd *cmd, int p);
+
 // utils.c
 int     ft_ctrl_operator(char *str);
+
 #endif
