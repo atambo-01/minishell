@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>		+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/24 11:11:22 by atambo			#+#	#+#			 */
-/*   Updated: 2025/01/28 16:49:27 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/28 18:25:33 by atambo           ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 	paths = *p_paths;
 	while (paths[i])
 	{
-		full_path = ft_strjoin_path(paths[i], cmd->n);
+		full_path = ft_strjoin_path(paths[i], cmd->params[0]);
 		if (full_path == NULL)
 			break;
 		if (access(full_path, F_OK | X_OK) == 0) // Check if command is executable
@@ -62,7 +62,7 @@ int	ft_get_path(t_cmd *cmd)
 
 	r = 0;
 	path_env = getenv("PATH");
-	if (!path_env || !cmd || !cmd->n)
+	if (!path_env || !cmd || !cmd->params[0])
 		return (-1);
 	paths = ft_split(path_env, ':');
 	if (!paths)
@@ -111,12 +111,12 @@ int ft_execute(t_cmd *cmd, int p)
 	status = 0;
 	if (!cmd)
 		return (0);
-	if(cmd->nc && cmd->nc->n)
+	if (cmd->nc && cmd->nc->params[0])
 	{
-		if (p == 0 && ft_strcmp(cmd->nc->n, "|") == 0)
+		if (p == 0 && ft_strcmp(cmd->nc->params[0], "|") == 0)
 			ft_pipe(cmd->nc);
 	}
-	while (cmd && cmd->n)
+	while (cmd && cmd->params[0])
 	{
 		if (ft_builtin(cmd) == 0)
 		{
@@ -129,7 +129,7 @@ int ft_execute(t_cmd *cmd, int p)
 		}
 		else 
 		{
-			ft_putstr_fd(cmd->n, 1);
+			ft_putstr_fd(cmd->params[0], 1);
 			ft_putstr_fd(": ", 1);
 			ft_putstr_fd("command not found\n", 1);
 			return(127);

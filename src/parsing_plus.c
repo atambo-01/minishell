@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 10:41:14 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/29 00:09:43 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	add_token(char *line, t_list **p_token, t_count *c)
 	}
 }
 
-void	add_pipe(t_list **p_token)
+void	add_pipe_token(t_list **p_token)
 {
 	t_list	*curr;
 	t_list	*token;

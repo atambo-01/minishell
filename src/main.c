@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/28 17:18:54 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/29 11:53:54 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,33 +48,33 @@ void	ft_token_ls(t_list *token)
 
 void	ft_cmd_ls(t_cmd *cmd)
 {
+	printf("starting cmd_ls\n");
+	printf("-------------------------------------\n");
 	if (!cmd)
 		return ;
-	int i = 0;
+	int i;
 	while (cmd)
-	{
-		if (cmd && cmd->n)
+	{	
+		if (cmd->params && cmd->params[0]) // Check if params is not NULL
 		{
-			printf("cmd_ls = %s\t: ", cmd->n);
-			if (cmd->params)
+			printf("here!!!!!!!!!!!!!!!!!\n");
+			printf("cmd_ls = %s\t: ", cmd->params[0]);
+			i = 0;
+			while (cmd->params[i])
 			{
-				i = 0;
-				while(cmd->params[i])
-				{
-					printf("%s ", cmd->params[i]);
-					i++;
-				}
+				printf("%s ", cmd->params[i]);
+				i++;
 			}
 			printf("\n");
 		}
 		cmd = cmd->nc;
-		i++;
-		if (cmd && cmd->n)
+		if (cmd && cmd->params && cmd->params[0])
 			printf("\n");
 	}
 	printf("\n");
-	return ;
+	printf("-------------------------------------\n");
 }
+
 
 void	ft_free_token(t_list **p_token)
 {
@@ -108,7 +108,7 @@ void	ft_free_cmd(t_cmd **p_cmd)
 		next = cmd->nc;
 		ft_free_p((void **)&(cmd->params));
 		ft_free_p((void **)&(cmd->path));
-		ft_free_p((void **)&(cmd->n));
+		ft_free_p((void **)&(cmd->params[0]));
 		cmd->pc = NULL;	
 		cmd->ft_envp = NULL;
 		cmd->nc = NULL;
@@ -192,23 +192,29 @@ int	main(int ac, char **av, char **envp)
 				break;
 			else if ((mv->token = ft_get_token(mv->line)) != NULL)
 			{
+				printf("\n");
 				if ((mv->cmd = get_cmd(mv->token, mv->ft_envp)) != NULL);
 				{
+					ft_cmd_ls(mv->cmd);
+					/*
 					printf("acessing ft_execute\n");
-					printf("mv->cmd->n\t\t=%s\n", mv->cmd->n);
+					printf("mv->cmd->params[0]\t\t=%s\n", mv->cmd->params[0]);
 					printf("mv->cmd->params\t=\t");
-					ft_putlines(mv->cmd->params);
+				//	ft_putlines(mv->cmd->params);
 					printf(":::::::::::::::::::::::::::\n");
-					ft_execute(mv->cmd, 0);
-					ft_free_cmd(&(mv->cmd));
+				//	ft_execute(mv->cmd, 0);
+					 */
+				//	ft_free_cmd(&(mv->cmd));
 				}
-				ft_free_token(&(mv->token));
+			//	ft_free_token(&(mv->token));
 			}
 			add_history(mv->line);
 		}
-		ft_free_p((void **)&(mv->line));
+	//	ft_free_p((void **)&(mv->line));
 	}
+	/*
 	ft_free_p((void **)&(mv->line));
 	ft_free_pp((void ***)&(mv->ft_envp));
 	ft_free_p((void **)&mv);
+	*/
 }

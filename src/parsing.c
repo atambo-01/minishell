@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 15:09:22 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/29 00:09:54 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_handle_pipe(char*line, t_list **token, t_count *c)
 		c->temp = c->k - c->last + 1;
 		add_token(line, token, c);
 	}
-	add_pipe(token);
+	add_pipe_token(token);
 	skip_spaces(line, c);
 	c->last = c->k + 1;
 }
