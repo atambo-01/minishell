@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/29 17:10:47 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:08:49 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,9 @@ void	add_cmd(t_list *token, t_cmd **cmd, char **ft_envp)
 		return ;
 	new = ft_malloc(sizeof(t_cmd));
 	new->n = ft_strdup (token->s);
-	new->params = NULL;
+	new->params = ft_malloc(sizeof(char **) * 2);
+	new->params[0] = ft_strdup(new->n);
+	new->params[1] = NULL;
 	new->ft_envp = ft_envp;
 	new->nc = NULL;
 	new->pc = NULL;
@@ -68,10 +70,12 @@ t_list	*add_params(t_list *token, t_cmd *p_cmd)
 	i = 0;
 	if (!token || !p_cmd)
 		return (NULL);
+	free(cmd->params[0]);
+	free(cmd->params);
 	i = ft_count_params(token);
 	cmd = get_tail_cmd(p_cmd);
-	cmd->params = ft_malloc(sizeof(char *) * (i + 3));
-	cmd->params[0] = cmd->n;
+	p_cmd->params = ft_malloc(sizeof(char *) * (i + 3));
+	p_cmd->params[0] = cmd->n;
 	i = 1;
 	while (token && (ft_strcmp(token->s, "|") != 0))
 	{
