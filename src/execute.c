@@ -65,7 +65,7 @@ int	ft_execute(t_cmd *cmd, int p)
 	}
 	while (cmd && cmd->n)
 	{
-		if (ft_builtin(cmd) == 0)
+		if (ft_builtin(cmd, &cmd->ft_envp) == 0)
 		{
 			cmd = cmd->nc;
 			continue ;

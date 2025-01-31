@@ -91,12 +91,15 @@ void	ft_pipe(t_cmd *cmd);
 //builtin
 void	ft_echo(t_cmd *cmd);
 void    ft_env(t_cmd *env);
+void	print_ex(char **env);
+int ft_is_valid_name(char *name);
+void	ft_export(char **args, char ***env);
 void	ft_cd(t_cmd *path);
 
 
 //execute
 void	ft_pwd(void);
-int		ft_builtin(t_cmd *cmd);
+int		ft_builtin(t_cmd *cmd, char ***ft_envp);
 int		ft_execute(t_cmd *cmd, int p);
 
 #endif

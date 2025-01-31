@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 12:44:20 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/24 12:59:04 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/29 13:10:52 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_execute(t_cmd *cmd, int p)
 	}
 	while (cmd && cmd->n)
 	{
-		if (ft_builtin(cmd) == 0)
+		if (ft_builtin(cmd, cmd->ft_envp) == 0)
 		{
 			cmd = cmd->nc; // Move to the next command after a built-in
 			continue ;

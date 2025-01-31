@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 16:50:48 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/30 12:51:43 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,9 @@ void	ft_cd(t_cmd *path)
 	}
 }
 
-int	ft_builtin(t_cmd *cmd)
+int	ft_builtin(t_cmd *cmd, char ***ft_envp)
 {
+	// Note que quando há pipes tudo acontece em um filho
 	if (ft_strcmp("echo", cmd->n) == 0)
 	{
 		ft_echo(cmd);
@@ -54,22 +55,25 @@ int	ft_builtin(t_cmd *cmd)
 		ft_cd(cmd);
 		return (0);
 	}
-	else if (ft_strcmp("pwd", cmd->n) == 0) {
+	else if (ft_strcmp("pwd", cmd->n) == 0)
+	{
 		ft_pwd();
 		return (0);
 	}
-	/*else if (ft_strcmp("export", cmd->n) == 0) {
-		ft_export(cmd);
+	else if (ft_strcmp("export", cmd->n) == 0)
+	{
+		ft_export(cmd->params, ft_envp);
 		return (0);
 	}
-	else if (ft_strcmp("unset", cmd->n) == 0) {
+	/*else if (ft_strcmp("unset", cmd->n) == 0)
+	{
 		ft_unset(cmd);
 		return (0);
-	}
-	else if (ft_strcmp("env", cmd->n) == 0) {
+	}*/
+	else if (ft_strcmp("env", cmd->n) == 0)
+	{
 		ft_env(cmd);
 		return (0);
 	}
-*/
 	return (1);
 }

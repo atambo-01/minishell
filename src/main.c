@@ -56,7 +56,6 @@ void	ft_cmd_ls(t_cmd *cmd)
 	{
 		if (cmd && cmd->n)
 		{
-			printf("cmd_ls = %s\t: ", cmd->n);
 			if (cmd->params)
 			{
 				i = 0;
@@ -73,7 +72,6 @@ void	ft_cmd_ls(t_cmd *cmd)
 		if (cmd && cmd->n)
 			printf("\n");
 	}
-	printf("\n");
 	return ;
 }
 
@@ -130,10 +128,10 @@ char	**ft_envp_copy(char **envp)
     while (envp[count])
         count++;
     copy = ft_malloc(sizeof(char *) * (count + 1));
-    if (!copy)
-        return NULL;
-	i = 0;
-	while(i < count)
+	if (!copy)
+		return (NULL);
+	i = -1;
+	while(++i < count)
     {
         copy[i] = ft_strdup(envp[i]);
         if (!copy[i])
@@ -141,11 +139,9 @@ char	**ft_envp_copy(char **envp)
             while (--i >= 0)
                 free(copy[i]);
             free(copy);
-            return NULL;
+            return (NULL);
         }
-		i++;
     }
-    copy[i] = NULL;
     return copy;
 }
 
@@ -159,8 +155,7 @@ int	main(int ac, char **av, char **envp)
 	line = NULL;
 	g_exit = 0;
 	ft_envp = ft_envp_copy(envp); 
-	int i = 0;
-	while (i == 0)
+	while (ac > 0 && av)
 	{
 		line = readline("minishell > ");
 		if (ft_strlen(line) > 0)
@@ -170,15 +165,12 @@ int	main(int ac, char **av, char **envp)
 			add_history(line);
 			token = ft_get_token(line);
 			ft_token_ls(token);
-			printf("\n");
 			cmd = get_cmd(token, ft_envp);
-			printf("\n");
 			ft_cmd_ls(cmd);
-			ft_builtin(cmd);
-			ft_execute(cmd, 0);
+			if (ft_builtin(cmd, &ft_envp))
+				ft_execute(cmd, 0);
 			ft_free_p((void **)&line);
 		}
-		i++;
 	}
 	ft_free_token(&token);
 	line = NULL;

@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 14:56:38 by eneto            ###   ########.fr       */
+/*   Updated: 2025/01/28 15:16:34 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,7 @@ t_list	*add_params(t_list *token, t_cmd *p_cmd)
 	i = 0;
 	while (token && (ft_strcmp(token->s, "|") != 0))
 	{
-		cmd->params[i] = token->s;
-		i++;
+		cmd->params[i++] = token->s;
 		token = token->next;
 	}
 	cmd->params[i] = NULL;

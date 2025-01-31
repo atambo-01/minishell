@@ -1,37 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   ft_export2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 15:00:39 by eneto             #+#    #+#             */
-/*   Updated: 2025/01/30 12:41:27 by eneto            ###   ########.fr       */
+/*   Created: 2025/01/30 10:02:13 by eneto             #+#    #+#             */
+/*   Updated: 2025/01/30 13:05:54 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_env(t_cmd *env)
+void	print_var_wq(const char *var)
+{
+	char	*s;
+
+	s = ft_strchr(var, '=');
+	if (s)
+		printf("=\"%s\"\n", s + 1);
+	else
+		printf("\n");
+}
+
+void	print_ex(char **env)
 {
 	int	i;
-	int	count;
 
-	/*env->path = getenv("PATH");
-	if (env->path == NULL)
-	{
-		ft_putendl_fd("Erro: env: No such file or directory", 2);
-		return ;
-	}*/
-	count = 0;
-	while (env->params && env->params[count])
-		count++;
 	i = 0;
-	if (count == 0)
+	if (!env || !(*env)[i])
+		return ;
+	while (env[i] != NULL)
 	{
-		while (env->ft_envp && env->ft_envp[i])
-			printf("%s\n", env->ft_envp[i++]);
+		printf("declare - x %s", env[i]);
+		if (ft_strchr(env[i], '='))
+			print_var_wq(env[i]);
+		else
+			printf("\n");
+		i++;
 	}
-	else
-		ft_putendl_fd("Erro: env: too many arguments", 2);
 }
