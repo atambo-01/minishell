@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/31 11:40:55 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/31 16:21:05 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,10 @@ t_list	*ft_get_token(char *line)
 	token = NULL;
 	c = ft_malloc(sizeof(t_count));
 	ft_counter(&c);
-	line = trimmed;
-	while (line[c->k])
+	while (trimmed[c->k])
 	{
-		ft_get_token_if(line, &token, c);
-		ft_process_quotes(line[c->k], c);
+		ft_get_token_if(trimmed, &token, c);
+		ft_process_quotes(trimmed[c->k], c);
 		(c->k)++;
 	}
 	if (c->q != 0)

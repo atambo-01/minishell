@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/29 16:48:47 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/31 14:25:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_main_vars
 	t_cmd	*cmd;
 	char	*line;
 	char	**ft_envp;
+	int		exit;
 }	t_main_vars;
 
 void    ft_free_cmd(t_cmd **p_cmd);
@@ -95,11 +96,13 @@ t_list  *add_params(t_list *token, t_cmd *p_cmd);
 t_cmd	*get_cmd(t_list *token, char **ft_envp);
 
 // pipe.c
-void	ft_pipe(t_cmd *cmd);
+int	ft_pipe(t_cmd *cmd, const int prev_exit);
+
+//builtins.c
+int		ft_builtin(t_cmd *cmd, const int prev_exit);
 
 // execute
-int		ft_builtin(t_cmd *cmd);
-int		ft_execute(t_cmd *cmd, int p);
+int		ft_execute(t_cmd *cmd, int p, const int prev_exit);
 
 // utils.c
 int     ft_ctrl_operator(char *str);

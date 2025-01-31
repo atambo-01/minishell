@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/31 12:08:49 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/31 12:38:05 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ t_list	*add_params(t_list *token, t_cmd *p_cmd)
 	i = 0;
 	if (!token || !p_cmd)
 		return (NULL);
-	free(cmd->params[0]);
-	free(cmd->params);
+	free(p_cmd->params[0]);
+	free(p_cmd->params);
 	i = ft_count_params(token);
 	cmd = get_tail_cmd(p_cmd);
 	p_cmd->params = ft_malloc(sizeof(char *) * (i + 3));

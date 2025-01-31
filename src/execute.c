@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>		+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/24 11:11:22 by atambo			#+#	#+#			 */
-/*   Updated: 2025/01/28 16:49:27 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/31 14:33:24 by atambo           ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -74,10 +74,12 @@ int	ft_get_path(t_cmd *cmd)
 	return (-3);		// Command not found
 }
 
-int	ft_execve(t_cmd *cmd, int status)
+int	ft_execve(t_cmd *cmd)
 {
-	pid_t pid;
+	pid_t	pid;
+	int		status;
 
+	status = 0;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -103,28 +105,28 @@ int	ft_execve(t_cmd *cmd, int status)
 	return(status);
 }
 
-int ft_execute(t_cmd *cmd, int p)
+int ft_execute(t_cmd *cmd, int p, const int prev_exit)
 {
 	pid_t   pid;
 	int		status;
 	
 	status = 0;
 	if (!cmd)
-		return (0);
+		return (-1);
 	if(cmd->nc && cmd->nc->n)
 	{
 		if (p == 0 && ft_strcmp(cmd->nc->n, "|") == 0)
-			ft_pipe(cmd->nc);
+			status = (ft_pipe(cmd->nc, prev_exit));
 	}
 	while (cmd && cmd->n)
 	{
-		if (ft_builtin(cmd) == 0)
+		if ((status = ft_builtin(cmd, prev_exit)) == 0)
 		{
 			cmd = cmd->nc;
 		}
 		else if	(ft_get_path(cmd) == 1)
 		{
-			ft_execve(cmd, status);
+			status = ft_execve(cmd);
 			cmd = cmd->nc;
 		}
 		else 
@@ -135,5 +137,5 @@ int ft_execute(t_cmd *cmd, int p)
 			return(127);
 		}
 	}
-	return (g_exit);
+	return (status);
 }
