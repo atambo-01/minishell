@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>		+#+  +:+	   +#+		*/
 /*												+#+#+#+#+#+   +#+		   */
 /*   Created: 2025/01/24 11:11:22 by atambo			#+#	#+#			 */
-/*   Updated: 2025/01/31 14:33:24 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/01 11:37:08 by atambo           ###   ########.fr       */
 /*																			*/
 /* ************************************************************************** */
 
@@ -47,7 +47,12 @@ int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 			cmd->path = full_path;
 			return(1);
 		}
-		free(full_path);
+		else
+		{
+			printf("full path = %s\n", full_path);
+			free(full_path);
+			break;
+		}
 		i++;
 	}
 	return(-1);
