@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/29 17:39:37 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/01 12:54:09 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ t_list	*ft_get_tail(t_list *node)
 	return (node);
 }
 
-void	ft_counter(t_count **c)
+void	ft_counter(t_count *c)
 {
-	if (!c || !*c)
+	if (!c)
 		return ;
-	(*c)->i = 0;
-	(*c)->j = 0;
-	(*c)->k = 0;
-	(*c)->last = 0;
-	(*c)->q = 0;
-	(*c)->temp = 0;
-	(*c)->end = 0;
+	(c)->i = 0;
+	(c)->j = 0;
+	(c)->k = 0;
+	(c)->last = 0;
+	(c)->q = 0;
+	(c)->temp = 0;
+	(c)->end = 0;
 }
 
 void	add_token(char *line, t_list **p_token, t_count *c)
@@ -45,6 +45,7 @@ void	add_token(char *line, t_list **p_token, t_count *c)
 		return ;
 	token = ft_malloc(sizeof(t_list));
 	token->s = ft_malloc(sizeof(char *) * (c->temp + 1));
+	printf("add_token temp=%d\n", c->temp);
 	ft_strlcpy(token->s, &line[c->last], c->temp);
 	process = ft_get_subtoken(token->s);
 	token->s = process;
@@ -81,6 +82,9 @@ void	skip_spaces(char *line, t_count *c)
 {
 	if (!line || !c)
 		return ;
-	while (line[c->k] == ' ')
-		(c->k)++;
+	if (line[c->k + 1] != 0)
+	{
+		while (line[c->k] == ' ')
+			(c->k)++;
+	}
 }

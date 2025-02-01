@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 09:27:30 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/01 12:22:23 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ typedef struct s_main_vars
 	int		exit;
 }	t_main_vars;
 
+
+void    ft_token_ls(t_list *token);
 void    ft_free_cmd(t_cmd **p_cmd);
 // parsing.c
 void    ft_process_quotes(char ch, t_count *c);
@@ -82,7 +84,7 @@ void	ft_get_token_if(char *line, t_list **p_token, t_count *c);
 t_list	*ft_get_token(char *line);
 
 // parsing_plus.c
-void	ft_counter(t_count **c);
+void	ft_counter(t_count *c);
 void	ft_counter_free(t_count **c);
 void	add_token(char *line, t_list **p_token, t_count *c);
 void	add_pipe(t_list **p_token);
