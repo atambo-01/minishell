@@ -1,13 +1,13 @@
 /* ************************************************************************** */
-/*																			*/
-/*														:::	  ::::::::   */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
-/*													+:+ +:+		 +:+	 */
-/*   By: atambo <alex.tambo.15432@gmail.com>		+#+  +:+	   +#+		*/
-/*												+#+#+#+#+#+   +#+		   */
-/*   Created: 2025/01/24 11:11:22 by atambo			#+#	#+#			 */
-/*   Updated: 2025/02/01 11:37:08 by atambo           ###   ########.fr       */
-/*																			*/
+/*                                                    +:+ +:+         +:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
+/*   Updated: 2025/02/01 16:22:34 by atambo           ###   ########.fr       */
+/*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
@@ -18,7 +18,7 @@ char *ft_strjoin_path(const char *dir, const char *name)
 	size_t len_dir = strlen(dir);
 	size_t len_name = strlen(name);
 
-	full_path = ft_malloc(len_dir + len_name + 2); // +1 for '/' and +1 for '\0'
+	full_path = ft_malloc(len_dir + len_name + 2);
 	if (!full_path)
 		return (NULL);
 	ft_strcpy(full_path, (char *)dir);
@@ -42,17 +42,12 @@ int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 		full_path = ft_strjoin_path(paths[i], cmd->n);
 		if (full_path == NULL)
 			break;
-		if (access(full_path, F_OK | X_OK) == 0) // Check if command is executable
+		if (access(full_path, F_OK | X_OK) == 0)
 		{
 			cmd->path = full_path;
 			return(1);
 		}
-		else
-		{
-			printf("full path = %s\n", full_path);
-			free(full_path);
-			break;
-		}
+		free(full_path);
 		i++;
 	}
 	return(-1);
@@ -118,28 +113,23 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit)
 	status = 0;
 	if (!cmd)
 		return (-1);
-	if(cmd->nc && cmd->nc->n)
+	if(cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
 	{
-		if (p == 0 && ft_strcmp(cmd->nc->n, "|") == 0)
-			status = (ft_pipe(cmd->nc, prev_exit));
+		status = (ft_pipe(cmd->nc, prev_exit));
+		cmd = cmd->nc->nc;
 	}
-	while (cmd && cmd->n)
+	else if (cmd->n)
 	{
 		if ((status = ft_builtin(cmd, prev_exit)) == 0)
-		{
-			cmd = cmd->nc;
-		}
+			return (status);
 		else if	(ft_get_path(cmd) == 1)
-		{
 			status = ft_execve(cmd);
-			cmd = cmd->nc;
-		}
 		else 
 		{
 			ft_putstr_fd(cmd->n, 1);
 			ft_putstr_fd(": ", 1);
 			ft_putstr_fd("command not found\n", 1);
-			return(127);
+			return (127);
 		}
 	}
 	return (status);

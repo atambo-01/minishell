@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 12:07:24 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/01 15:01:27 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,19 +76,15 @@ void	add_params(t_list **token, t_cmd *p_cmd)
 	i = ft_count_params(*token);
 	cmd = get_tail_cmd(p_cmd);
 	cmd->params = ft_malloc(sizeof(char *) * (i + 2));
+	i = 0;
 	cmd->params[i] = ft_strdup(cmd->n);
 	i++;
-	printf("add_params tokesn ");
-	ft_token_ls(*token);
-//	printf("start param = %s\n", (*token)->s);
 	while (*token && (*token)->s)
 	{
 		if (ft_ctrl_operator((*token)->s) > 0)
 			break;
 		cmd->params[i] = ft_strdup((*token)->s);
 		i++;
-	//	if (!(*token)->next)
-	//		printf("end param %s\n", (*token)->s);
 		*token = (*token)->next;
 	}
 	if (*token && (*token)->s)

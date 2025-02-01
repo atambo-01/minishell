@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 13:37:00 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/01 14:56:45 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	ft_handle_space_or_end(char*line, t_list **token, t_count *c)
 {
 	c->end = (line[c->k + 1] == 0);
 	c->temp = c->k + c->end - c->last + 1;
-	printf("c->temp=%d\nc->last=%d\n", c->temp, c->last);
+//	printf("c->temp=%d\nc->last=%d\n", c->temp, c->last);
 	add_token(line, token, c);
 	skip_spaces(line, c);
 	c->last = c->k;
@@ -55,7 +55,7 @@ void	ft_get_token_if(char*line, t_list **token, t_count *c)
 	}
 	else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
 	{
-		printf("handle_space_end c->k=%d\n", c->k);
+	//	printf("handle_space_end c->k=%d\n", c->k);
 		ft_handle_space_or_end(line, token, c);
 	}
 }
@@ -83,7 +83,6 @@ t_list	*ft_get_token(char *line)
 		else
 			(c.k)++;
 	}
-	ft_token_ls(token);
 	if (c.q != 0)
 		printf("error:unclosed quotes\n");
 	ft_free_p((void **)&(trim));

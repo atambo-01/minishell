@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:19:53 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/31 14:16:40 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/01 16:06:50 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ int	handle_first_fork(t_cmd *cmd, int *fd, const int prev_exit)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		ft_execute(cmd->pc, 1, prev_exit);
+		ft_execute(cmd->pc, 0, prev_exit);
+		exit(EXIT_FAILURE);
 	}
+	return (pid);
 }
 
 int	handle_second_fork(t_cmd *cmd, int *fd, const int prev_exit)
@@ -46,26 +48,32 @@ int	handle_second_fork(t_cmd *cmd, int *fd, const int prev_exit)
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[1]);
 		close(fd[0]);
-		ft_execute(cmd->nc, 0, prev_exit);
+		ft_execute(cmd->nc, 1, prev_exit);
+		exit(EXIT_FAILURE);
 	}
+	return(pid);
 }
 
 int	ft_pipe(t_cmd *cmd, const int prev_exit)
 {
 	int	fd[2];
 	int	status;
+	pid_t	pid_0;
+	pid_t	pid_1;
 
 	status = -1;
+	pid_0 = 0;
+	pid_1 = 0;
 	if (pipe(fd) == -1)
 	{
 		perror("pipe");
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
-	status = handle_first_fork(cmd, fd, prev_exit);
-	status = handle_second_fork(cmd, fd, prev_exit);
+	pid_0 = handle_first_fork(cmd, fd, prev_exit);
+	pid_1 = handle_second_fork(cmd, fd, prev_exit);
 	close(fd[0]);
 	close(fd[1]);
-	wait(NULL);
-	wait(NULL);
+	waitpid(pid_0, &status, 0);
+	waitpid(pid_1, &status, 0);
 	return(status);
 }
