@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/31 16:27:02 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/31 23:28:08 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,9 +157,9 @@ static void ft_minishell_exit(t_main_vars **p_mv)
 
 void	ft_free_cmd(t_cmd **p_cmd)
 {
+	int		n;
 	t_cmd	*cmd;
 	t_cmd	*next;
-	int		i;
 
 	if (!p_cmd || !*p_cmd)
 		return ;
@@ -167,18 +167,22 @@ void	ft_free_cmd(t_cmd **p_cmd)
 	while(cmd)
 	{
 		next = cmd->nc;
+		n = 0;
+		/*
+		while(cmd->params[n] != NULL)
+		{
+			free(cmd->params[n]);
+			n++;
+		}
+		*/
+		ft_free_pp((void ***)&(cmd->params));
+		cmd->params = NULL;
 		free(cmd->n);
 		free(cmd->path);
-		free(cmd->params);
-		if (cmd->ft_envp)
-        {
-            i = 0;
-            while (cmd->ft_envp[i])
-                free(cmd->ft_envp[i++]);
-            free(cmd->ft_envp);
-        }
+		cmd->ft_envp = NULL;	
 		free(cmd);
 		cmd = next;
+		
 	}
 	*p_cmd = NULL;
 }
@@ -198,20 +202,21 @@ int	main(int ac, char **av, char **envp)
 				break;
 			else if ((mv.token = ft_get_token(mv.line)) != NULL)
 			{
+				printf("line =_%s\n", mv.line);
+				add_history(mv.line);
 				ft_token_ls(mv.token);
 				if ((mv.cmd = get_cmd(mv.token, mv.ft_envp)) != NULL);
 				{
 					ft_cmd_ls(mv.cmd);
 					mv.exit = ft_execute(mv.cmd, 0, mv.exit);
-				//	ft_free_cmd(&(mv.cmd));
+					ft_free_cmd(&(mv.cmd));
 				}
-				//ft_free_token(&(mv.token));
+				ft_free_token(&(mv.token));
 			}
-			add_history(mv.line);
 		}
-	//	ft_free_p((void **)&(mv.line));
+		ft_free_p((void **)&(mv.line));
 	}
 	rl_clear_history();
 	ft_free_p((void **)&(mv.line));
-//	ft_free_pp((void ***)&(mv.ft_envp));
+	ft_free_pp((void ***)&(mv.ft_envp));
 }

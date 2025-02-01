@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/31 14:25:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/01/31 17:38:32 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,10 @@
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <unistd.h>
+
+// REMOVE THIS !!!!!!
+# include <string.h>
+
 
 extern int	g_exit;
 
