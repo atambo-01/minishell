@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 15:42:21 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/03 17:02:48 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -195,7 +195,7 @@ int	main(int ac, char **av, char **envp)
 	mv.ft_envp = ft_envp_copy(envp);
 	while (1)
 	{
-		mv.line = readline("minishell > ");
+		mv.line = readline("42_minishell > ");
 		if (ft_strlen(mv.line) > 0)
 		{
 		//	printf("line =_%s\n", mv.line);

@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 14:56:45 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/03 16:57:21 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,18 @@ t_list	*ft_get_token(char *line)
 		else
 			(c.k)++;
 	}
-	if (c.q != 0)
-		printf("error:unclosed quotes\n");
 	ft_free_p((void **)&(trim));
+	if (c.q != 0)
+	{
+		ft_free_token(&token);
+		printf("error:unclosed quotes\n");
+		return(NULL);
+	}
 	return (token);
 }
+
+
+
+
+
+
