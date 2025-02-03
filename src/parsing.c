@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/03 16:57:21 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/03 23:38:24 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,20 @@ void	ft_handle_pipe(char*line, t_list **token, t_count *c)
 //	c->k += 1;
 }
 
+void	ft_handle_ctrl_op(char *line, t_list **token, t_count *c, int cop)
+{
+	if (c->k >= 1 && line[c->k - 1] != ' ')
+	{
+		c->temp = c->k - c->last + 1;
+		add_token(line, token, c);
+	}
+	add_ctrl_op(token, cop);
+	skip_spaces(line, c);
+	c->last = c->k + 1;
+//	c->k += 1;
+}
+
+
 void	ft_handle_space_or_end(char*line, t_list **token, t_count *c)
 {
 	c->end = (line[c->k + 1] == 0);
@@ -49,9 +63,17 @@ void	ft_handle_space_or_end(char*line, t_list **token, t_count *c)
 
 void	ft_get_token_if(char*line, t_list **token, t_count *c)
 {
-	if (c->q == 0 && line[c->k] == '|')
+	int	cop;
+
+	cop = 0;
+	cop = ft_ctrl_operator(&line[c->k]);
+	printf("line =%s\n", &line[c->k]);
+	printf("cop = %d\n", cop);
+	printf("----------------------------------------------\n");
+	if (c->q == 0 && cop)
 	{
-		ft_handle_pipe(line, token, c);
+		printf("add cop\n");
+		ft_handle_ctrl_op(line, token, c, cop);
 	}
 	else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
 	{
@@ -66,7 +88,7 @@ t_list	*ft_get_token(char *line)
 	t_list	*token;
 	char	*trim;
 
-	if (!(trim = ft_strtrim(line, " ")))
+	if (!(trim = ft_ctrl_syntax((ft_strtrim(line, " ")))))
 		return(NULL);
 	token = NULL;
 	ft_counter(&c);

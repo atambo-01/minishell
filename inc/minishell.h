@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/03 16:59:22 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/03 18:42:06 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ typedef struct s_main_vars
 	int		exit;
 }	t_main_vars;
 
+char  *ft_ctrl_syntax(char *trim);
+void	add_ctrl_op(t_list  **p_token, int cop);
 void	ft_free_token(t_list  **p_token);
 void    ft_token_ls(t_list *token);
 void    ft_free_cmd(t_cmd **p_cmd);

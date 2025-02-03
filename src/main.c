@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/03 17:02:48 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/03 23:59:29 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ void	ft_token_ls(t_list *token)
 	i = ft_list_size(token);
 	while (i-- > -1)
 	{
-		printf("%s", token->s);
-		printf("->");
+		printf("{%s}", token->s);
+		printf(" ");
 		token = token->next;
 	}
 	printf("\n");
@@ -199,19 +199,19 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strlen(mv.line) > 0)
 		{
 		//	printf("line =_%s\n", mv.line);
+			add_history(mv.line);
 			if (ft_strcmp(mv.line, "exit") == 0)
-				break;
+				break ;
 			else if ((mv.token = ft_get_token(mv.line)) != NULL)
 			{
-				add_history(mv.line);
-			//	ft_token_ls(mv.token);
-				if ((mv.cmd = get_cmd(mv.token, mv.ft_envp)) != NULL);
+				ft_token_ls(mv.token);
+		/*		if ((mv.cmd = get_cmd(mv.token, mv.ft_envp)) != NULL);
 				{
 			//		ft_cmd_ls(mv.cmd);
 					mv.exit = ft_execute(mv.cmd, 1, mv.exit);
 					ft_free_cmd(&(mv.cmd));
 				}
-				ft_free_token(&(mv.token));
+		*/		ft_free_token(&(mv.token));
 			}
 		}
 		ft_free_p((void **)&(mv.line));

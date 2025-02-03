@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 14:47:12 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/03 18:42:35 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,49 @@ int	ft_ctrl_operator(char *str)
 {
 	if (!str)
 		return (0);
-	if (!ft_strcmp(str, "|"))
+	if (str[0] == '|')
 		return (1);
-	else if (!ft_strcmp(str, ">>"))
+	else if (str[0] == '>' && str[1] == '>')
 		return (2);
-	else if (!ft_strcmp(str, "<<"))
+	else if (str[0] == '<' && str[1] == '<')
 		return (3);
-	else if (!ft_strcmp(str, ">"))
+	else if (str[0] == '>')
+		return (4);
+	else if (str[0] == '<')
 		return (5);
-	else if (!ft_strcmp(str, "<"))
-		return (6);
 	else
 		return (0);
 }
 
+char	*ft_ctrl_syntax(char *trim)
+{	
+	int	i;
+	int	cop;
+	
+	i = 1;
+	cop = 0;
+	if (!trim)
+		return (NULL);
+	if (!ft_ctrl_operator(trim))
+	{
+		while(trim[i])
+		{
+			cop = ft_ctrl_operator(&trim[i]);
+			if (cop && !trim[i + 1])
+				break;	
+			if (cop  && trim[i + 1])
+			{
+				while(trim[i] == ' ')
+					i++;
+				if (ft_ctrl_operator(&trim[i + 1]))
+					break;
+			}
+			if (trim[i + 1] == 0)
+				return(trim);
+			i++;
+		}
+	}
+	free(trim);
+	printf("error: bad control operator syntax.\n");
+	return(NULL);
+}

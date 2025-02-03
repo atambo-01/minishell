@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 15:02:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/03 18:11:15 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,43 @@ void	add_pipe(t_list **p_token)
 	}
 }
 
+
+void	add_ctrl_op(t_list **p_token, int cop)
+{
+	t_list	*curr;
+	t_list	*token;
+
+	if (!p_token || !*p_token)
+		return ;
+	token = ft_malloc(sizeof(t_list));
+	if (cop == 1)
+		token->s = ft_strdup("|");
+	else if (cop == 2)
+		token->s = ft_strdup(">>");
+	else if (cop == 3)	
+		token->s = ft_strdup("<<");
+	else if (cop == 4)
+		token->s = ft_strdup(">");
+	else if (cop == 5 ) 
+		token->s = ft_strdup("<");
+	token->next = NULL;
+	if (!*p_token)
+		*p_token = token;
+	else
+	{
+		curr = ft_get_tail(*p_token);
+		curr->next = token;
+	}
+}
+
+
 void	skip_spaces(char *line, t_count *c)
 {
 	if (!line || !c)
 		return ;
 	if (line[c->k + 1] != 0)
 	{
-		while (line[c->k] == ' ')
+		while (line[c->k + 1] == ' ')
 			(c->k)++;
 	}
 }
