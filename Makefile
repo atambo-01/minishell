@@ -27,6 +27,7 @@ SOURCES		=	src/main.c\
 				src/get_subtoken.c\
 				src/ft_export.c\
 				src/ft_export2.c\
+				src/ft_aux_ex.c\
 				src/ft_env.c
 
 OBJS		=	$(SOURCES:.c=.o)
