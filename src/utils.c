@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/03 18:42:35 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/05 02:39:05 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,15 +30,15 @@ int	ft_ctrl_operator(char *str)
 		return (0);
 }
 
-char	*ft_ctrl_syntax(char *trim)
-{	
+int	ft_ctrl_syntax(char *trim)
+{
 	int	i;
 	int	cop;
 	
 	i = 1;
 	cop = 0;
 	if (!trim)
-		return (NULL);
+		return (0);
 	if (!ft_ctrl_operator(trim))
 	{
 		while(trim[i])
@@ -54,11 +54,11 @@ char	*ft_ctrl_syntax(char *trim)
 					break;
 			}
 			if (trim[i + 1] == 0)
-				return(trim);
+				return(1);
 			i++;
 		}
 	}
 	free(trim);
 	printf("error: bad control operator syntax.\n");
-	return(NULL);
+	return(0);
 }
