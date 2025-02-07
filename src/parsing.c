@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/07 01:50:51 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 13:02:24 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,9 +90,9 @@ char *pre_ft_get_token(char *line, char **ft_envp)
 
     if (ft_check_quotes(line) != 0) 
         return (NULL);
-	if (!(trim = ft_strtrim(line, " ")))
-		return (NULL);
 	if (ft_ctrl_syntax(line) == 0)
+		return (NULL);
+	if (!(trim = ft_strtrim(line, " ")))
 		return (NULL);
     if (!(exp = ft_expand(trim, ft_envp)))
         return (NULL);

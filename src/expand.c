@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/06 23:56:24 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 13:06:54 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,33 @@ int	ft_check_quotes(char *line)
 	return(q);
 }
 
+void    ft_exp_path(char *exp_line, char *line, int *x, int *i)
+{
+    char    *resolved_path;
+    char    temp_path[1024];
+    int     start;
+    
+    start = *i;
+    while (line[*i] && line[*i] != ' ')
+        (*i)++;
+    
+    strncpy(temp_path, &line[start], *i - start);
+    temp_path[*i - start] = '\0';
+    
+    resolved_path = realpath(temp_path, NULL);
+    if (resolved_path)
+    {
+        strcpy(&exp_line[*x], resolved_path);
+        *x += strlen(resolved_path);
+        free(resolved_path);
+    }
+    else
+    {
+        strcpy(&exp_line[*x], temp_path);
+        *x += strlen(temp_path);
+    }
+}
+
 char	*ft_expand(char *line, char **ft_envp)
 {
     int     i = 0, q = 0, start, end, x = 0;
@@ -76,12 +103,17 @@ char	*ft_expand(char *line, char **ft_envp)
             q = 2;
         else if (line[i] == '\'' && q == 2)
             q = 0;
-		if (line[i] == ' ' && q == 0)
-		{
-			while(line[i + 1] && line[i + 1] == ' ')
-				i++;
-		}
-     	if (q != 2 && line[i] == '$' && ft_isalnum(line[i + 1]))
+
+        // Handle spaces
+        if (q == 0 && line[i] == ' ')
+        {
+            if (x > 0 && exp_line[x - 1] != ' ') // Only add space if the last char isn't already a space
+                exp_line[x++] = ' ';
+            while (line[i + 1] == ' ') // Skip consecutive spaces
+                i++;
+        }
+        // Expand environment variables
+     	else if (q != 2 && line[i] == '$' && ft_isalnum(line[i + 1]))
         {
             start = i + 1;
             end = start;
@@ -104,6 +136,13 @@ char	*ft_expand(char *line, char **ft_envp)
             free(var_name);
             i = end - 1;  // Move past the variable
         }
+        // Expand paths
+		else if (q != 2 && (line[i] == '/' || 
+				!ft_strncmp(&line[i], "./", 2) || 
+				!ft_strncmp(&line[i], "../", 3)))
+		{
+			ft_exp_path(exp_line, line, &x, &i);
+		}
         else
         {
             exp_line[x++] = line[i];

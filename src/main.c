@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/07 01:33:12 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 12:22:46 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -220,3 +220,6 @@ int	main(int ac, char **av, char **envp)
 	ft_free_p((void **)&(mv.line));
 	ft_free_pp((void ***)&(mv.ft_envp));
 }
+
+
+

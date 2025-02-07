@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 16:22:34 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 12:24:04 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,19 @@ int	ft_execve(t_cmd *cmd)
 	return(status);
 }
 
+/*
+void	ft_redirect(t_cmd *cmd)
+{
+	0 - expand relative and abs paths in expand
+			by this step ur redirs and expanded paths should be inside
+			the cmd->params matrix
+	1 - check if there is redirect
+	1.5 - if in the redir in if out then redir out
+	2 - check file and open file
+	3 - read or write file
+}
+*/
+
 int ft_execute(t_cmd *cmd, int p, const int prev_exit)
 {
 	pid_t   pid;
@@ -118,6 +131,7 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit)
 		status = (ft_pipe(cmd->nc, prev_exit));
 		cmd = cmd->nc->nc;
 	}
+//	ft_redirect(cmd);
 	else if (cmd->n)
 	{
 		if ((status = ft_builtin(cmd, prev_exit)) == 0)
@@ -127,8 +141,7 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit)
 		else 
 		{
 			ft_putstr_fd(cmd->n, 1);
-			ft_putstr_fd(": ", 1);
-			ft_putstr_fd("command not found\n", 1);
+			ft_putstr_fd(": command not found\n", 1);
 			return (127);
 		}
 	}

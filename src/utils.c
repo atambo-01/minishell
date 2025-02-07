@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/07 01:45:54 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 12:51:58 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ int	ft_ctrl_operator(char *str)
 		return (0);
 }
 
+int	ft_ctrl_syntax_error(void)
+{
+	printf("error: bad control operator syntax.\n");
+	return(0);
+}
+
 int	ft_ctrl_syntax(char *line)
 {
 	int	i;
@@ -39,7 +45,7 @@ int	ft_ctrl_syntax(char *line)
 	cop = 0;
 	if (!line)
 		return (0);
-	if (!ft_ctrl_operator(line))
+	if (ft_ctrl_operator(line) == 0)
 	{
 		while(line[i])
 		{
@@ -47,23 +53,20 @@ int	ft_ctrl_syntax(char *line)
 			if (cop >= 4)
 				i++;
 			if (cop && (!line[i + 1] || ft_ctrl_operator(&line[i + 1])))
-				break;	
+				return(ft_ctrl_syntax_error());
 			if (cop  && line[i + 1] == ' ')
 			{
 				i++;
 				while(line[i] == ' ')
 					i++;
 				if (ft_ctrl_operator(&line[i]))
-					break;
+					return(ft_ctrl_syntax_error());
 			}
-			if (line[i + 1] == 0)
+			if (line[i] == 0 || line[i + 1] == 0)
 				return(1);
 			i++;
 		}
 	}
-	free(line);
-	printf("error: bad control operator syntax.\n");
-	return(0);
 }
 
 

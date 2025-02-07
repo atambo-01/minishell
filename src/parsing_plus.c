@@ -6,11 +6,22 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/07 01:41:08 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 07:47:20 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
+void	skip_spaces(char *line, t_count *c)
+{
+	if (!line || !c)
+		return ;
+	if (line[c->k + 1] != 0)
+	{
+		while (line[c->k + 1] == ' ')
+			(c->k)++;
+	}
+}
 
 t_list	*ft_get_tail(t_list *node)
 {
@@ -106,14 +117,3 @@ void	add_ctrl_op(t_list **p_token, int cop)
 	}
 }
 
-
-void	skip_spaces(char *line, t_count *c)
-{
-	if (!line || !c)
-		return ;
-	if (line[c->k + 1] != 0)
-	{
-		while (line[c->k + 1] == ' ')
-			(c->k)++;
-	}
-}
