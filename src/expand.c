@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/07 13:06:54 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 13:25:11 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,33 +52,6 @@ int	ft_check_quotes(char *line)
 	if (q != 0)
 		printf("error: unclosed quotes\n");
 	return(q);
-}
-
-void    ft_exp_path(char *exp_line, char *line, int *x, int *i)
-{
-    char    *resolved_path;
-    char    temp_path[1024];
-    int     start;
-    
-    start = *i;
-    while (line[*i] && line[*i] != ' ')
-        (*i)++;
-    
-    strncpy(temp_path, &line[start], *i - start);
-    temp_path[*i - start] = '\0';
-    
-    resolved_path = realpath(temp_path, NULL);
-    if (resolved_path)
-    {
-        strcpy(&exp_line[*x], resolved_path);
-        *x += strlen(resolved_path);
-        free(resolved_path);
-    }
-    else
-    {
-        strcpy(&exp_line[*x], temp_path);
-        *x += strlen(temp_path);
-    }
 }
 
 char	*ft_expand(char *line, char **ft_envp)
@@ -135,15 +108,8 @@ char	*ft_expand(char *line, char **ft_envp)
             x += strlen(&exp_line[x]);  // Move x forward
             free(var_name);
             i = end - 1;  // Move past the variable
-        }
-        // Expand paths
-		else if (q != 2 && (line[i] == '/' || 
-				!ft_strncmp(&line[i], "./", 2) || 
-				!ft_strncmp(&line[i], "../", 3)))
-		{
-			ft_exp_path(exp_line, line, &x, &i);
 		}
-        else
+		else
         {
             exp_line[x++] = line[i];
         }
