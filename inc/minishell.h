@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/05 02:52:42 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/06 23:59:52 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ typedef struct s_main_vars
 
 char	*ft_expand(char *line, char**ft_envp);
 int		ft_check_quotes(char *line);
-int		ft_ctrl_syntax(char *trim);
+int		ft_ctrl_syntax(char *line);
 void	add_ctrl_op(t_list  **p_token, int cop);
 void	ft_free_token(t_list  **p_token);
 void    ft_token_ls(t_list *token);
