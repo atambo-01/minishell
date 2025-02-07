@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/05 03:07:27 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/06 23:56:24 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,38 @@ void get_env_value(char *var_name, char *dest, char **ft_envp)
     }
 }
 
+int	ft_check_quotes(char *line)
+{
+	int	i;
+	int	q;
+
+	i = 0;
+	q = 0;
+	if (!line)
+		return (0);
+	while(line[i])
+	{
+		if (line[i] == '"' && q == 0)
+			q = 1;
+		else if (line[i] == '"' && q == 1)
+			q = 0;
+		if (line[i] == '\'' && q == 0)
+			q = 2;
+		else if (line[i] == '\'' && q == 2)
+			q = 0;
+		i++;
+	}
+	if (q != 0)
+		printf("error: unclosed quotes\n");
+	return(q);
+}
 
 char	*ft_expand(char *line, char **ft_envp)
 {
     int     i = 0, q = 0, start, end, x = 0;
     char    *exp_line;
     char    *var_name;
-
+	
     if (!line || !ft_envp || !*ft_envp)
         return (NULL);
     exp_line = ft_malloc(1024);
@@ -51,8 +76,12 @@ char	*ft_expand(char *line, char **ft_envp)
             q = 2;
         else if (line[i] == '\'' && q == 2)
             q = 0;
-
-        if (q != 2 && line[i] == '$' && ft_isalnum(line[i + 1]))
+		if (line[i] == ' ' && q == 0)
+		{
+			while(line[i + 1] && line[i + 1] == ' ')
+				i++;
+		}
+     	if (q != 2 && line[i] == '$' && ft_isalnum(line[i + 1]))
         {
             start = i + 1;
             end = start;
@@ -82,31 +111,7 @@ char	*ft_expand(char *line, char **ft_envp)
         i++;
     }
     exp_line[x] = '\0';
-    printf("Expanded Line: %s\n", exp_line);
 	return(exp_line);
 }
 
 
-int	ft_check_quotes(char *line)
-{
-	int	i;
-	int	q;
-
-	i = 0;
-	q = 0;
-	if (!line)
-		return (0);
-	while(line[i])
-	{
-		if (line[i] == '"' && q == 0)
-			q = 1;
-		else if (line[i] == '"' && q == 1)
-			q = 0;
-		if (line[i] == '\'' && q == 0)
-			q = 2;
-		else if (line[i] == '\'' && q == 2)
-			q = 0;
-		i++;
-	}
-	return(q);
-}
