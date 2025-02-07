@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/03 18:11:15 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 01:41:08 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,13 +89,13 @@ void	add_ctrl_op(t_list **p_token, int cop)
 	if (cop == 1)
 		token->s = ft_strdup("|");
 	else if (cop == 2)
-		token->s = ft_strdup(">>");
-	else if (cop == 3)	
-		token->s = ft_strdup("<<");
-	else if (cop == 4)
 		token->s = ft_strdup(">");
-	else if (cop == 5 ) 
+	else if (cop == 3 ) 
 		token->s = ft_strdup("<");
+	else if (cop == 4)
+		token->s = ft_strdup(">>");
+	else if (cop == 5)	
+		token->s = ft_strdup("<<");
 	token->next = NULL;
 	if (!*p_token)
 		*p_token = token;

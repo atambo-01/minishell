@@ -6,11 +6,12 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/05 03:02:48 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/07 01:50:51 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
 
 void	ft_process_quotes(char ch, t_count *c)
 {
@@ -22,7 +23,9 @@ void	ft_process_quotes(char ch, t_count *c)
 		c->q = 2;
 	else if (ch == '\'' && c->q == 2)
 		c->q = 0;
+	
 }
+
 
 void	ft_handle_pipe(char*line, t_list **token, t_count *c)
 {
@@ -46,8 +49,10 @@ void	ft_handle_ctrl_op(char *line, t_list **token, t_count *c, int cop)
 	}
 	add_ctrl_op(token, cop);
 	skip_spaces(line, c);
+	if (cop >= 4)
+		c->k += 1;
+	skip_spaces(line, c);
 	c->last = c->k + 1;
-//	c->k += 1;
 }
 
 
@@ -67,7 +72,7 @@ void	ft_get_token_if(char *line, t_list **token, t_count *c)
 
 	cop = 0;
 	cop = ft_ctrl_operator(&line[c->k]);
-	if (c->q == 0 && cop)
+	if ( c->q == 0 && cop != 0)
 	{
 		ft_handle_ctrl_op(line, token, c, cop);
 	}
@@ -76,7 +81,6 @@ void	ft_get_token_if(char *line, t_list **token, t_count *c)
 	//	printf("handle_space_end c->k=%d\n", c->k);
 		ft_handle_space_or_end(line, token, c);
 	}
-	ft_process_quotes(line[c->k], c);
 }
 
 char *pre_ft_get_token(char *line, char **ft_envp)
@@ -84,19 +88,14 @@ char *pre_ft_get_token(char *line, char **ft_envp)
     char *trim;
     char *exp;
 
-    if (ft_check_quotes(line) != 0 && ft_ctrl_syntax(line))
-    {
-        printf("error: unclosed quotes\n");
+    if (ft_check_quotes(line) != 0) 
         return (NULL);
-    }
-    if (!(trim = ft_strtrim(line, " ")))
-        return (NULL);
+	if (!(trim = ft_strtrim(line, " ")))
+		return (NULL);
+	if (ft_ctrl_syntax(line) == 0)
+		return (NULL);
     if (!(exp = ft_expand(trim, ft_envp)))
-    {
-        free(trim);
         return (NULL);
-    }
-    free(trim);
     return (exp);
 }
 
@@ -113,15 +112,15 @@ t_list *ft_get_token(char *line, char **ft_envp)
     ft_counter(&c);
     while (exp[c.k])
     {
+		if (exp[c.k + 1] == 0 && exp[c.k] != ' ' && exp[c.k - 1] == ' ')
+		{
+			c = (t_count){0, 0, c.k, c.k, c.q, 2, 0};
+			add_token(exp, &token, &c);
+			break;
+		}
+		ft_process_quotes(exp[c.k], &c);
         ft_get_token_if(exp, &token, &c);
-        if (exp[c.k + 1] == 0 && exp[c.k] != ' ' && exp[c.k - 1] == ' ')
-        {
-            c = (t_count){0, 0, c.k, c.k, c.q, 2, 0};
-            add_token(exp, &token, &c);
-            break;
-        }
-        else
-            (c.k)++;
+        (c.k)++;
     }
     free(exp);
     return (token);
