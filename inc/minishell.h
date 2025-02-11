@@ -9,11 +9,7 @@
 /*                                                +#+#+#+#+#+  
 	+#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/02/05 02:52:42 by atambo           ###   ########.fr       */
-=======
 /*   Updated: 2025/02/11 08:47:30 by atambo           ###   ########.fr       */
->>>>>>> origin/life_is_hard
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +45,13 @@ typedef struct s_list
 	struct s_list *next;
 } t_list;
 
+typedef struct s_env
+{
+	char *name;
+	char *value;
+	struct s_env *next;
+} t_env;
+
 typedef struct s_cmd
 {
 	char *n;
@@ -75,8 +78,8 @@ typedef struct s_main_vars
 	t_list *token;
 	t_cmd *cmd;
 	char *line;
-	char **ft_envp;
 	int exit;
+	t_env *env;
 } t_main_vars;
 
 char	*ft_expand(char *line, char**ft_envp);
@@ -86,6 +89,7 @@ void	add_ctrl_op(t_list  **p_token, int cop);
 void	ft_free_token(t_list  **p_token);
 void    ft_token_ls(t_list *token);
 void    ft_free_cmd(t_cmd **p_cmd);
+
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
 void	ft_handle_pipe(char *line, t_list **token, t_count *c);
@@ -107,7 +111,7 @@ char	*ft_get_subtoken(char *old);
 // get_cmd.c
 t_cmd	*get_tail_cmd(t_cmd *cmd);
 void	add_cmd(t_list *token, t_cmd **cmd, char **ft_envp);
-int	ft_count_params(t_list *token);
+int		ft_count_params(t_list *token);
 void	add_params(t_list **token, t_cmd *p_cmd);
 t_cmd	*get_cmd(t_list *token, char **ft_envp);
 
@@ -115,11 +119,11 @@ t_cmd	*get_cmd(t_list *token, char **ft_envp);
 int	ft_pipe(t_cmd *cmd, const int prev_exit);
 
 // builtins.c
-int	ft_builtin(t_cmd *cm, char ***ft_envp, const int prev_exit);
-int	ft_mtxlen(char **mtx);
-int	ft_vfy_name(char *name, char ***env);
-int	ft_echo(t_cmd *cmd, const int prev_exit);
-int	ft_is_valid_name(char *name);
+int		ft_builtin(t_cmd *cm, char ***ft_envp, const int prev_exit);
+int		ft_mtxlen(char **mtx);
+int		ft_vfy_name(char *name, char ***env);
+int		ft_echo(t_cmd *cmd, const int prev_exit);
+int		ft_is_valid_name(char *name);
 void	ft_export(char **args, char ***env);
 void	ft_env(t_cmd *env);
 void	print_ex(char **env);
@@ -128,13 +132,18 @@ void	ft_cd(t_cmd *path);
 void	ft_pwd(void);
 
 // execute
-<<<<<<< HEAD
-int	ft_execute(t_cmd *cmd, int p, const int prev_exit);
-=======
 int		ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
->>>>>>> origin/life_is_hard
 
 // utils.c
-int	ft_ctrl_operator(char *str);
+int		ft_ctrl_operator(char *str);
+
+//env_list
+t_env	*ft_create_env_node(const char *env);
+void	ft_remove_env_node(t_env **head, const char *name);
+void	ft_add_env_node(t_env **head, const char *env);
+t_env	*ft_envp_to_list(char **envp);
+void	ft_free_env(t_env **p_env);
+
+
 
 #endif

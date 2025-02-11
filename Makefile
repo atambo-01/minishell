@@ -30,6 +30,7 @@ SOURCES		=	src/main.c\
 				src/ft_env.c\
 				src/utils.c\
 				src/expand.c\
+				src/env_list.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

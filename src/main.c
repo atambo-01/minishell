@@ -95,46 +95,15 @@ void	ft_free_token(t_list **p_token)
 	}
 }
 
-
-char **ft_envp_copy(char **envp)
-{
-    int i;
-	int	count;
-	char **copy;
-	
-	if (!envp || !*envp)
-		return(NULL);
-	count = 0;
-    while (envp[count])
-        count++;
-    copy = ft_malloc(sizeof(char *) * (count + 1));
-    if (!copy)
-        return NULL;
-	i = 0;
-   	while(i < count)
-    {
-        copy[i] = ft_strdup(envp[i]);
-        if (!copy[i])
-        {
-            while (--i >= 0)
-                free(copy[i]);
-            free(copy);
-            return NULL;
-        }
-		i++;
-    }
-    copy[i] = NULL;
-    return copy;
-}
-
-static void	ft_minishell_init(t_main_vars *mv)
+static void	ft_minishell_init(t_main_vars *mv, char **envp)
 {
 	g_exit = 0;
 	mv->token = NULL;
 	mv->cmd = NULL;
 	mv->line = NULL;
-	mv->ft_envp = NULL;
 	mv->exit = -1;
+	mv->env = ft_envp_to_list(envp);
+	
 }
 
 static void ft_minishell_exit(t_main_vars **p_mv)
@@ -150,8 +119,8 @@ static void ft_minishell_exit(t_main_vars **p_mv)
 		ft_free_token(&(mv->token));
 	if (mv->line)
 		ft_free_p((void **)&(mv->line));
-	if (mv->ft_envp)
-		ft_free_pp((void ***)&(mv->ft_envp));
+	if (mv->env)
+		ft_free_env(&(mv->env));
 	ft_free_p((void **)&(*p_mv));
 }
 
@@ -191,34 +160,34 @@ int	main(int ac, char **av, char **envp)
 {
 	t_main_vars	mv;
 	
-	ft_minishell_init(&mv);
-	mv.ft_envp = ft_envp_copy(envp);
-	while (1)
-	{
-		mv.line = readline("42_minishell > ");
-		if (ft_strlen(mv.line) > 0)
-		{
-		//	printf("line =_%s\n", mv.line);
-			add_history(mv.line);
-			if (ft_strcmp(mv.line, "exit") == 0)
-				break ;
-			else if ((mv.token = ft_get_token(mv.line, mv.ft_envp)) != NULL)
-			{
-				ft_token_ls(mv.token);
-				if ((mv.cmd = get_cmd(mv.token, mv.ft_envp)) != NULL);
-				{
-					ft_cmd_ls(mv.cmd);
-					mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
-					ft_free_cmd(&(mv.cmd));
-				}
-				ft_free_token(&(mv.token));
-			}
-		}
-	//	free(mv.line);
-	}
-	rl_clear_history();
-	ft_free_p((void **)&(mv.line));
-	ft_free_pp((void ***)&(mv.ft_envp));
+	ft_minishell_init(&mv, envp);
+	
+	// while (1)
+	// {
+	// 	mv.line = readline("42_minishell > ");
+	// 	if (ft_strlen(mv.line) > 0)
+	// 	{
+	// 	//	printf("line =_%s\n", mv.line);
+	// 		add_history(mv.line);
+	// 		if (ft_strcmp(mv.line, "exit") == 0)
+	// 			break ;
+	// 		else if ((mv.token = ft_get_token(mv.line, mv.ft_envp)) != NULL)
+	// 		{
+	// 			ft_token_ls(mv.token);
+	// 			if ((mv.cmd = get_cmd(mv.token, mv.ft_envp)) != NULL);
+	// 			{
+	// 				ft_cmd_ls(mv.cmd);
+	// 				mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
+	// 				ft_free_cmd(&(mv.cmd));
+	// 			}
+	// 			ft_free_token(&(mv.token));
+	// 		}
+	// 	}
+	// //	free(mv.line);
+	// }
+	// rl_clear_history();
+	// ft_free_p((void **)&(mv.line));
+	// ft_free_pp((void ***)&(mv.ft_envp));
 }
 
 
