@@ -208,15 +208,18 @@ int	main(int ac, char **av, char **envp)
 				if ((mv.cmd = get_cmd(mv.token, mv.ft_envp)) != NULL);
 				{
 					ft_cmd_ls(mv.cmd);
-					mv.exit = ft_execute(mv.cmd, 1, mv.exit);
+					mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
 					ft_free_cmd(&(mv.cmd));
 				}
 				ft_free_token(&(mv.token));
 			}
 		}
-		ft_free_p((void **)&(mv.line));
+	//	free(mv.line);
 	}
 	rl_clear_history();
 	ft_free_p((void **)&(mv.line));
 	ft_free_pp((void ***)&(mv.ft_envp));
 }
+
+
+

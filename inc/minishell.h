@@ -9,7 +9,11 @@
 /*                                                +#+#+#+#+#+  
 	+#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/02/05 02:52:42 by atambo           ###   ########.fr       */
+=======
+/*   Updated: 2025/02/11 08:47:30 by atambo           ###   ########.fr       */
+>>>>>>> origin/life_is_hard
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,13 +79,13 @@ typedef struct s_main_vars
 	int exit;
 } t_main_vars;
 
-char	*ft_expand(char *line, char **ft_envp);
-int	ft_check_quotes(char *line);
-int	ft_ctrl_syntax(char *trim);
-void	add_ctrl_op(t_list **p_token, int cop);
-void	ft_free_token(t_list **p_token);
-void	ft_token_ls(t_list *token);
-void	ft_free_cmd(t_cmd **p_cmd);
+char	*ft_expand(char *line, char**ft_envp);
+int		ft_check_quotes(char *line);
+int		ft_ctrl_syntax(char *line);
+void	add_ctrl_op(t_list  **p_token, int cop);
+void	ft_free_token(t_list  **p_token);
+void    ft_token_ls(t_list *token);
+void    ft_free_cmd(t_cmd **p_cmd);
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
 void	ft_handle_pipe(char *line, t_list **token, t_count *c);
@@ -124,7 +128,11 @@ void	ft_cd(t_cmd *path);
 void	ft_pwd(void);
 
 // execute
+<<<<<<< HEAD
 int	ft_execute(t_cmd *cmd, int p, const int prev_exit);
+=======
+int		ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
+>>>>>>> origin/life_is_hard
 
 // utils.c
 int	ft_ctrl_operator(char *str);

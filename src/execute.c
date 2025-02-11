@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/07 01:45:34 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/11 12:17:46 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,64 @@ int	ft_execve(t_cmd *cmd)
 	return(status);
 }
 
-int ft_execute(t_cmd *cmd, int p, const int prev_exit)
+int    ft_redir_out(t_cmd *cmd, int i, int prev_exit)
+{
+    int fd[3];
+	int	status;
+
+    if (!cmd->params[i + 1])
+        return(ft_perror("Syntax error: missing file\n", -1));
+    fd[0] = open(cmd->params[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+    if (fd[0] == -1)
+        ft_perror("open", -1);
+    fd[1] = dup(STDOUT_FILENO);
+    if (fd[1] == -1)
+    {
+		close(fd[0]);
+        return(ft_perror("dup (saving stdout)", -1));
+    }
+    if (dup2(fd[0], STDOUT_FILENO) == -1)
+    {
+        close(fd[0]);
+        close(fd[1]);
+		return(ft_perror("dup2 (redirecting stdout)"));
+    }
+    close(fd[0]);
+    fd[2] = ft_execute(cmd, 0, prev_exit, 0);
+    if (dup2(fd[1], STDOUT_FILENO) == -1)
+    {
+        close(fd[1]);
+		return(ft_perror("dup2 (restoring stdout)"));
+    }
+    close(fd[1]);
+	return (fd[2]);
+}
+
+
+int	ft_redirect(t_cmd *cmd, int prev_exit)
+{
+	int	i;
+
+	i = 0;
+	while(cmd->params[i])
+	{
+		if (ft_ctrl_operator(cmd->params[i]) == 2)
+		{
+			printf("redir_out\n");
+			return(ft_redir_out(cmd, i, prev_exit));
+		}
+/*		else if (ft_ctrl_operator(cmd->params[i]) == 3)
+			ft_redir_in();
+		else if (ft_ctrl_operator(cmd->params[i]) == 4)
+			ft_redir_append();
+		else if (ft_ctrl_operator(cmd->params[i]) == 5)
+			ft_readoc();
+*/		i++;
+	}
+}
+
+
+int ft_execute(t_cmd *cmd, int p, const int prev_exit, int r)
 {
 	pid_t   pid;
 	int		status;
@@ -114,11 +171,10 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit)
 	if (!cmd)
 		return (-1);
 	if(cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
-	{
-		status = (ft_pipe(cmd->nc, prev_exit));
-		cmd = cmd->nc->nc;
-	}
-	else if (cmd->n)
+		return(ft_pipe(cmd->nc, prev_exit));
+	if (r && (status = ft_redirect(cmd, prev_exit)))
+		return(status);
+	if (cmd->n)
 	{
 		if ((status = ft_builtin(cmd, &(cmd->ft_envp), prev_exit)) == 0)
 			return (status);
@@ -127,8 +183,7 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit)
 		else 
 		{
 			ft_putstr_fd(cmd->n, 1);
-			ft_putstr_fd(": ", 1);
-			ft_putstr_fd("command not found\n", 1);
+			ft_putstr_fd(": command not found\n", 1);
 			return (127);
 		}
 	}

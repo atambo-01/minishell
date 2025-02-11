@@ -6,11 +6,12 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/06 18:59:47 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/11 12:19:39 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
 
 void	ft_process_quotes(char ch, t_count *c)
 {
@@ -22,7 +23,9 @@ void	ft_process_quotes(char ch, t_count *c)
 		c->q = 2;
 	else if (ch == '\'' && c->q == 2)
 		c->q = 0;
+	
 }
+
 
 void	ft_handle_pipe(char*line, t_list **token, t_count *c)
 {
@@ -46,8 +49,10 @@ void	ft_handle_ctrl_op(char *line, t_list **token, t_count *c, int cop)
 	}
 	add_ctrl_op(token, cop);
 	skip_spaces(line, c);
+	if (cop >= 4)
+		c->k += 1;
+	skip_spaces(line, c);
 	c->last = c->k + 1;
-//	c->k += 1;
 }
 
 
@@ -67,7 +72,7 @@ void	ft_get_token_if(char *line, t_list **token, t_count *c)
 
 	cop = 0;
 	cop = ft_ctrl_operator(&line[c->k]);
-	if (c->q == 0 && cop)
+	if ( c->q == 0 && cop != 0)
 	{
 		ft_handle_ctrl_op(line, token, c, cop);
 	}
@@ -84,19 +89,14 @@ char *pre_ft_get_token(char *line, char **ft_envp)
     char *trim;
     char *exp;
 
-    if (ft_check_quotes(line) != 0 && ft_ctrl_syntax(line))
-    {
-        printf("error: unclosed quotes\n");
+    if (ft_check_quotes(line) != 0) 
         return (NULL);
-    }
-    if (!(trim = ft_strtrim(line, " ")))
-        return (NULL);
+	if (ft_ctrl_syntax(line) == 0)
+		return (NULL);
+	if (!(trim = ft_strtrim(line, " ")))
+		return (NULL);
     if (!(exp = ft_expand(trim, ft_envp)))
-    {
-        free(trim);
         return (NULL);
-    }
-    free(trim);
     return (exp);
 }
 
@@ -113,14 +113,15 @@ t_list *ft_get_token(char *line, char **ft_envp)
     ft_counter(&c);
     while (exp[c.k])
     {
-        if (exp[c.k + 1] == 0 && exp[c.k] != ' ' && exp[c.k - 1] == ' ')
-        {
-            c = (t_count){0, 0, c.k, c.k, c.q, 2, 0};
-            add_token(exp, &token, &c);
-            break;
-        }
+		if (exp[c.k + 1] == 0 && exp[c.k] != ' ' && exp[c.k - 1] == ' ')
+		{
+			c = (t_count){0, 0, c.k, c.k, c.q, 2, 0};
+			add_token(exp, &token, &c);
+			break;
+		}
+		ft_process_quotes(exp[c.k], &c);
         ft_get_token_if(exp, &token, &c);
-		(c.k)++;
+        (c.k)++;
     }
     free(exp);
     return (token);
