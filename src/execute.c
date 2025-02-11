@@ -1,14 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
+/*   Updated: 2025/02/07 01:45:34 by eneto            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-char	*ft_strjoin_path(const char *dir, const char *name)
+char *ft_strjoin_path(const char *dir, const char *name)
 {
-	char	*full_path;
-	size_t	len_dir;
-	size_t	len_name;
+	char *full_path;
+	size_t len_dir = strlen(dir);
+	size_t len_name = strlen(name);
 
-	len_dir = strlen(dir);
-	len_name = strlen(name);
-	full_path = ft_malloc(len_dir + len_name + 2); // +1 for '/' and +1 for '\0'
+	full_path = ft_malloc(len_dir + len_name + 2);
 	if (!full_path)
 		return (NULL);
 	ft_strcpy(full_path, (char *)dir);
@@ -17,91 +27,110 @@ char	*ft_strjoin_path(const char *dir, const char *name)
 	return (full_path);
 }
 
-int	ft_get_path(t_cmd *cmd)
+int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 {
-	char	*path_env;
-	char	**paths;
-	char	*full_path;
 	int		i;
+	char	*full_path;
+	char	**paths;
 
-	path_env = getenv("PATH");
-	if (!path_env || !cmd || !cmd->n)
-		return (-1);
-	paths = ft_split(path_env, ':'); // Split PATH into directories
-	if (!paths)
-		return (-2);
+	if (!p_paths || !*p_paths)
+		return (0);
 	i = 0;
+	paths = *p_paths;
 	while (paths[i])
 	{
 		full_path = ft_strjoin_path(paths[i], cmd->n);
-		if (!full_path)
-			break ;
+		if (full_path == NULL)
+			break;
 		if (access(full_path, F_OK | X_OK) == 0)
-			// Check if command is executable
 		{
-			ft_free_pp((void ***)&paths); // Free the split PATH
-			ft_free_p((void **)&cmd->n);
 			cmd->path = full_path;
-			return (1);
+			return(1);
 		}
 		free(full_path);
 		i++;
 	}
-	ft_free_pp((void ***)&paths); // Free the split PATH
-	return (-3);                  // Command not found
+	return(-1);
 }
 
-int	ft_execute(t_cmd *cmd, int p)
+int	ft_get_path(t_cmd *cmd)
+{
+	int		r;
+	char	*path_env;
+	char	**paths;
+	char	*full_path;
+
+	r = 0;
+	path_env = getenv("PATH");
+	if (!path_env || !cmd || !cmd->n)
+		return (-1);
+	paths = ft_split(path_env, ':');
+	if (!paths)
+		return (-2);
+	r = ft_test_paths(cmd, &paths);
+	ft_free_pp((void ***)&paths); // Free the split PATH
+	if (r == 1)
+		return(r);
+	return (-3);		// Command not found
+}
+
+int	ft_execve(t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
 
+	status = 0;
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		return (1);
+	}
+	if (pid == 0)
+	{
+		if (execve(cmd->path, cmd->params, cmd->ft_envp) == -1)
+		{
+			perror("execve");
+			_exit(2);
+		}
+	}
+	else
+	{
+		waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			status = 128 + WTERMSIG(status);
+	}
+	return(status);
+}
+
+int ft_execute(t_cmd *cmd, int p, const int prev_exit)
+{
+	pid_t   pid;
+	int		status;
+	
+	status = 0;
 	if (!cmd)
-		return (0);
-	if (cmd->nc && cmd->nc->n)
+		return (-1);
+	if(cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
 	{
-		if (p == 0 && ft_strcmp(cmd->nc->n, "|") == 0)
-			ft_pipe(cmd->nc);
+		status = (ft_pipe(cmd->nc, prev_exit));
+		cmd = cmd->nc->nc;
 	}
-	while (cmd && cmd->n)
+	else if (cmd->n)
 	{
-		if (ft_builtin(cmd, &cmd->ft_envp) == 0)
+		if ((status = ft_builtin(cmd, &(cmd->ft_envp), prev_exit)) == 0)
+			return (status);
+		else if	(ft_get_path(cmd) == 1)
+			status = ft_execve(cmd);
+		else 
 		{
-			cmd = cmd->nc;
-			continue ;
+			ft_putstr_fd(cmd->n, 1);
+			ft_putstr_fd(": ", 1);
+			ft_putstr_fd("command not found\n", 1);
+			return (127);
 		}
-		else if ((pid = fork()) == -1)
-		{
-			perror("fork");
-			return (1);
-		}
-		if (pid == 0)
-		{
-			if (ft_get_path(cmd))
-			{
-				printf("execve\n");
-				printf("cmd->path = %s\n", cmd->path);
-				ft_putlines(cmd->params);
-				ft_putstr("\n");
-				if (execve(cmd->path, cmd->params, cmd->ft_envp) == -1)
-				{
-					ft_putstr_fd(cmd->n, 1);
-					ft_putstr_fd(": ", 1);
-					ft_putstr_fd("command not found\n", 1);
-					exit(127);
-				}
-			}
-			exit(1);
-		}
-		else
-		{
-			waitpid(pid, &status, 0); // Wait for the child process
-			if (WIFEXITED(status))
-				g_exit = WEXITSTATUS(status); // Capture the child's exit status
-			else if (WIFSIGNALED(status))
-				g_exit = 128 + WTERMSIG(status); // Signal termination status
-		}
-		cmd = cmd->nc; // Move to the next command
 	}
-	return (g_exit);
+	return (status);
 }

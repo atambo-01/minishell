@@ -6,12 +6,12 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/01/29 11:51:53 by eneto            ###   ########.fr        #
+#    Updated: 2025/02/05 01:42:30 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	cc
-CFLAGS		=	-g -Wall -Wextra -Werror
+CFLAGS		=	-g #-Wall -Wextra -Werror
 NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
@@ -26,9 +26,10 @@ SOURCES		=	src/main.c\
 				src/builtins.c\
 				src/get_subtoken.c\
 				src/ft_export.c\
-				src/ft_export2.c\
 				src/ft_aux_ex.c\
-				src/ft_env.c
+				src/ft_env.c\
+				src/utils.c\
+				src/expand.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

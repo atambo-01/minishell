@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/24 15:00:39 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/03 10:51:34 by eneto            ###   ########.fr       */
+/*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
+/*   Updated: 2025/02/06 18:12:20 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	ft_env(t_cmd *env)
 	while (env->params && env->params[count])
 		count++;
 	i = 0;
-	if (count == 0)
+	if (count == 1)
 	{
 		while (env->ft_envp && env->ft_envp[i])
 		{

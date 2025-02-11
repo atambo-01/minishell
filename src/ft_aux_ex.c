@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/03 14:12:18 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/03 14:52:06 by eneto            ###   ########.fr       */
+/*   Created: 2025/02/06 17:24:09 by eneto             #+#    #+#             */
+/*   Updated: 2025/02/11 11:37:22 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_is_valid_name(char *name)
 		f = 0;
 	else
 	{
-		while (name[i] != '\0')
+		while (name[i] && name[i] != '=')
 		{
 			if (!ft_isalnum(name[i]) && name[i] != '_')
 				f = 0;
@@ -61,7 +61,7 @@ int	ft_vfy_name(char *name, char ***env)
 	while ((*env)[++i])
 	{
 		mp = ft_strchr((*env)[i], '=');
-		if (!mp)
+		if (mp)
 			tmp = ft_substr((*env)[i], 0, (mp - (*env)[i]));
 		else
 			tmp = ft_strdup((*env)[i]);
@@ -76,7 +76,6 @@ int	ft_vfy_name(char *name, char ***env)
 			free(tmp);
 			return (1);
 		}
-		free(tmp);
 	}
 	return (0);
 }

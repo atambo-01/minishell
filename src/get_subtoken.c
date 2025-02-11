@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 09:51:03 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 09:51:04 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/01 12:26:18 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,12 @@ void	ft_subtoken_handle_quotes(char *old, char *new, t_count *c)
 {
 	if (old[c->i] == c->q && ft_strchr(old + c->i + 1, c->q))
 	{
-		while (old[c->i + 1] != c->q)
+		c->i += 1;
+		while (old[c->i] != c->q)
 		{
 			//  if (q == '"' && (old == '$' || old[k] == '\\') )
 			//  ft_expand(old + i, new);
-			new[(c->k)] = old[(c->i) + 1];
+			new[(c->k)] = old[(c->i)];
 			(c->k)++;
 			(c->i)++;
 		}
@@ -40,17 +41,14 @@ void	ft_subtoken_handle_quotes(char *old, char *new, t_count *c)
 char	*ft_get_subtoken(char *old)
 {
 	char	*new;
-	t_count	*c;
+	t_count	c;
 
-	c = ft_malloc(sizeof(t_count));
 	ft_counter(&c);
-	c->q = '"';
+	c.q = '"';
 	new = ft_malloc(sizeof(char) * ft_strlen(old) + 1);
-	while (old[c->i])
-		ft_subtoken_handle_quotes(old, new, c);
+	while (old[c.i])
+		ft_subtoken_handle_quotes(old, new, &c);
 	free(old);
 	old = NULL;
-	free(c);
-	c = NULL;
 	return (new);
 }

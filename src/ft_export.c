@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/20 11:02:46 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/03 14:50:49 by eneto            ###   ########.fr       */
+/*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
+/*   Updated: 2025/02/11 11:44:25 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,22 +35,23 @@
 // }
 void	print_ex(char **env)
 {
-	
-    int		i;
-    char	*tmp;
+	int		i;
+	char	*tmp;
 
-    i = 0;
-    if (!env || !(*env)[i])
-        return ;
-    while (env[i] != NULL)
-    {
-        tmp = ft_strchr(env[i], '=');
-        if (tmp)
-            printf("declare -x %.*s=\"%s\"\n", (int)(tmp - env[i]), env[i], tmp + 1);
-        else
-            printf("declare -x %s\n", env[i]);
-        i++;
-    }
+	i = 1;
+	tmp = NULL;
+	if (!env || !(*env))
+		return ;
+	while (env[i] != NULL)
+	{
+		tmp = ft_strchr(env[i], '=');
+		if (tmp)
+			printf("declare -x %.*s=\"%s\"\n", (int)(tmp - env[i]), env[i], tmp
+				+ 1);
+		else
+			printf("declare -x %s\n", env[i]);
+		i++;
+	}
 }
 
 void	ft_add_env(char *name, char *value, char ***env)
@@ -63,20 +64,20 @@ void	ft_add_env(char *name, char *value, char ***env)
 	i = 0;
 	if (value == NULL && ft_vfy_name(name, env))
 		return ;
-	// else if(!ft_strchr(name, '='))
-	// 		value = NULL;
 	mtx = malloc(sizeof(char *) * (ft_mtxlen((*env)) + 2));
 	while ((*env)[i])
 	{
 		mtx[i] = ft_strdup((*env)[i]);
-		free((*env)[i]);
+		//free((*env)[i]);
 		i++;
 	}
-	temp = ft_strjoin(name, "=");
-	if (value == NULL && (ft_strchr(value, ' ')))
+	if (value == "")
 		value = "";
+	else if (!(ft_strchr(value, ' ')))
+		value = "";
+	temp = ft_strjoin(name, "=");
 	new_env = ft_strjoin(temp, value);
-	free(temp);
+	//free(temp);
 	mtx[i] = new_env;
 	mtx[i + 1] = NULL;
 	*env = mtx;
@@ -89,37 +90,38 @@ void	ft_add_env(char *name, char *value, char ***env)
 // 4. aloca memoria pra nova matrix com tamanhoif (!ft_is_valid_name(args[i]))
 void	ft_export(char **args, char ***env)
 {
-	int		i;
-	char	*name;
-	char	*value;
-	char	*tmp;
+	int i;
+	char *name;
+	char *value;
+	char *tmp;
 
-	i = -1;
-	if (!args)
+	i = 0;
+	if (!args || !args[0])
 	{
 		print_ex(*env);
 		return ;
 	}
 	else
 	{
-		while (args[++i])
+		while (args[i])
 		{
 			tmp = ft_strchr(args[i], '=');
 			if (!tmp)
 			{
-				if(!ft_is_valid_name(args[i]))
-					continue;
-				ft_add_env(args[i], NULL, env);
+				if (ft_is_valid_name(args[i]))
+					ft_add_env(args[i], NULL, env);
 			}
-			else
+			else if (ft_is_valid_name(args[i]))
 			{
 				name = ft_substr(args[i], 0, (tmp - args[i]));
-				value = ft_substr(args[i], tmp - args[i] + 1, ft_strlen(tmp
-							+ 1));
+				value = ft_substr(args[i], tmp - args[i] + 1, ft_strlen(tmp + 1));
+				printf("name: %s_ \nvalue: %s_\n", name, value);
 				ft_add_env(name, value, env);
 				free(name);
 				free(value);
 			}
+			i++;
 		}
 	}
+	return;
 }

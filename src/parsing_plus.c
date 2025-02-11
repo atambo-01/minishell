@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/01/24 10:41:14 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/03 18:11:15 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,17 +21,17 @@ t_list	*ft_get_tail(t_list *node)
 	return (node);
 }
 
-void	ft_counter(t_count **c)
+void	ft_counter(t_count *c)
 {
-	if (!c || !*c)
+	if (!c)
 		return ;
-	(*c)->i = 0;
-	(*c)->j = 0;
-	(*c)->k = 0;
-	(*c)->last = 0;
-	(*c)->q = 0;
-	(*c)->temp = 0;
-	(*c)->end = 0;
+	(c)->i = 0;
+	(c)->j = 0;
+	(c)->k = 0;
+	(c)->last = 0;
+	(c)->q = 0;
+	(c)->temp = 0;
+	(c)->end = 0;
 }
 
 void	add_token(char *line, t_list **p_token, t_count *c)
@@ -77,10 +77,43 @@ void	add_pipe(t_list **p_token)
 	}
 }
 
+
+void	add_ctrl_op(t_list **p_token, int cop)
+{
+	t_list	*curr;
+	t_list	*token;
+
+	if (!p_token || !*p_token)
+		return ;
+	token = ft_malloc(sizeof(t_list));
+	if (cop == 1)
+		token->s = ft_strdup("|");
+	else if (cop == 2)
+		token->s = ft_strdup(">>");
+	else if (cop == 3)	
+		token->s = ft_strdup("<<");
+	else if (cop == 4)
+		token->s = ft_strdup(">");
+	else if (cop == 5 ) 
+		token->s = ft_strdup("<");
+	token->next = NULL;
+	if (!*p_token)
+		*p_token = token;
+	else
+	{
+		curr = ft_get_tail(*p_token);
+		curr->next = token;
+	}
+}
+
+
 void	skip_spaces(char *line, t_count *c)
 {
 	if (!line || !c)
 		return ;
-	while (line[c->k] == ' ')
-		(c->k)++;
+	if (line[c->k + 1] != 0)
+	{
+		while (line[c->k + 1] == ' ')
+			(c->k)++;
+	}
 }
