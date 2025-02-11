@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 15:01:27 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/09 15:46:07 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	ft_count_params(t_list *token)
 	i = 0;
 	if (!token)
 		return (0);
-	while (token && !(ft_ctrl_operator(token->s)))
+	while (token && (ft_ctrl_operator(token->s) != 1))
 	{
 		i++;
 		token = token->next;
@@ -81,7 +81,7 @@ void	add_params(t_list **token, t_cmd *p_cmd)
 	i++;
 	while (*token && (*token)->s)
 	{
-		if (ft_ctrl_operator((*token)->s) > 0)
+		if (ft_ctrl_operator((*token)->s) == 1 )
 			break;
 		cmd->params[i] = ft_strdup((*token)->s);
 		i++;

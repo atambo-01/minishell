@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/07 12:24:04 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/11 10:54:52 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,20 +105,64 @@ int	ft_execve(t_cmd *cmd)
 	return(status);
 }
 
-/*
-void	ft_redirect(t_cmd *cmd)
+int    ft_redir_out(t_cmd *cmd, int i, int prev_exit)
 {
-	0 - expand relative and abs paths in expand
-			by this step ur redirs and expanded paths should be inside
-			the cmd->params matrix
-	1 - check if there is redirect
-	1.5 - if in the redir in if out then redir out
-	2 - check file and open file
-	3 - read or write file
-}
-*/
+    int fd[3];
+	int	status;
 
-int ft_execute(t_cmd *cmd, int p, const int prev_exit)
+    if (!cmd->params[i + 1])
+        return(ft_perror("Syntax error: missing file\n", -1));
+    fd[0] = open(cmd->params[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+    if (fd[0] == -1)
+        ft_perror("open", -1);
+    fd[1] = dup(STDOUT_FILENO);
+    if (fd[1] == -1)
+    {
+		close(fd[0]);
+        return(ft_perror("dup (saving stdout)", -1));
+    }
+    if (dup2(fd[0], STDOUT_FILENO) == -1)
+    {
+        close(fd[0]);
+        close(fd[1]);
+		return(ft_perror("dup2 (redirecting stdout)"));
+    }
+    close(fd[0]);
+    fd[2] = ft_execute(cmd, 0, prev_exit, 0);
+    if (dup2(fd[1], STDOUT_FILENO) == -1)
+    {
+        close(fd[1]);
+		return(ft_perror("dup2 (restoring stdout)"));
+    }
+    close(fd[1]);
+	return (fd[2]);
+}
+
+
+int	ft_redirect(t_cmd *cmd, int prev_exit)
+{
+	int	i;
+
+	i = 0;
+	while(cmd->params[i])
+	{
+		if (ft_ctrl_operator(cmd->params[i]) == 2)
+		{
+			printf("redir_out\n");
+			return(ft_redir_out(cmd, i, prev_exit));
+		}
+/*		else if (ft_ctrl_operator(cmd->params[i]) == 3)
+			ft_redir_in();
+		else if (ft_ctrl_operator(cmd->params[i]) == 4)
+			ft_redir_append();
+		else if (ft_ctrl_operator(cmd->params[i]) == 5)
+			ft_readoc();
+*/		i++;
+	}
+}
+
+
+int ft_execute(t_cmd *cmd, int p, const int prev_exit, int r)
 {
 	pid_t   pid;
 	int		status;
@@ -127,12 +171,10 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit)
 	if (!cmd)
 		return (-1);
 	if(cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
-	{
-		status = (ft_pipe(cmd->nc, prev_exit));
-		cmd = cmd->nc->nc;
-	}
-//	ft_redirect(cmd);
-	else if (cmd->n)
+		return(ft_pipe(cmd->nc, prev_exit));
+	if (r && (status = ft_redirect(cmd, prev_exit)))
+		return(status);
+	if (cmd->n)
 	{
 		if ((status = ft_builtin(cmd, prev_exit)) == 0)
 			return (status);

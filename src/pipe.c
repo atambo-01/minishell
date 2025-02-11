@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:19:53 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/01 16:06:50 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/11 08:48:49 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	handle_first_fork(t_cmd *cmd, int *fd, const int prev_exit)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		ft_execute(cmd->pc, 0, prev_exit);
+		ft_execute(cmd->pc, 0, prev_exit, 1);
 		exit(EXIT_FAILURE);
 	}
 	return (pid);
@@ -48,7 +48,7 @@ int	handle_second_fork(t_cmd *cmd, int *fd, const int prev_exit)
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[1]);
 		close(fd[0]);
-		ft_execute(cmd->nc, 1, prev_exit);
+		ft_execute(cmd->nc, 1, prev_exit, 1);
 		exit(EXIT_FAILURE);
 	}
 	return(pid);

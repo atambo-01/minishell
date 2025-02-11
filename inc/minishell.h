@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/20 12:44:08 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/06 23:59:52 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/11 08:47:30 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,7 @@ int		ft_pipe(t_cmd *cmd, const int prev_exit);
 int		ft_builtin(t_cmd *cmd, const int prev_exit);
 
 // execute
-int		ft_execute(t_cmd *cmd, int p, const int prev_exit);
+int		ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
 
 // utils.c
 int     ft_ctrl_operator(char *str);
