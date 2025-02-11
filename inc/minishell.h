@@ -139,11 +139,12 @@ int		ft_ctrl_operator(char *str);
 
 //env_list
 t_env	*ft_create_env_node(const char *env);
-void	ft_remove_env_node(t_env **head, const char *name);
-void	ft_add_env_node(t_env **head, const char *env);
+void	ft_remove_env_node(t_env **head, char *name);
+void	ft_add_env_node(t_env **head, char *env);
 t_env	*ft_envp_to_list(char **envp);
+char	**ft_list_to_envp(t_env *env);
 void	ft_free_env(t_env **p_env);
-
+void	ft_list_env(t_env *env);
 
 
 #endif

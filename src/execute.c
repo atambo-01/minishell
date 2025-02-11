@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/11 12:17:46 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/11 14:18:36 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,14 +125,14 @@ int    ft_redir_out(t_cmd *cmd, int i, int prev_exit)
     {
         close(fd[0]);
         close(fd[1]);
-		return(ft_perror("dup2 (redirecting stdout)"));
+		return(ft_perror("dup2 (redirecting stdout)", -1));
     }
     close(fd[0]);
     fd[2] = ft_execute(cmd, 0, prev_exit, 0);
     if (dup2(fd[1], STDOUT_FILENO) == -1)
     {
         close(fd[1]);
-		return(ft_perror("dup2 (restoring stdout)"));
+		return(ft_perror("dup2 (restoring stdout)", -1));
     }
     close(fd[1]);
 	return (fd[2]);
