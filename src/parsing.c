@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/13 20:45:39 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/13 21:45:14 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	ft_process_quotes(char ch, t_count *c)
 		c->q = 2;
 	else if (ch == '\'' && c->q == 2)
 		c->q = 0;
-	
 }
 
 
@@ -57,10 +56,11 @@ void	ft_handle_ctrl_op(char *line, t_list **token, t_count *c, int cop)
 
 
 void	ft_handle_space_or_end(char*line, t_list **token, t_count *c)
-{
-	c->end = (line[c->k + 1] == 0);
+{	
+	c->end = 0;
+	if (line[c->k + 1] == 0)
+		c->end = 1;
 	c->temp = c->k + c->end - c->last + 1;
-//	printf("c->temp=%d\nc->last=%d\n", c->temp, c->last);
 	add_token(line, token, c);
 	skip_spaces(line, c);
 	c->last = c->k + 1;
@@ -70,18 +70,16 @@ void	ft_get_token_if(char *line, t_list **token, t_count *c)
 {
 	int	cop;
 
-	cop = 0;
 	cop = ft_ctrl_operator(&line[c->k]);
+	ft_process_quotes(line[c->k], c);
 	if ( c->q == 0 && cop != 0)
 	{
 		ft_handle_ctrl_op(line, token, c, cop);
 	}
 	else if ((c->q == 0 && line[c->k] == ' ') || line[c->k + 1] == 0)
 	{
-	//	printf("handle_space_end c->k=%d\n", c->k);
 		ft_handle_space_or_end(line, token, c);
 	}
-	ft_process_quotes(line[c->k], c);
 }
 
 char *pre_ft_get_token(char *line, t_env *env, const int prev_exit)
@@ -113,14 +111,7 @@ t_list *ft_get_token(char *line, t_env *env, const int prev_exit)
     ft_counter(&c);
     while (exp[c.k])
     {
-		if (exp[c.k + 1] == 0 && exp[c.k] != ' ' && exp[c.k - 1] == ' ')
-		{
-			c = (t_count){0, 0, c.k, c.k, c.q, 2, 0};
-			add_token(exp, &token, &c);
-			break;
-		}
-		ft_process_quotes(exp[c.k], &c);
-        ft_get_token_if(exp, &token, &c);
+		ft_get_token_if(exp, &token, &c);
         (c.k)++;
     }
     free(exp);
