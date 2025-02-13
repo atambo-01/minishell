@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/02/05 01:42:30 by atambo           ###   ########.fr        #
+#    Updated: 2025/02/12 16:11:07 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,15 +22,15 @@ SOURCES		=	src/main.c\
 				src/pwd.c\
 				src/get_cmd.c\
 				src/pipe.c\
-				src/execute.c\
-				src/builtins.c\
 				src/get_subtoken.c\
-				src/ft_export.c\
-				src/ft_aux_ex.c\
-				src/ft_env.c\
 				src/utils.c\
 				src/expand.c\
 				src/env_list.c\
+				src/execute.c\
+				src/builtins.c\
+				src/ft_env.c\
+				src/ft_export.c\
+				src/ft_aux_ex.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

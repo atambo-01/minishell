@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/11 12:19:39 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/12 22:45:41 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ void	ft_get_token_if(char *line, t_list **token, t_count *c)
 	ft_process_quotes(line[c->k], c);
 }
 
-char *pre_ft_get_token(char *line, char **ft_envp)
+char *pre_ft_get_token(char *line, t_env *env, const int prev_exit)
 {
     char *trim;
     char *exp;
@@ -95,18 +95,18 @@ char *pre_ft_get_token(char *line, char **ft_envp)
 		return (NULL);
 	if (!(trim = ft_strtrim(line, " ")))
 		return (NULL);
-    if (!(exp = ft_expand(trim, ft_envp)))
+    if (!(exp = ft_expand(trim, env, prev_exit)))
         return (NULL);
     return (exp);
 }
 
-t_list *ft_get_token(char *line, char **ft_envp)
+t_list *ft_get_token(char *line, t_env *env, const int prev_exit)
 {
     t_count c;
     t_list  *token;
     char    *exp;
 
-    if (!(exp = pre_ft_get_token(line, ft_envp)))
+    if (!(exp = pre_ft_get_token(line, env, prev_exit)))
         return (NULL);
 
     token = NULL;

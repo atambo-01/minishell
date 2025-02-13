@@ -6,25 +6,22 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/11 12:18:28 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/12 23:38:04 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void get_env_value(char *var_name, char *dest, char **ft_envp)
+void get_env_value(char *var_name, char *dest, t_env *env)
 {
-    int i = 0;
-    int len = strlen(var_name);
-
-    while (ft_envp[i])
+    while (env)
     {
-        if (strncmp(ft_envp[i], var_name, len) == 0 && ft_envp[i][len] == '=')
+        if (ft_strcmp(env->name, var_name) == 0 && env->value != NULL)
         {
-            strcpy(dest, &ft_envp[i][len + 1]);  // Copy the value after '='
-            return;
+        	ft_strcpy(dest, env->value);
+			return;
         }
-        i++;
+        env = env->next;
     }
 }
 
@@ -54,18 +51,17 @@ int	ft_check_quotes(char *line)
 	return(q);
 }
 
-char	*ft_expand(char *line, char **ft_envp)
+char	*ft_expand(char *line, t_env *env, const int prev_exit)
 {
     int     i = 0, q = 0, start, end, x = 0;
     char    *exp_line;
     char    *var_name;
 	
-    if (!line || !ft_envp || !*ft_envp)
+    if (!line || !env)
         return (NULL);
     exp_line = ft_malloc(1024);
     if (!exp_line)
         return (NULL);
-
     while (line[i])
     {
         if (line[i] == '"' && q == 0)
@@ -76,8 +72,6 @@ char	*ft_expand(char *line, char **ft_envp)
             q = 2;
         else if (line[i] == '\'' && q == 2)
             q = 0;
-
-        // Handle spaces
         if (q == 0 && line[i] == ' ')
         {
             if (x > 0 && exp_line[x - 1] != ' ') // Only add space if the last char isn't already a space
@@ -85,26 +79,32 @@ char	*ft_expand(char *line, char **ft_envp)
             while (line[i + 1] == ' ') // Skip consecutive spaces
                 i++;
         }
-        // Expand environment variables
-     	else if (q != 2 && line[i] == '$' && ft_isalnum(line[i + 1]))
+		else if (q != 2 && line[i] == '$' && line[i + 1] == '?')
+		{
+			char	*exit;		
+			exit = ft_itoa(prev_exit);
+			printf("exit = %s\n", exit);
+			printf("exit len = %d\n", ft_strlen(exit));
+			ft_strlcpy(&(exp_line[x]), exit, ft_strlen(exit) + 1);
+			x += ft_strlen(exit);
+			i += 1;
+			free(exit);
+		}
+     	else if (q != 2 && line[i] == '$' && ft_isalpha(line[i + 1]))
         {
             start = i + 1;
             end = start;
             while (ft_isalnum(line[end]) || line[end] == '_')
                 end++;
-
             var_name = malloc(sizeof(char) * (end - start + 1));
             if (!var_name)
             {
                 free(exp_line);
                 return (NULL);
             }
-
             strncpy(var_name, &line[start], end - start);
             var_name[end - start] = '\0';
-
-            get_env_value(var_name, &exp_line[x], ft_envp);
-
+            get_env_value(var_name, &exp_line[x], env);
             x += strlen(&exp_line[x]);  // Move x forward
             free(var_name);
             i = end - 1;  // Move past the variable
@@ -116,6 +116,7 @@ char	*ft_expand(char *line, char **ft_envp)
         i++;
     }
     exp_line[x] = '\0';
+	printf("exp_line = {%s}\n", exp_line);
 	return(exp_line);
 }
 

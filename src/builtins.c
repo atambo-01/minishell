@@ -6,90 +6,85 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/11 11:05:42 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/12 23:16:07 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	ft_echo(t_cmd *cmd, const int prev_exit)
+int	ft_echo_flags(char *str, char *flags)
 {
-	int	n;
+	ft_memset(flags, 0, 53);
+	while(*str)
+	{
+		if (*str == 'n')
+			flags['n' - 'a'] = 1;
+		else
+		{
+			ft_memset(flags, 0, 53);
+			return(0);
+		}
+		str++;
+	}
+	return(1);
+}
 
-	n = 1;
-	if (!cmd || !cmd->n)
+int	ft_echo(t_cmd *cmd)
+{
+	int		n;
+	char	flags[53];
+
+	if (!cmd)
 		return (1);
-	if (ft_strcmp("-n ", cmd->params[0]) == 0)
-		n = 2;
+	n = 1;
+	ft_memset(flags, 0, 53);
+	if (!cmd->params[1])
+	{
+		printf("\n");
+		return(0);
+	}
+	if (cmd->params[1][0] == '-' && cmd->params[1][1])
+		n += ft_echo_flags(&(cmd->params[1][1]), flags);
 	while (cmd->params[n])
 	{
-		if (ft_strcmp("$?",cmd->params[n]) == 0)
-			printf("%d", prev_exit);
-		else
-			printf("%s", cmd->params[n]);
+		printf("%s", cmd->params[n]);
 		n++;
 		if (cmd->params[n])
 			printf(" ");
 	}
-	if (n)
+	if (flags['n' - 'a'] == 0)
 		printf("\n");
 	return (0);
 }
-void	ft_cd(t_cmd *path)
+
+int	ft_cd(t_cmd *cmd)
 {
-	chdir(path->n);
-	if (!path->n)
+	t_env *home;
+
+	home = NULL;
+	if (cmd->params[1])
+		return(chdir(cmd->params[1]));
+	else
 	{
-		ft_putstr_fd("Erro ao abrir pasta/dir", 2);
-		return ;
-	}
+		home = ft_get_env(cmd->env, "HOME");
+		if (!home)
+			return(ft_perror("minishell: cd: HOME not set.", -1));
+		return(chdir(home->value));
+	}	
 }
 
-// int	ft_builtin(t_cmd *cmd, const int prev_exit)
-// {
-// 	if (ft_strcmp("echo", cmd->n) == 0)
-// 	{
-// 		ft_echo(cmd, prev_exit);
-// 		return (0);
-// 	}
-// 	/*
-// 	else if (ft_strcmp("cd", cmd->n) == 0) {
-// 		ft_cd(cmd);
-// 		return (0);
-// 	}
-// 	else if (ft_strcmp("pwd", cmd->n) == 0) {
-// 		ft_pwd(cmd);
-// 		return (0);
-// 	}
-// 	else if (ft_strcmp("export", cmd->n) == 0) {
-// 		ft_export(cmd);
-// 		return (0);
-// 	}
-// 	else if (ft_strcmp("unset", cmd->n) == 0) {
-// 		ft_unset(cmd);
-// 		return (0);
-// 	}
-// 	else if (ft_strcmp("env", cmd->n) == 0) {
-// 		ft_env(cmd);
-// 		return (0);
-// 	}
-// */
-// 	return (1);
-// }
-
-int	ft_builtin(t_cmd *cmd, char ***ft_envp, const int prev_exit)
+int	ft_builtin(t_cmd *cmd, const int prev_exit)
 {
-	if (ft_strcmp(cmd->n, "cd") == 0)
-		ft_cd(cmd);
+	if		(ft_strcmp(cmd->n, "cd") == 0)
+		return (ft_cd(cmd));
 	else if (ft_strcmp(cmd->n, "echo") == 0)
-		ft_echo(cmd, prev_exit);
-	else if (ft_strcmp(cmd->n, "env") == 0)
-		ft_env(cmd);
-	else if (ft_strcmp(cmd->n, "export") == 0)
-		ft_export(&(cmd->params[1]), ft_envp);
-	// else if (ft_strcmp(cmd->n, "unset") == 0)
-	//     ft_unset(cmd->n, ft_envp);
-	//else if (ft_strcmp(cmd->n, "exit") == 0)
-		//ft_exit(cmd->n, prev_exit);
-	return (0);
+		return (ft_echo(cmd));
+/*	else if (ft_strcmp(cmd->n, "env") == 0)
+		return (ft_env(cmd));
+	else if (ft_strcmp(cmd->n, "unset") == 0)
+	    return (ft_unset(cmd->n, ft_envp));
+	else if (ft_strcmp(cmd->n, "exit") == 0)
+		return (ft_exit(cmd->n, prev_exit));
+*/	return (1);
+	
 }

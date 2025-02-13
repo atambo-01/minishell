@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/11 11:44:25 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/12 19:32:37 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ void	ft_add_env(char *name, char *value, char ***env)
 // 3. se tiver args,
 // percorrer cada um dos nomes e checkar se o nome da variavel tem algum char n permitido
 // 4. aloca memoria pra nova matrix com tamanhoif (!ft_is_valid_name(args[i]))
+
+/*
 void	ft_export(char **args, char ***env)
 {
 	int i;
@@ -125,3 +127,6 @@ void	ft_export(char **args, char ***env)
 	}
 	return;
 }
+*/
+
+

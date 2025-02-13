@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/11 14:18:36 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/12 18:00:50 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,21 +78,20 @@ int	ft_execve(t_cmd *cmd)
 {
 	pid_t	pid;
 	int		status;
-
+	char	**env_p;
+	
 	status = 0;
+	env_p = NULL;
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("fork");
-		return (1);
-	}
+		return (ft_perror("fork", -1));
 	if (pid == 0)
 	{
-		if (execve(cmd->path, cmd->params, cmd->ft_envp) == -1)
-		{
-			perror("execve");
-			_exit(2);
-		}
+		env_p = ft_list_to_envp(cmd->env);
+		if (!env_p || !*env_p)
+			exit(1);
+		if (execve(cmd->path, cmd->params, env_p) == -1)
+			exit(2);
 	}
 	else
 	{
@@ -174,18 +173,15 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit, int r)
 		return(ft_pipe(cmd->nc, prev_exit));
 	if (r && (status = ft_redirect(cmd, prev_exit)))
 		return(status);
-	if (cmd->n)
+	if ((status = ft_builtin(cmd, prev_exit)) == 0)
+		return (status);
+	else if	(ft_get_path(cmd) == 1)
+		status = ft_execve(cmd);
+	else 
 	{
-		if ((status = ft_builtin(cmd, &(cmd->ft_envp), prev_exit)) == 0)
-			return (status);
-		else if	(ft_get_path(cmd) == 1)
-			status = ft_execve(cmd);
-		else 
-		{
 			ft_putstr_fd(cmd->n, 1);
 			ft_putstr_fd(": command not found\n", 1);
 			return (127);
-		}
 	}
 	return (status);
 }

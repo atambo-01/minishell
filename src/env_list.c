@@ -1,5 +1,18 @@
 #include "../inc/minishell.h"
 
+t_env	*ft_get_env(t_env *env, const char *name)
+{
+	if (!env)
+		return(NULL);
+	while(env)
+	{
+		if (ft_strcmp(env->name, name) == 0)
+			return(env);
+		env = env->next;
+	}
+	return(NULL);
+}
+
 t_env	*ft_create_env_node(const char *env)
 {
 	t_env	*new_node;
@@ -55,36 +68,29 @@ void	ft_remove_env_node(t_env **head, char *name)
 	}
 }
 
-void	ft_add_env_node(t_env **head, char *env)
+void	ft_add_env_node(t_env *env, char *str)
 {
 	t_env	*new_node;
-	t_env	*current;
 
-	if (!head || !env)
+	if (!env || !str)
 		return;
-	current = *head;
-	while (current)
+	while (env->next)
 	{
-		if (ft_strncmp(current->name, env, ft_strlen(current->name)) == 0)
+		if (ft_strncmp(env->name, str, ft_strlen(env->name)) == 0)
 		{
-			if (current->value != NULL)
-				free(current->value);
-			current->value = NULL;
-			if (ft_strchr(env, '='))
-				current->value = ft_strdup(ft_strchr(env, '=') + 1);
+			if (env->value != NULL)
+				free(env->value);
+			env->value = NULL;
+			if (ft_strchr(str, '='))
+				env->value = ft_strdup(ft_strchr(str, '=') + 1);
 			return;
 		}
-		if (!current->next)
-			break;
-		current = current->next;
+		env = env->next;
 	}
-	new_node = ft_create_env_node(env);
+	new_node = ft_create_env_node(str);
 	if (!new_node)
 		return;
-	if (!current)
-		*head = new_node;
-	else
-		current->next = new_node;
+	env->next = new_node;
 }
 
 t_env	*ft_envp_to_list(char **envp)

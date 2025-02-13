@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/11 12:18:54 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/12 13:59:04 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_cmd	*get_tail_cmd(t_cmd *cmd)
 	return (cmd);
 }
 
-void	add_cmd(t_list *token, t_cmd **cmd, char **ft_envp)
+void	add_cmd(t_list *token, t_cmd **cmd, t_env *env)
 {
 	t_cmd	*curr;
 	t_cmd	*new;
@@ -36,7 +36,7 @@ void	add_cmd(t_list *token, t_cmd **cmd, char **ft_envp)
 		new->params[0] = strdup(new->n);
 		new->params[1] = NULL;
 	}
-	new->ft_envp = ft_envp;
+	new->env = env;
 	new->nc = NULL;
 	new->pc = NULL;
 	if (!*cmd)
@@ -91,20 +91,20 @@ void	add_params(t_list **token, t_cmd *p_cmd)
 	cmd->params[i] = NULL;
 }
 
-t_cmd	*get_cmd(t_list *token, char **ft_envp)
+t_cmd	*get_cmd(t_list *token, t_env *env)
 {
 	t_cmd	*cmd;
 
 	cmd = NULL;
-	add_cmd(token, &cmd, ft_envp);
+	add_cmd(token, &cmd, env);
 	token = token->next;
 	while (token && token->s)
 	{
 		if (ft_ctrl_operator(token->s))
 		{
-			add_cmd(token, &cmd, ft_envp);
+			add_cmd(token, &cmd, env);
 			token = token->next;
-			add_cmd(token, &cmd, ft_envp);
+			add_cmd(token, &cmd, env);
 			token = token->next;
 		}
 		else

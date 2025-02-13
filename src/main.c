@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/11 15:28:34 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/12 23:06:12 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,8 @@ static void	ft_minishell_init(t_main_vars *mv, char **envp)
 	mv->line = NULL;
 	mv->exit = -1;
 	mv->env = ft_envp_to_list(envp);
-	
+	ft_add_env_node(mv->env, "SHELL=minishell");
+	ft_add_env_node(mv->env, "HOME=");
 }
 
 static void ft_minishell_exit(t_main_vars **p_mv)
@@ -148,7 +149,7 @@ void	ft_free_cmd(t_cmd **p_cmd)
 		cmd->params = NULL;
 		free(cmd->n);
 		free(cmd->path);
-		cmd->ft_envp = NULL;	
+		cmd->env = NULL;	
 		free(cmd);
 		cmd = next;
 		
@@ -161,42 +162,33 @@ int	main(int ac, char **av, char **envp)
 	t_main_vars	mv;
 	
 	ft_minishell_init(&mv, envp);
-	ft_add_env_node(&(mv.env), "alex=42");
-	ft_add_env_node(&(mv.env), "alex=");
-//	ft_list_env(mv.env);
-	int i = 0;
-	char **ft_envp = ft_list_to_envp(mv.env);	
-	while(ft_envp[i])
+	 while (1)
 	{
-		printf("%s\n", ft_envp[i]);
-		i++;
-	}
-	// while (1)
-	// {
-	// 	mv.line = readline("42_minishell > ");
-	// 	if (ft_strlen(mv.line) > 0)
-	// 	{
-	// 	//	printf("line =_%s\n", mv.line);
-	// 		add_history(mv.line);
-	// 		if (ft_strcmp(mv.line, "exit") == 0)
-	// 			break ;
-	// 		else if ((mv.token = ft_get_token(mv.line, mv.ft_envp)) != NULL)
-	// 		{
-	// 			ft_token_ls(mv.token);
-	// 			if ((mv.cmd = get_cmd(mv.token, mv.ft_envp)) != NULL);
-	// 			{
-	// 				ft_cmd_ls(mv.cmd);
-	// 				mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
-	// 				ft_free_cmd(&(mv.cmd));
-	// 			}
-	// 			ft_free_token(&(mv.token));
-	// 		}
-	// 	}
-	// //	free(mv.line);
-	// }
-	// rl_clear_history();
-	// ft_free_p((void **)&(mv.line));
-	// ft_free_pp((void ***)&(mv.ft_envp));
+	 	mv.line = readline("minishell_prompt > ");
+	 	if (ft_strlen(mv.line) > 0)
+	 	{
+	 	//	printf("line =_%s\n", mv.line);
+	 		add_history(mv.line);
+	 		if (ft_strcmp(mv.line, "exit") == 0)
+	 			break ;
+	 		else if ((mv.token = ft_get_token(mv.line, mv.env, mv.exit)) != NULL)
+	 		{
+	 			ft_token_ls(mv.token);
+				if ((mv.cmd = get_cmd(mv.token, mv.env)) != NULL);
+	 			{
+	 				ft_cmd_ls(mv.cmd);
+	 				mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
+	 				ft_free_cmd(&(mv.cmd));
+	 			}
+			/*	
+	 		*/	
+				ft_free_token(&(mv.token));
+	 		}
+	 	}
+	 //	free(mv.line);
+	 }
+	 rl_clear_history();
+	 ft_free_p((void **)&(mv.line));
 }
 
 
