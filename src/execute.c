@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/13 15:33:37 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/14 00:19:02 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,11 @@ int	ft_get_path(t_cmd *cmd)
 	char	**paths;
 	char	*full_path;
 
+	if (ft_strchr(cmd->n, '/') != NULL)
+	{
+		cmd->path = realpath(cmd->n, NULL);
+		return(1);
+	}
 	r = 0;
 	path_env = getenv("PATH");
 	if (!path_env || !cmd || !cmd->n)
@@ -68,10 +73,10 @@ int	ft_get_path(t_cmd *cmd)
 	if (!paths)
 		return (-2);
 	r = ft_test_paths(cmd, &paths);
-	ft_free_pp((void ***)&paths); // Free the split PATH
+	ft_free_pp((void ***)&paths);
 	if (r == 1)
 		return(r);
-	return (-3);		// Command not found
+	return (-3);
 }
 
 int	ft_execve(t_cmd *cmd)
@@ -101,6 +106,8 @@ int	ft_execve(t_cmd *cmd)
 		else if (WIFSIGNALED(status))
 			status = 128 + WTERMSIG(status);
 	}
+	if (status != 0)
+		return(ft_perror("error: ft_execve.\n", status));
 	return(status);
 }
 
