@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/12 23:38:04 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/13 15:36:29 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,17 +74,15 @@ char	*ft_expand(char *line, t_env *env, const int prev_exit)
             q = 0;
         if (q == 0 && line[i] == ' ')
         {
-            if (x > 0 && exp_line[x - 1] != ' ') // Only add space if the last char isn't already a space
+            if (x > 0 && exp_line[x - 1] != ' ')
                 exp_line[x++] = ' ';
-            while (line[i + 1] == ' ') // Skip consecutive spaces
+            while (line[i + 1] == ' ')
                 i++;
         }
 		else if (q != 2 && line[i] == '$' && line[i + 1] == '?')
 		{
 			char	*exit;		
 			exit = ft_itoa(prev_exit);
-			printf("exit = %s\n", exit);
-			printf("exit len = %d\n", ft_strlen(exit));
 			ft_strlcpy(&(exp_line[x]), exit, ft_strlen(exit) + 1);
 			x += ft_strlen(exit);
 			i += 1;
@@ -110,13 +108,10 @@ char	*ft_expand(char *line, t_env *env, const int prev_exit)
             i = end - 1;  // Move past the variable
 		}
 		else
-        {
             exp_line[x++] = line[i];
-        }
         i++;
     }
     exp_line[x] = '\0';
-	printf("exp_line = {%s}\n", exp_line);
 	return(exp_line);
 }
 

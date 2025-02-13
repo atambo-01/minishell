@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/12 18:00:50 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/13 15:33:37 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,7 @@ int	ft_redirect(t_cmd *cmd, int prev_exit)
 	while(cmd->params[i])
 	{
 		if (ft_ctrl_operator(cmd->params[i]) == 2)
-		{
-			printf("redir_out\n");
 			return(ft_redir_out(cmd, i, prev_exit));
-		}
 /*		else if (ft_ctrl_operator(cmd->params[i]) == 3)
 			ft_redir_in();
 		else if (ft_ctrl_operator(cmd->params[i]) == 4)

@@ -156,7 +156,6 @@ char    **ft_list_to_envp(t_env *env)
         env = env->next;
         i++;
     }
-	printf("here !!!\n");
     envp[i] = NULL;
     return (envp);
 }

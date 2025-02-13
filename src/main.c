@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/12 23:06:12 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/13 15:41:34 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,13 +170,13 @@ int	main(int ac, char **av, char **envp)
 	 	//	printf("line =_%s\n", mv.line);
 	 		add_history(mv.line);
 	 		if (ft_strcmp(mv.line, "exit") == 0)
-	 			break ;
+				break ;
 	 		else if ((mv.token = ft_get_token(mv.line, mv.env, mv.exit)) != NULL)
 	 		{
 	 			ft_token_ls(mv.token);
 				if ((mv.cmd = get_cmd(mv.token, mv.env)) != NULL);
 	 			{
-	 				ft_cmd_ls(mv.cmd);
+	 		//		ft_cmd_ls(mv.cmd);
 	 				mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
 	 				ft_free_cmd(&(mv.cmd));
 	 			}
