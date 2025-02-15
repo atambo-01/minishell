@@ -28,9 +28,9 @@ SOURCES		=	src/main.c\
 				src/env_list.c\
 				src/execute.c\
 				src/builtins.c\
-				src/ft_env.c\
-				src/ft_export.c\
-				src/ft_aux_ex.c\
+				src/env.c\
+				src/export.c\
+				#src/unset.c\	
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

@@ -182,7 +182,7 @@ int	main(int ac, char **av, char **envp)
 	 			}
 			/*	
 	 		*/	
-				ft_free_token(&(mv.token));
+			//	ft_free_token(&(mv.token));
 	 		}
 	 	}
 	 //	free(mv.line);

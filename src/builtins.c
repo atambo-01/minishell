@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/12 23:16:07 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/15 12:19:21 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,14 @@ int	ft_builtin(t_cmd *cmd, const int prev_exit)
 		return (ft_cd(cmd));
 	else if (ft_strcmp(cmd->n, "echo") == 0)
 		return (ft_echo(cmd));
-/*	else if (ft_strcmp(cmd->n, "env") == 0)
+	else if (ft_strcmp(cmd->n, "env") == 0)
 		return (ft_env(cmd));
+	else if(ft_strcmp(cmd->n, "export") == 0)
+		return (ft_export(cmd->params, &(cmd->env)), 0);
 	else if (ft_strcmp(cmd->n, "unset") == 0)
-	    return (ft_unset(cmd->n, ft_envp));
-	else if (ft_strcmp(cmd->n, "exit") == 0)
-		return (ft_exit(cmd->n, prev_exit));
-*/	return (1);
+	    return (ft_remove_env_node(&(cmd->env), cmd->env->name), 0);
+	// else if (ft_strcmp(cmd->n, "exit") == 0)
+	// 	return (ft_exit(cmd->n, prev_exit));
+	return (1);
 	
 }
