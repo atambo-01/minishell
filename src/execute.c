@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/14 09:12:16 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/15 18:58:26 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,9 +117,9 @@ int    ft_redir_out(t_cmd *cmd, int i, int prev_exit)
 	int	status;
 
 	printf("redir_out\n");
-    if (!cmd->params[i + 1])
+    if (!cmd->redir[i + 1])
         return(ft_perror("Syntax error: missing file\n", -1));
-    fd[0] = open(cmd->params[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+    fd[0] = open(cmd->redir[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
     if (fd[0] == -1)
         ft_perror("open", -1);
     fd[1] = dup(STDOUT_FILENO);
@@ -134,8 +134,8 @@ int    ft_redir_out(t_cmd *cmd, int i, int prev_exit)
         close(fd[1]);
 		return(ft_perror("dup2 (redirecting stdout)", -1));
     }
+	fd[2] = ft_execute(cmd, 0, prev_exit, 0);
     close(fd[0]);
-    fd[2] = ft_execute(cmd, 0, prev_exit, 0);
     if (dup2(fd[1], STDOUT_FILENO) == -1)
     {
         close(fd[1]);
@@ -152,9 +152,11 @@ int	ft_redirect(t_cmd *cmd, int prev_exit)
 
 	i = 0;
 	if (!cmd->redir)
-	while(cmd->params[i])
+		return (1);
+	while(cmd->redir[i])
 	{
-		if (ft_cop(cmd->params[i]) == 2)
+		printf("redir\n");
+		if (ft_cop(cmd->redir[i]) == 2)
 			return(ft_redir_out(cmd, i, prev_exit));
 /*		else if (ft_ctrl_operator(cmd->params[i]) == 3)
 			ft_redir_in();
@@ -164,6 +166,7 @@ int	ft_redirect(t_cmd *cmd, int prev_exit)
 			ft_readoc();
 */		i++;
 	}
+	return(42);
 }
 
 
@@ -177,7 +180,7 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit, int r)
 		return (-1);
 	if(cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
 		return(ft_pipe(cmd->nc, prev_exit));
-	if (r && (status = ft_redirect(cmd, prev_exit)))
+	if (r && cmd->redir && (status = ft_redirect(cmd, prev_exit) == 0))
 		return(status);
 	if ((status = ft_builtin(cmd, prev_exit)) == 0)
 		return (status);

@@ -1,0 +1,26 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    problems_to_solve                                  :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/02/15 23:27:17 by atambo            #+#    #+#              #
+#    Updated: 2025/02/15 23:29:50 by atambo           ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+
+
+1	Errors and error numbers: need to handle either all types of error s or at
+	least most of them, since there couldben an error at each  step there should
+	be a corresponding msg and number. Additionally there seem to be some diffs
+	between how bash recieves some  $? eg:
+
+	if touch /bin/file and try run it with file nothing happens which is
+	expected but $? = 0 while in minshell i get 2 and if i just
+	execve("/bin/file", av, env) directly i  get -1 meaning that execve does 
+	consider it an error but bash doesnt 
+	
+
+

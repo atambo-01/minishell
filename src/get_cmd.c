@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/14 09:11:50 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/15 18:37:02 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,22 +68,22 @@ int	ft_count_params(t_list *token, int r)
 	return (i);
 }
 
-void	add_redir(t_list *token, t_cmd* cmd)
+void	add_redir(t_list **token, t_cmd* cmd)
 {
 	int	i;
 	
 	i = 0;
-	cmd->redir = ft_malloc(sizeof(char) * (ft_count_params(token, 0) + 1));
-	while(token)
+	cmd->redir = ft_malloc(sizeof(char) * (ft_count_params(*token, 0) + 1));
+	while(*token)
 	{
-		if (ft_cop(token->s) == 1)
+		if (ft_cop((*token)->s) == 1)
 			break;
 		else
 		{
-			cmd->redir[i] = ft_strdup(token->s);
+			cmd->redir[i] = ft_strdup((*token)->s);
 			i++;
 		}
-		token = token->next;
+		*token = (*token)->next;
 	}
 	cmd->redir[i] = NULL;
 
@@ -112,9 +112,8 @@ void	add_params(t_list **token, t_cmd *p_cmd)
 		i++;
 		*token = (*token)->next;
 	}
-	if (ft_cop((*token)->s) > 1)
-		add_redir(*token, cmd);
-	if (*token && (*token)->s)
+	if (*token && ft_cop((*token)->s) > 1)
+		add_redir(token, cmd);
 	cmd->params[i] = NULL;
 }
 
@@ -127,7 +126,7 @@ t_cmd	*get_cmd(t_list *token, t_env *env)
 	token = token->next;
 	while (token && token->s)
 	{
-		if (ft_cop(token->s) == 1)
+		if (token->s && ft_cop(token->s) == 1)
 		{
 			add_cmd(token, &cmd, env);
 			token = token->next;
