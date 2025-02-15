@@ -6,13 +6,13 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/13 20:45:14 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:13:14 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h" 
 
-int	ft_ctrl_operator(char *str)
+int	ft_cop(char *str)
 {
 	if (!str)
 		return (0);
@@ -30,7 +30,7 @@ int	ft_ctrl_operator(char *str)
 		return (0);
 }
 
-int	ft_ctrl_syntax(char *line)
+int	ft_cop_syntax(char *line)
 {
 	int	i;
 	int	cop;
@@ -39,14 +39,14 @@ int	ft_ctrl_syntax(char *line)
 	cop = 0;
 	if (!line)
 		return (1);
-	if (ft_ctrl_operator(line) != 0)
+	if (ft_cop(line) != 0)
 		return (ft_perror("error: bad control operator syntax", 2));
 	while(line[i])
 	{
-		cop = ft_ctrl_operator(&line[i]);
+		cop = ft_cop(&line[i]);
 		if (cop >= 4)
 			i++;
-		if (cop && (!line[i + 1] || ft_ctrl_operator(&line[i + 1])))
+		if (cop && (!line[i + 1] || ft_cop(&line[i + 1])))
 		{
 			return (ft_perror("error: bad control operator syntax", 3));
 		}
@@ -55,7 +55,7 @@ int	ft_ctrl_syntax(char *line)
 			i++;
 			while(line[i] == ' ')
 				i++;
-			if (!line[i] || ft_ctrl_operator(&line[i]))
+			if (!line[i] || ft_cop(&line[i]))
 			{
 				return (ft_perror("error: bad control operator syntax", 4));
 			}

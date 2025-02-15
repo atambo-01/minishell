@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:03:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/12 22:43:50 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:24:02 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ typedef struct s_cmd
 	char			*path;
 	t_env			*env;
 	char			**params;
+	char			**redir;
 } t_cmd;
 
 typedef struct s_count
@@ -78,7 +79,7 @@ typedef struct s_main_vars
 
 char	*ft_expand(char *line, t_env *env, const int prev_exi);
 int		ft_check_quotes(char *line);
-int		ft_ctrl_syntax(char *line);
+int		ft_cop_syntax(char *line);
 void	add_ctrl_op(t_list  **p_token, int cop);
 void	ft_free_token(t_list  **p_token);
 void    ft_token_ls(t_list *token);
@@ -105,7 +106,7 @@ char	*ft_get_subtoken(char *old);
 // get_cmd.c
 t_cmd	*get_tail_cmd(t_cmd *cmd);
 void	add_cmd(t_list *token, t_cmd **cmd, t_env *env);
-int		ft_count_params(t_list *token);
+int		ft_count_params(t_list *token, int r);
 void	add_params(t_list **token, t_cmd *p_cmd);
 t_cmd	*get_cmd(t_list *token, t_env *env);
 
@@ -129,7 +130,7 @@ int		ft_pwd(void);
 int		ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
 
 // utils.c
-int		ft_ctrl_operator(char *str);
+int		ft_cop(char *str);
 
 //env_list
 void	ft_add_env_node(t_env *env, char *str);

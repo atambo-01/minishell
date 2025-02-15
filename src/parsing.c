@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/13 21:45:14 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:24:58 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	ft_get_token_if(char *line, t_list **token, t_count *c)
 {
 	int	cop;
 
-	cop = ft_ctrl_operator(&line[c->k]);
+	cop = ft_cop(&line[c->k]);
 	ft_process_quotes(line[c->k], c);
 	if ( c->q == 0 && cop != 0)
 	{
@@ -89,7 +89,7 @@ char *pre_ft_get_token(char *line, t_env *env, const int prev_exit)
 
     if (ft_check_quotes(line) != 0) 
         return (NULL);
-	if (ft_ctrl_syntax(line) != 0)
+	if (ft_cop_syntax(line) != 0)
 		return (NULL);
 	if (!(trim = ft_strtrim(line, " ")))
 		return (NULL);

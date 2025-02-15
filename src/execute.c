@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/14 00:19:02 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:12:16 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,7 @@ int    ft_redir_out(t_cmd *cmd, int i, int prev_exit)
     int fd[3];
 	int	status;
 
+	printf("redir_out\n");
     if (!cmd->params[i + 1])
         return(ft_perror("Syntax error: missing file\n", -1));
     fd[0] = open(cmd->params[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
@@ -150,9 +151,10 @@ int	ft_redirect(t_cmd *cmd, int prev_exit)
 	int	i;
 
 	i = 0;
+	if (!cmd->redir)
 	while(cmd->params[i])
 	{
-		if (ft_ctrl_operator(cmd->params[i]) == 2)
+		if (ft_cop(cmd->params[i]) == 2)
 			return(ft_redir_out(cmd, i, prev_exit));
 /*		else if (ft_ctrl_operator(cmd->params[i]) == 3)
 			ft_redir_in();

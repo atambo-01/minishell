@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/12 13:59:04 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/14 09:11:50 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	add_cmd(t_list *token, t_cmd **cmd, t_env *env)
 		return ;
 	new = ft_malloc(sizeof(t_cmd));
 	new->n = ft_strdup(token->s);
-	if (!token->next || ft_ctrl_operator(token->next->s))
+	if (!token->next || ft_cop(token->next->s))
 	{
 		new->params = (char **)ft_malloc(sizeof(char *) * 2);
 		new->params[0] = strdup(new->n);
@@ -49,19 +49,44 @@ void	add_cmd(t_list *token, t_cmd **cmd, t_env *env)
 	}
 }
 
-int	ft_count_params(t_list *token)
+int	ft_count_params(t_list *token, int r)
 {
 	int	i;
 
 	i = 0;
 	if (!token)
 		return (0);
-	while (token && (ft_ctrl_operator(token->s) != 1))
+	while (token && (ft_cop(token->s) != 1))
 	{
+		if (ft_cop(token->s) == 1)
+			break;
+		if (r && ft_cop(token->s) != 0)
+			break;
 		i++;
 		token = token->next;
 	}
 	return (i);
+}
+
+void	add_redir(t_list *token, t_cmd* cmd)
+{
+	int	i;
+	
+	i = 0;
+	cmd->redir = ft_malloc(sizeof(char) * (ft_count_params(token, 0) + 1));
+	while(token)
+	{
+		if (ft_cop(token->s) == 1)
+			break;
+		else
+		{
+			cmd->redir[i] = ft_strdup(token->s);
+			i++;
+		}
+		token = token->next;
+	}
+	cmd->redir[i] = NULL;
+
 }
 
 void	add_params(t_list **token, t_cmd *p_cmd)
@@ -73,7 +98,7 @@ void	add_params(t_list **token, t_cmd *p_cmd)
 	cmd = NULL;
 	if (!*token || !p_cmd)
 		return ;
-	i = ft_count_params(*token);
+	i = ft_count_params(*token, 1);
 	cmd = get_tail_cmd(p_cmd);
 	cmd->params = ft_malloc(sizeof(char *) * (i + 2));
 	i = 0;
@@ -81,12 +106,14 @@ void	add_params(t_list **token, t_cmd *p_cmd)
 	i++;
 	while (*token && (*token)->s)
 	{
-		if (ft_ctrl_operator((*token)->s) == 1 )
+		if (ft_cop((*token)->s))
 			break;
 		cmd->params[i] = ft_strdup((*token)->s);
 		i++;
 		*token = (*token)->next;
 	}
+	if (ft_cop((*token)->s) > 1)
+		add_redir(*token, cmd);
 	if (*token && (*token)->s)
 	cmd->params[i] = NULL;
 }
@@ -100,7 +127,7 @@ t_cmd	*get_cmd(t_list *token, t_env *env)
 	token = token->next;
 	while (token && token->s)
 	{
-		if (ft_ctrl_operator(token->s))
+		if (ft_cop(token->s) == 1)
 		{
 			add_cmd(token, &cmd, env);
 			token = token->next;
