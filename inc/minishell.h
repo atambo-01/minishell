@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:03:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/14 09:24:02 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/16 15:43:27 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ char	*ft_get_subtoken(char *old);
 // get_cmd.c
 t_cmd	*get_tail_cmd(t_cmd *cmd);
 void	add_cmd(t_list *token, t_cmd **cmd, t_env *env);
-int		ft_count_params(t_list *token, int r);
+int		ft_count_params(t_list *token);
 void	add_params(t_list **token, t_cmd *p_cmd);
 t_cmd	*get_cmd(t_list *token, t_env *env);
 
