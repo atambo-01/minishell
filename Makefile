@@ -30,7 +30,7 @@ SOURCES		=	src/main.c\
 				src/builtins.c\
 				src/env.c\
 				src/export.c\
-				#src/unset.c\	
+				src/ft_unset.c	
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

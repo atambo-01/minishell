@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+        
+	+:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+      
+	+#+        */
+/*                                                +#+#+#+#+#+  
+	+#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
 /*   Updated: 2025/02/12 23:06:12 by atambo           ###   ########.fr       */
 /*                                                                            */
@@ -12,7 +15,8 @@
 
 #include "../inc/minishell.h"
 
-int	g_exit = 0;
+
+int			g_exit = 0;
 
 int	ft_list_size(t_list *head)
 {
@@ -60,7 +64,7 @@ void	ft_cmd_ls(t_cmd *cmd)
 			if (cmd->params)
 			{
 				i = 0;
-				while(cmd->params[i])
+				while (cmd->params[i])
 				{
 					printf("%s ", cmd->params[i]);
 					i++;
@@ -78,13 +82,13 @@ void	ft_cmd_ls(t_cmd *cmd)
 
 void	ft_free_token(t_list **p_token)
 {
-	t_list	*token;
-	t_list	*next;
+	t_list *token;
+	t_list *next;
 
 	if (!p_token || !*p_token || !(*p_token)->s)
-		return;
+		return ;
 	token = *p_token;
-	while(token)
+	while (token)
 	{
 		next = token->next;
 		free(token->s);
@@ -107,12 +111,12 @@ static void	ft_minishell_init(t_main_vars *mv, char **envp)
 	ft_add_env_node(mv->env, "HOME=");
 }
 
-static void ft_minishell_exit(t_main_vars **p_mv)
+static void	ft_minishell_exit(t_main_vars **p_mv)
 {
-	t_main_vars	*mv;
-	
+	t_main_vars *mv;
+
 	if (!p_mv || !*p_mv)
-		return;
+		return ;
 	mv = *p_mv;
 	if (mv->cmd)
 		ft_free_cmd(&(mv->cmd));
@@ -127,14 +131,14 @@ static void ft_minishell_exit(t_main_vars **p_mv)
 
 void	ft_free_cmd(t_cmd **p_cmd)
 {
-	int		n;
-	t_cmd	*cmd;
-	t_cmd	*next;
+	int n;
+	t_cmd *cmd;
+	t_cmd *next;
 
 	if (!p_cmd || !*p_cmd)
 		return ;
 	cmd = *p_cmd;
-	while(cmd)
+	while (cmd)
 	{
 		next = cmd->nc;
 		n = 0;
@@ -149,47 +153,45 @@ void	ft_free_cmd(t_cmd **p_cmd)
 		cmd->params = NULL;
 		free(cmd->n);
 		free(cmd->path);
-		cmd->env = NULL;	
+		cmd->env = NULL;
 		free(cmd);
 		cmd = next;
-		
 	}
 	*p_cmd = NULL;
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_main_vars	mv;
-	
+	t_main_vars mv;
+
 	ft_minishell_init(&mv, envp);
-	 while (1)
+	while (1)
 	{
-	 	mv.line = readline("minishell_prompt > ");
-	 	if (ft_strlen(mv.line) > 0)
-	 	{
-	 	//	printf("line =_%s\n", mv.line);
-	 		add_history(mv.line);
-	 		if (ft_strcmp(mv.line, "exit") == 0)
-	 			break ;
-	 		else if ((mv.token = ft_get_token(mv.line, mv.env, mv.exit)) != NULL)
-	 		{
-	 			ft_token_ls(mv.token);
-				if ((mv.cmd = get_cmd(mv.token, mv.env)) != NULL);
-	 			{
-	 				ft_cmd_ls(mv.cmd);
-	 				mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
-	 				ft_free_cmd(&(mv.cmd));
-	 			}
-			/*	
-	 		*/	
-			//	ft_free_token(&(mv.token));
-	 		}
-	 	}
-	 //	free(mv.line);
-	 }
-	 rl_clear_history();
-	 ft_free_p((void **)&(mv.line));
+		mv.line = readline("minishell_prompt > ");
+		if (ft_strlen(mv.line) > 0)
+		{
+			//	printf("line =_%s\n", mv.line);
+			add_history(mv.line);
+			if (ft_strcmp(mv.line, "exit") == 0)
+				break ;
+			else if ((mv.token = ft_get_token(mv.line, mv.env,
+						mv.exit)) != NULL)
+			{
+				ft_token_ls(mv.token);
+				if ((mv.cmd = get_cmd(mv.token, mv.env)) != NULL)
+					;
+				{
+					ft_cmd_ls(mv.cmd);
+					mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
+					ft_free_cmd(&(mv.cmd));
+				}
+				/*
+					*/
+				//	ft_free_token(&(mv.token));
+			}
+		}
+		//	free(mv.line);
+	}
+	rl_clear_history();
+	ft_free_p((void **)&(mv.line));
 }
-
-
-

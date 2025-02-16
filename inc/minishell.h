@@ -1,12 +1,12 @@
-/*                                                                            */
 /* ************************************************************************** */
+/*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/12 14:03:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/12 22:43:50 by atambo           ###   ########.fr       */
+/*   Created: 2025/02/15 12:30:18 by eneto             #+#    #+#             */
+/*   Updated: 2025/02/15 12:30:18 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	char			*n;
-	struct s_cmd	*pc;
-	struct s_cmd	*nc;
-	char			*path;
-	t_env			*env;
-	char			**params;
+	char *n;
+	struct s_cmd *pc;
+	struct s_cmd *nc;
+	char *path;
+	t_env *env;
+	char **params;
 } t_cmd;
 
 typedef struct s_count
@@ -77,19 +77,19 @@ typedef struct s_main_vars
 } t_main_vars;
 
 char	*ft_expand(char *line, t_env *env, const int prev_exi);
-int		ft_check_quotes(char *line);
-int		ft_ctrl_syntax(char *line);
-void	add_ctrl_op(t_list  **p_token, int cop);
-void	ft_free_token(t_list  **p_token);
-void    ft_token_ls(t_list *token);
-void    ft_free_cmd(t_cmd **p_cmd);
+int	ft_check_quotes(char *line);
+int	ft_ctrl_syntax(char *line);
+void	add_ctrl_op(t_list **p_token, int cop);
+void	ft_free_token(t_list **p_token);
+void	ft_token_ls(t_list *token);
+void	ft_free_cmd(t_cmd **p_cmd);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
 void	ft_handle_pipe(char *line, t_list **token, t_count *c);
 void	ft_handle_space_or_end(char *line, t_list **token, t_count *c);
 void	ft_get_token_if(char *line, t_list **p_token, t_count *c);
-t_list	*ft_get_token(char *line, t_env *env,const int prev_exit);
+t_list	*ft_get_token(char *line, t_env *env, const int prev_exit);
 
 // parsing_plus.c
 void	ft_counter(t_count *c);
@@ -105,7 +105,7 @@ char	*ft_get_subtoken(char *old);
 // get_cmd.c
 t_cmd	*get_tail_cmd(t_cmd *cmd);
 void	add_cmd(t_list *token, t_cmd **cmd, t_env *env);
-int		ft_count_params(t_list *token);
+int	ft_count_params(t_list *token);
 void	add_params(t_list **token, t_cmd *p_cmd);
 t_cmd	*get_cmd(t_list *token, t_env *env);
 
@@ -113,25 +113,26 @@ t_cmd	*get_cmd(t_list *token, t_env *env);
 int	ft_pipe(t_cmd *cmd, const int prev_exit);
 
 // builtins.c
-int		ft_builtin(t_cmd *cm, const int prev_exit);
-int		ft_mtxlen(char **mtx);
-int		ft_vfy_name(char *name, char **env);
-int		ft_is_valid_name(char *name);
-void	print_ex( t_env **envp);
+int	ft_builtin(t_cmd *cm, const int prev_exit);
+int	ft_mtxlen(char **mtx);
+int	ft_vfy_name(char *name, char **env);
+int	ft_is_valid_name(char *name);
+void	print_ex(t_env **envp);
 
-int		ft_echo(t_cmd *cmd);
+int	ft_echo(t_cmd *cmd);
 int	ft_export(char **args, t_env **envp);
 int	ft_env(t_cmd *cmd);
-int		ft_cd(t_cmd *path);
-int		ft_pwd(void);
+int	ft_cd(t_cmd *path);
+int	ft_pwd(void);
+int	ft_unset(t_env **env, char **name);
 
 // execute
-int		ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
+int	ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
 
 // utils.c
-int		ft_ctrl_operator(char *str);
+int	ft_ctrl_operator(char *str);
 
-//env_list
+// env_list
 void	ft_add_env_node(t_env *env, char *str);
 void	ft_free_env(t_env **p_env);
 void	ft_list_env(t_env *env);
@@ -142,7 +143,5 @@ t_env	*ft_create_env_node(const char *env);
 t_env	*ft_envp_to_list(char **envp);
 
 char	**ft_list_to_envp(t_env *env);
-
-
 
 #endif
