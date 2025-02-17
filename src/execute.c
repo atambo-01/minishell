@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/15 18:58:26 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/17 22:10:24 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,66 +111,122 @@ int	ft_execve(t_cmd *cmd)
 	return(status);
 }
 
-int    ft_redir_out(t_cmd *cmd, int i, int prev_exit)
+int    ft_redir_out(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
-    int fd[3];
-	int	status;
-
-	printf("redir_out\n");
-    if (!cmd->redir[i + 1])
-        return(ft_perror("Syntax error: missing file\n", -1));
-    fd[0] = open(cmd->redir[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
-    if (fd[0] == -1)
-        ft_perror("open", -1);
-    fd[1] = dup(STDOUT_FILENO);
-    if (fd[1] == -1)
-    {
-		close(fd[0]);
-        return(ft_perror("dup (saving stdout)", -1));
-    }
-    if (dup2(fd[0], STDOUT_FILENO) == -1)
-    {
-        close(fd[0]);
-        close(fd[1]);
-		return(ft_perror("dup2 (redirecting stdout)", -1));
-    }
-	fd[2] = ft_execute(cmd, 0, prev_exit, 0);
-    close(fd[0]);
-    if (dup2(fd[1], STDOUT_FILENO) == -1)
-    {
-        close(fd[1]);
-		return(ft_perror("dup2 (restoring stdout)", -1));
-    }
-    close(fd[1]);
-	return (fd[2]);
+    fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+    if (fd[*i_fd] == -1)
+        return (ft_perror("error: open\n", -1));
+    if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
+		return (ft_perror("dup2: redirecting stdout\n", -1));
+	(*i_fd)++;
+	return (0);
 }
 
+int    ft_redir_in(t_cmd *cmd, int i, int fd[], int *i_fd)
+{
+    fd[*i_fd] = open(cmd->redir[i + 1],O_RDONLY);
+    if (fd[*i_fd] == -1)
+        return (ft_perror("open\n", -1));
+    if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
+		return (ft_perror("dup2: redirecting stdin\n", -1));
+	(*i_fd)++;
+	return (0);
+}
 
-int	ft_redirect(t_cmd *cmd, int prev_exit)
+int	mod_fd(t_cmd *cmd, int i, int fd[], int *i_fd)
+{
+	if (ft_cop(cmd->redir[i]) == 2)
+	{
+		return (ft_redir_out(cmd, i, fd, i_fd));
+	}
+	else if (ft_cop(cmd->params[i]) == 3)
+	{
+		return (ft_redir_in(cmd, i, fd, i_fd));
+	}
+	/*	
+	else if (ft_cop(cmd->params[i]) == 4)
+	{	
+		return (ft_redir_append(cmd, i, fd, i_fd));
+	}
+	else if (ft_cop(cmd->params[i]) == 5)
+	{
+		return (ft_heredoc(cmd, i, fd, i_fd));
+	}
+*/
+	return (0);
+}
+
+int	bckp_fd(int fd[])
+{
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
+	fd[2] = dup(STDERR_FILENO);
+	if (fd[0] == -1 || fd[1] == -1 || fd[2] == -1)
+	{
+		close(fd[0]);
+		close(fd[1]);
+		close(fd[2]);
+		return (1);
+	}
+	return (0);
+}
+
+void	close_fd(int fd[], int i_fd)
+{
+	int j;
+
+	j = 3;
+	while(j < i_fd)
+	{
+		close(fd[j]);
+		j++;
+	}
+	dup2(fd[0], STDIN_FILENO);
+	dup2(fd[1], STDOUT_FILENO);
+	dup2(fd[2], STDERR_FILENO);
+	close(fd[1]);
+	close(fd[2]);
+}
+
+int	count_redir(t_cmd *cmd)
 {
 	int	i;
 
 	i = 0;
+	while(cmd->redir[i])
+		i++;
+	return(i);
+}
+
+int	ft_redirect(t_cmd *cmd)
+{
+	int	*fd;
+	int r;
+	int	i;
+	int	i_fd;
+	int status;
+	
 	if (!cmd->redir)
 		return (1);
+	fd = ft_malloc(sizeof(int) * (count_redir(cmd) + 1));
+	if (bckp_fd(fd) != 0)
+		return (ft_perror("error: saving std fds\n", -1));
+	i = 0;
+	i_fd = 3;
 	while(cmd->redir[i])
 	{
-		printf("redir\n");
-		if (ft_cop(cmd->redir[i]) == 2)
-			return(ft_redir_out(cmd, i, prev_exit));
-/*		else if (ft_ctrl_operator(cmd->params[i]) == 3)
-			ft_redir_in();
-		else if (ft_ctrl_operator(cmd->params[i]) == 4)
-			ft_redir_append();
-		else if (ft_ctrl_operator(cmd->params[i]) == 5)
-			ft_readoc();
-*/		i++;
+		r = mod_fd(cmd, i, fd, &i_fd);
+		if (r == -1)
+			return (-1);
+		i++;
 	}
-	return(42);
+	status = ft_execute(cmd, 0, 0);
+	close_fd(fd, i_fd);
+	return (status);
 }
 
 
-int ft_execute(t_cmd *cmd, int p, const int prev_exit, int r)
+int ft_execute(t_cmd *cmd, int p, int r)
 {
 	pid_t   pid;
 	int		status;
@@ -179,13 +235,14 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit, int r)
 	if (!cmd)
 		return (-1);
 	if(cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
-		return(ft_pipe(cmd->nc, prev_exit));
-	if (r && cmd->redir && (status = ft_redirect(cmd, prev_exit) == 0))
-		return(status);
-	if ((status = ft_builtin(cmd, prev_exit)) == 0)
+		return(ft_pipe(cmd->nc));
+	if (r && cmd->redir)
+		return (ft_redirect(cmd));
+	status = ft_builtin(cmd);
+	if (status != 127)
 		return (status);
 	else if	(ft_get_path(cmd) == 1)
-		status = ft_execve(cmd);
+		return (ft_execve(cmd));
 	else 
 	{
 			ft_putstr_fd(cmd->n, 1);
@@ -194,3 +251,5 @@ int ft_execute(t_cmd *cmd, int p, const int prev_exit, int r)
 	}
 	return (status);
 }
+
+

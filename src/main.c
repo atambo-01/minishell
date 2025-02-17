@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/16 20:57:22 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/17 18:13:59 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,10 @@ void	ft_free_token(t_list **p_token)
 
 static void	ft_minishell_init(t_main_vars *mv, char **envp)
 {
-	g_exit = 0;
 	mv->token = NULL;
 	mv->cmd = NULL;
 	mv->line = NULL;
-	mv->exit = -1;
+	mv->exit = 0;
 	mv->env = ft_envp_to_list(envp);
 	ft_add_env_node(mv->env, "SHELL=minishell");
 	ft_add_env_node(mv->env, "HOME=");
@@ -174,20 +173,20 @@ int	main(int ac, char **av, char **envp)
 	 	mv.line = readline("minishell_prompt > ");
 	 	if (ft_strlen(mv.line) > 0)
 	 	{
-	 	//	printf("line =_%s\n", mv.line);
+	 //		printf("line =_%s\n", mv.line);
 	 		add_history(mv.line);
 	 		if (ft_strcmp(mv.line, "exit") == 0)
 				break ;
 	 		else if ((mv.token = ft_get_token(mv.line, mv.env, mv.exit)) != NULL)
 	 		{
-	 			ft_token_ls(mv.token);
+	 	//		ft_token_ls(mv.token);
 				if ((mv.cmd = get_cmd(mv.token, mv.env)) != NULL);
 	 			{
-	 				ft_cmd_ls(mv.cmd);
-	 	//			mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
+	 	//			ft_cmd_ls(mv.cmd);
+	 				mv.exit = ft_execute(mv.cmd, 1, 1);
 	 				//ft_free_cmd(&(mv.cmd));
 	 			}
-		//		ft_free_token(&(mv.token));
+				ft_free_token(&(mv.token));
 	 		}
 	 	}
 	 //	free(mv.line);

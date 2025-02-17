@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:03:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/16 15:43:27 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/17 17:38:23 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef struct s_main_vars
 	t_env *env;
 } t_main_vars;
 
-char	*ft_expand(char *line, t_env *env, const int prev_exi);
+char	*ft_expand(char *line, t_env *env, const int prev_exit);
 int		ft_check_quotes(char *line);
 int		ft_cop_syntax(char *line);
 void	add_ctrl_op(t_list  **p_token, int cop);
@@ -90,7 +90,7 @@ void	ft_process_quotes(char ch, t_count *c);
 void	ft_handle_pipe(char *line, t_list **token, t_count *c);
 void	ft_handle_space_or_end(char *line, t_list **token, t_count *c);
 void	ft_get_token_if(char *line, t_list **p_token, t_count *c);
-t_list	*ft_get_token(char *line, t_env *env,const int prev_exit);
+t_list	*ft_get_token(char *line, t_env *env, const int prev_exit);
 
 // parsing_plus.c
 void	ft_counter(t_count *c);
@@ -111,10 +111,10 @@ void	add_params(t_list **token, t_cmd *p_cmd);
 t_cmd	*get_cmd(t_list *token, t_env *env);
 
 // pipe.c
-int	ft_pipe(t_cmd *cmd, const int prev_exit);
+int	ft_pipe(t_cmd *cmd);
 
 // builtins.c
-int		ft_builtin(t_cmd *cm, const int prev_exit);
+int		ft_builtin(t_cmd *cm);
 int		ft_mtxlen(char **mtx);
 int		ft_vfy_name(char *name, char ***env);
 int		ft_is_valid_name(char *name);
@@ -127,7 +127,7 @@ int		ft_cd(t_cmd *path);
 int		ft_pwd(void);
 
 // execute
-int		ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
+int		ft_execute(t_cmd *cmd, int p, int r);
 
 // utils.c
 int		ft_cop(char *str);
