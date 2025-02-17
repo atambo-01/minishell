@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/16 21:57:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/17 14:32:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,34 +92,22 @@ void	add_redir(t_list *token, t_cmd *cmd)
 	
 	if (!token || !cmd || ((i = ft_count_redir(token)) <= 0))
 		return ;
-	cmd->redir = ft_malloc(sizeof(char) * (i + 1));
-	printf("redir count  = %d\n", i);
+	cmd->redir = ft_malloc(sizeof(char *) * (i + 1));
 	i = 0;
 	while(token)
 	{
 		if (ft_cop(token->s) >= 1)
 		{
 			cmd->redir[i] = strdup(token->s);
-			printf("add_redir = %s\n", cmd->redir[i]);
 			i++;
 			token = token->next;
 			cmd->redir[i] = strdup(token->s);
-			printf("add_redir = %s\n", cmd->redir[i]);
-			i ++;
-			printf("i  = %d\n", i);
+			i++;
 		}
 		if (token)
 			token = token->next;
-		printf("redir[0] = %s\n", cmd->redir[0]);
-		printf("---------------------------------------------\n");
 	}
 	cmd->redir[i] = NULL;
-	int w  = 0;
-	while(cmd->redir[w])
-	{
-		printf("%s\n", cmd->redir[w]);
-		w++;
-	}
 }
 
 void	add_params(t_list **token, t_cmd *cmd)
