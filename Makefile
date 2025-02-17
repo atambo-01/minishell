@@ -26,11 +26,14 @@ SOURCES		=	src/main.c\
 				src/utils.c\
 				src/expand.c\
 				src/env_list.c\
+				src/aux_env_list.c\
+				src/aux2_env_list.c\
 				src/execute.c\
 				src/builtins.c\
 				src/env.c\
 				src/export.c\
-				src/ft_unset.c	
+				src/signal.c\
+				src/ft_unset.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

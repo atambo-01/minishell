@@ -21,6 +21,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
+#include <signal.h>
 # include <unistd.h>
 
 extern int g_exit;
@@ -124,7 +125,7 @@ int	ft_export(char **args, t_env **envp);
 int	ft_env(t_cmd *cmd);
 int	ft_cd(t_cmd *path);
 int	ft_pwd(void);
-int	ft_unset(t_env **env, char **name);
+int	ft_unset(t_cmd *cmd);
 
 // execute
 int	ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
@@ -140,8 +141,12 @@ void	ft_remove_env_node(t_env **head, char *name);
 
 t_env	*ft_get_env(t_env *env, const char *name);
 t_env	*ft_create_env_node(const char *env);
+t_env	*ft_create_env_node_2(char *name, char *value);
 t_env	*ft_envp_to_list(char **envp);
 
 char	**ft_list_to_envp(t_env *env);
+
+//signal
+void	ctrl_c(int sig);
 
 #endif

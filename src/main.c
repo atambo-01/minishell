@@ -15,8 +15,7 @@
 
 #include "../inc/minishell.h"
 
-
-int			g_exit = 0;
+int			g_exit = 1;
 
 int	ft_list_size(t_list *head)
 {
@@ -165,6 +164,7 @@ int	main(int ac, char **av, char **envp)
 	t_main_vars mv;
 
 	ft_minishell_init(&mv, envp);
+	signal(SIGINT, ctrl_c);
 	while (1)
 	{
 		mv.line = readline("minishell_prompt > ");
