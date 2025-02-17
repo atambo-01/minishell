@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 12:55:21 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/17 13:38:14 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/17 13:40:36 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ int	ft_unset(t_cmd *cmd)
 	
 	i = 0;
 	if (!cmd || !cmd->env)
-		return ;
+		return (0);
 	while (cmd->params[++i])
 	{
 		if (ft_get_env(cmd->env, cmd->params[i]))
 			ft_remove_env_node(&(cmd->env), cmd->params[i]);
 	}
-	return ;
+	return (0);
 }
