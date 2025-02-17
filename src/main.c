@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/17 18:13:59 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/18 00:09:08 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,16 +62,17 @@ void	ft_cmd_ls(t_cmd *cmd)
 				i = 0;
 				while(cmd->params[i])
 				{
-					printf("%s ", cmd->params[i]);
+					printf("{%s}", cmd->params[i]);
 					i++;
 				}
 			}
 			if (cmd->redir)
 			{
+				printf(" : ");
 				i = 0;
 				while(cmd->redir[i])
 				{
-					printf("%s ", cmd->redir[i]);
+					printf("{%s}", cmd->redir[i]);
 					i++;
 				}
 			}
@@ -170,7 +171,7 @@ int	main(int ac, char **av, char **envp)
 	ft_minishell_init(&mv, envp);
 	 while (1)
 	{
-	 	mv.line = readline("minishell_prompt > ");
+	 	mv.line = readline(COLOR BOLD "minishell_prompt > " RESET);
 	 	if (ft_strlen(mv.line) > 0)
 	 	{
 	 //		printf("line =_%s\n", mv.line);

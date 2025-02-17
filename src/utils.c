@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/14 09:13:14 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/17 23:46:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_cop_syntax(char *line)
 	if (!line)
 		return (1);
 	if (ft_cop(line) != 0)
-		return (ft_perror("error: bad control operator syntax", 2));
+		return (ft_perror("error: bad control operator syntax\n", 2));
 	while(line[i])
 	{
 		cop = ft_cop(&line[i]);
@@ -48,7 +48,7 @@ int	ft_cop_syntax(char *line)
 			i++;
 		if (cop && (!line[i + 1] || ft_cop(&line[i + 1])))
 		{
-			return (ft_perror("error: bad control operator syntax", 3));
+			return (ft_perror("error: bad control operator syntax\n", 3));
 		}
 		if (cop  && line[i + 1] == ' ')
 		{
@@ -57,7 +57,7 @@ int	ft_cop_syntax(char *line)
 				i++;
 			if (!line[i] || ft_cop(&line[i]))
 			{
-				return (ft_perror("error: bad control operator syntax", 4));
+				return (ft_perror("error: bad control operator syntax\n", 4));
 			}
 		}
 	//	if (line[i] == 0 || line[i + 1] == 0)

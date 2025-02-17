@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/17 22:10:24 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/17 23:45:40 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,21 +133,41 @@ int    ft_redir_in(t_cmd *cmd, int i, int fd[], int *i_fd)
 	return (0);
 }
 
+int    ft_redir_append(t_cmd *cmd, int i, int fd[], int *i_fd)
+{
+    fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
+    if (fd[*i_fd] == -1)
+        return (ft_perror("error: open\n", -1));
+    if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
+		return (ft_perror("dup2: redirecting stdout\n", -1));
+	(*i_fd)++;
+	return (0);
+}
+
+int	count_redir(t_cmd *cmd)
+{
+	int	i;
+
+	i = 0;
+	while(cmd->redir[i])
+		i++;
+	return(i);
+}
+
 int	mod_fd(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
-	if (ft_cop(cmd->redir[i]) == 2)
-	{
+	int cop;
+
+	cop = ft_cop(cmd->redir[i]);
+	if (cop == 2)
 		return (ft_redir_out(cmd, i, fd, i_fd));
-	}
-	else if (ft_cop(cmd->params[i]) == 3)
-	{
+	else if (cop == 3)
 		return (ft_redir_in(cmd, i, fd, i_fd));
-	}
-	/*	
-	else if (ft_cop(cmd->params[i]) == 4)
+	else if (cop == 4)
 	{	
 		return (ft_redir_append(cmd, i, fd, i_fd));
 	}
+	/*	
 	else if (ft_cop(cmd->params[i]) == 5)
 	{
 		return (ft_heredoc(cmd, i, fd, i_fd));
@@ -188,15 +208,6 @@ void	close_fd(int fd[], int i_fd)
 	close(fd[2]);
 }
 
-int	count_redir(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	while(cmd->redir[i])
-		i++;
-	return(i);
-}
 
 int	ft_redirect(t_cmd *cmd)
 {

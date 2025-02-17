@@ -6,13 +6,15 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:03:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/17 17:38:23 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/18 00:08:46 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
+# define COLOR	"\033[34m"
+# define BOLD   "\x1B[1m"
+# define RESET	"\x1B[0m"
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <limits.h>
