@@ -6,15 +6,13 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:03:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/18 00:08:46 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/18 00:14:02 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define COLOR	"\033[34m"
-# define BOLD   "\x1B[1m"
-# define RESET	"\x1B[0m"
+
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <limits.h>
@@ -25,6 +23,10 @@
 # include <sys/wait.h>
 # include <unistd.h>
 
+# define COLOR	"\033[34m"
+# define BOLD   "\x1B[1m"
+# define RESET	"\x1B[0m"
+# define SHELL	"minishell"			
 extern int g_exit;
 
 typedef struct s_pipe

@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/17 23:45:40 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/18 00:19:40 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ int    ft_redir_out(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
     fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
     if (fd[*i_fd] == -1)
-        return (ft_perror("error: open\n", -1));
+        return (ft_perror("minshell: Permission denied\n", -1));
     if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
 		return (ft_perror("dup2: redirecting stdout\n", -1));
 	(*i_fd)++;
@@ -126,7 +126,7 @@ int    ft_redir_in(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
     fd[*i_fd] = open(cmd->redir[i + 1],O_RDONLY);
     if (fd[*i_fd] == -1)
-        return (ft_perror("open\n", -1));
+		return (ft_perror("minshell: Permission denied\n", -1));
     if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
 		return (ft_perror("dup2: redirecting stdin\n", -1));
 	(*i_fd)++;
@@ -137,7 +137,7 @@ int    ft_redir_append(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
     fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
     if (fd[*i_fd] == -1)
-        return (ft_perror("error: open\n", -1));
+       	return (ft_perror("minshell: Permission denied\n", -1));
     if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
 		return (ft_perror("dup2: redirecting stdout\n", -1));
 	(*i_fd)++;
