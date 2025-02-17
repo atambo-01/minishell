@@ -1,36 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   ll.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/15 12:06:16 by eneto            ###   ########.fr       */
+/*   Created: 2025/02/17 13:47:33 by eneto             #+#    #+#             */
+/*   Updated: 2025/02/17 13:49:53 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../inc/minishell.h"
+#include <stdio.h>
 
-int	ft_env(t_cmd *cmd)
+int main()
 {
-	t_env	*temp;
-
-	temp = NULL;
-	if (!cmd)
-		return (1);
-	if (cmd->params[1])
-		return (ft_perror("env: too many arguments", 2));
-	temp = cmd->env;
-	while (temp)
-	{
-		if (temp->value != NULL)
-		{
-			printf("%s", temp->name);
-			printf("=%s", temp->value);
-			printf("\n");
-		}
-		temp = temp->next;
-	}
-	return (0);
+    while(1)
+    {
+        printf("Hello, World!\n");
+    }
+    return (0);
 }
