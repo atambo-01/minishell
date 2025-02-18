@@ -192,7 +192,7 @@ int	main(int ac, char **av, char **envp)
 					;
 				{
 					ft_cmd_ls(mv.cmd);
-					mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
+					mv.exit = ft_execute(mv.cmd, 1, 1);
 					// ft_free_cmd(&(mv.cmd));
 				}
 				//		ft_free_token(&(mv.token));

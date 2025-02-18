@@ -115,10 +115,10 @@ void	add_params(t_list **token, t_cmd *p_cmd);
 t_cmd	*get_cmd(t_list *token, t_env *env);
 
 // pipe.c
-int	ft_pipe(t_cmd *cmd, const int prev_exit);
+int	ft_pipe(t_cmd *cmd);
 
 // builtins.c
-int	ft_builtin(t_cmd *cm, const int prev_exit);
+int	ft_builtin(t_cmd *cmd);
 int	ft_mtxlen(char **mtx);
 int	ft_vfy_name(char *name, char **env);
 int	ft_is_valid_name(char *name);
@@ -132,7 +132,7 @@ int	ft_pwd(void);
 int	ft_unset(t_cmd *cmd);
 
 // execute
-int	ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
+int	ft_execute(t_cmd *cmd, int p, int r);
 
 // utils.c
 int	ft_cop(char *str);

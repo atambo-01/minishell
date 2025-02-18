@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/18 12:34:46 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/18 12:50:43 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,19 +73,18 @@ int	ft_cd(t_cmd *cmd)
 	}
 }
 
-int	ft_builtin(t_cmd *cmd, const int prev_exit)
+int	ft_builtin(t_cmd *cmd)
 {
-	if (ft_strcmp(cmd->n, "cd") == 0)
+	if	(ft_strcmp(cmd->n, "cd") == 0)
 		return (ft_cd(cmd));
 	else if (ft_strcmp(cmd->n, "echo") == 0)
 		return (ft_echo(cmd));
-	else if (ft_strcmp(cmd->n, "env") == 0)
+/*	else if (ft_strcmp(cmd->n, "env") == 0)
 		return (ft_env(cmd));
-	else if (ft_strcmp(cmd->n, "export") == 0)
-		return (ft_export(cmd->params, &(cmd->env)));
 	else if (ft_strcmp(cmd->n, "unset") == 0)
-		return (ft_unset(cmd));
-	// else if (ft_strcmp(cmd->n, "exit") == 0)
-	// 	return (ft_exit(cmd->n, prev_exit));
-	return (1);
+	    return (ft_unset(cmd->n, ft_envp));
+	else if (ft_strcmp(cmd->n, "exit") == 0)
+		return (ft_exit(cmd->n, prev_exit));
+*/
+	return (127);	
 }

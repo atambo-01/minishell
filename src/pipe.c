@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:19:53 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/11 08:48:49 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/18 12:52:09 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	handle_first_fork(t_cmd *cmd, int *fd, const int prev_exit)
+int	handle_first_fork(t_cmd *cmd, int *fd)
 {
 	pid_t	pid;
 
@@ -27,13 +27,13 @@ int	handle_first_fork(t_cmd *cmd, int *fd, const int prev_exit)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		ft_execute(cmd->pc, 0, prev_exit, 1);
+		ft_execute(cmd->pc, 0, 1);
 		exit(EXIT_FAILURE);
 	}
 	return (pid);
 }
 
-int	handle_second_fork(t_cmd *cmd, int *fd, const int prev_exit)
+int	handle_second_fork(t_cmd *cmd, int *fd)
 {
 	pid_t	pid;
 
@@ -48,13 +48,13 @@ int	handle_second_fork(t_cmd *cmd, int *fd, const int prev_exit)
 		dup2(fd[0], STDIN_FILENO);
 		close(fd[1]);
 		close(fd[0]);
-		ft_execute(cmd->nc, 1, prev_exit, 1);
+		ft_execute(cmd->nc, 1, 1);
 		exit(EXIT_FAILURE);
 	}
 	return(pid);
 }
 
-int	ft_pipe(t_cmd *cmd, const int prev_exit)
+int	ft_pipe(t_cmd *cmd)
 {
 	int	fd[2];
 	int	status;
@@ -69,8 +69,8 @@ int	ft_pipe(t_cmd *cmd, const int prev_exit)
 		perror("pipe");
 		exit(EXIT_FAILURE);
 	}
-	pid_0 = handle_first_fork(cmd, fd, prev_exit);
-	pid_1 = handle_second_fork(cmd, fd, prev_exit);
+	pid_0 = handle_first_fork(cmd, fd);
+	pid_1 = handle_second_fork(cmd, fd);
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid_0, &status, 0);
