@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/17 14:32:56 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/18 13:28:36 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	add_cmd(t_list *token, t_cmd **cmd, t_env *env)
 	new->env = env;
 	new->nc = NULL;
 	new->pc = NULL;
+	new->redir = NULL;
 	if (!*cmd)
 		*cmd = new;
 	else
