@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+      
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
 /*   Updated: 2025/02/16 20:57:22 by atambo           ###   ########.fr       */
@@ -14,6 +14,7 @@
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
+
 
 int			g_exit = 1;
 
@@ -72,7 +73,7 @@ void	ft_cmd_ls(t_cmd *cmd)
 			if (cmd->redir)
 			{
 				i = 0;
-				while(cmd->redir[i])
+				while (cmd->redir[i])
 				{
 					printf("%s ", cmd->redir[i]);
 					i++;
@@ -119,7 +120,7 @@ static void	ft_minishell_init(t_main_vars *mv, char **envp)
 	ft_add_env_node(mv->env, "HOME=");
 }
 
-static void	ft_minishell_exit(t_main_vars **p_mv)
+static void  ft_minishell_exit(t_main_vars **p_mv)
 {
 	t_main_vars *mv;
 
@@ -150,7 +151,7 @@ void	ft_free_cmd(t_cmd **p_cmd)
 	{
 		next = cmd->nc;
 		n = 0;
-		while(cmd->params[n] != NULL)
+		while (cmd->params[n] != NULL)
 		{
 			free(cmd->params[n]);
 			n++;
@@ -172,29 +173,33 @@ int	main(int ac, char **av, char **envp)
 
 	ft_minishell_init(&mv, envp);
 	signal(SIGINT, ctrl_c);
+	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
-	 	mv.line = readline("minishell_prompt > ");
-	 	if (ft_strlen(mv.line) > 0)
-	 	{
-	 	//	printf("line =_%s\n", mv.line);
-	 		add_history(mv.line);
-	 		if (ft_strcmp(mv.line, "exit") == 0)
+		mv.line = readline("minishell_prompt > ");
+		ctrl_d(&mv);
+		if (ft_strlen(mv.line) > 0)
+		{
+			//	printf("line =_%s\n", mv.line);
+			add_history(mv.line);
+			if (ft_strcmp(mv.line, "exit") == 0)
 				break ;
-	 		else if ((mv.token = ft_get_token(mv.line, mv.env, mv.exit)) != NULL)
-	 		{
-	 			ft_token_ls(mv.token);
-				if ((mv.cmd = get_cmd(mv.token, mv.env)) != NULL);
-	 			{
-	 				ft_cmd_ls(mv.cmd);
-	 	//			mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
-	 				//ft_free_cmd(&(mv.cmd));
-	 			}
-		//		ft_free_token(&(mv.token));
-	 		}
-	 	}
-	 //	free(mv.line);
-	 }
-	 rl_clear_history();
-	 ft_free_p((void **)&(mv.line));
+			else if ((mv.token = ft_get_token(mv.line, mv.env,
+						mv.exit)) != NULL)
+			{
+				ft_token_ls(mv.token);
+				if ((mv.cmd = get_cmd(mv.token, mv.env)) != NULL)
+					;
+				{
+					ft_cmd_ls(mv.cmd);
+					mv.exit = ft_execute(mv.cmd, 1, mv.exit, 1);
+					// ft_free_cmd(&(mv.cmd));
+				}
+				//		ft_free_token(&(mv.token));
+			}
+		}
+		//	free(mv.line);
+	}
+	rl_clear_history();
+	ft_free_p((void **)&(mv.line));
 }

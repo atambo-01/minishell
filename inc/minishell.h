@@ -2,9 +2,12 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
+/*                                                    +:+ +:+
+	+:+     */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+
+	+#+        */
+/*                                                +#+#+#+#+#+
+	+#+           */
 /*   Created: 2025/02/12 14:03:22 by atambo            #+#    #+#             */
 /*   Updated: 2025/02/16 15:43:27 by atambo           ###   ########.fr       */
 /*                                                                            */
@@ -18,10 +21,10 @@
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
+# include <signal.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <sys/wait.h>
-#include <signal.h>
 # include <unistd.h>
 
 extern int g_exit;
@@ -49,13 +52,13 @@ typedef struct s_env
 
 typedef struct s_cmd
 {
-	char			*n;
-	struct s_cmd	*pc;
-	struct s_cmd	*nc;
-	char			*path;
-	t_env			*env;
-	char			**params;
-	char			**redir;
+	char *n;
+	struct s_cmd *pc;
+	struct s_cmd *nc;
+	char *path;
+	t_env *env;
+	char **params;
+	char **redir;
 } t_cmd;
 
 typedef struct s_count
@@ -79,12 +82,12 @@ typedef struct s_main_vars
 } t_main_vars;
 
 char	*ft_expand(char *line, t_env *env, const int prev_exi);
-int		ft_check_quotes(char *line);
-int		ft_cop_syntax(char *line);
-void	add_ctrl_op(t_list  **p_token, int cop);
-void	ft_free_token(t_list  **p_token);
-void    ft_token_ls(t_list *token);
-void    ft_free_cmd(t_cmd **p_cmd);
+int	ft_check_quotes(char *line);
+int	ft_cop_syntax(char *line);
+void	add_ctrl_op(t_list **p_token, int cop);
+void	ft_free_token(t_list **p_token);
+void	ft_token_ls(t_list *token);
+void	ft_free_cmd(t_cmd **p_cmd);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
@@ -124,7 +127,7 @@ void	print_ex(t_env **envp);
 int	ft_echo(t_cmd *cmd);
 int	ft_export(char **args, t_env **envp);
 int	ft_env(t_cmd *cmd);
-int	ft_cd(t_cmd *path);
+int	ft_cd(t_cmd *cmd);
 int	ft_pwd(void);
 int	ft_unset(t_cmd *cmd);
 
@@ -132,7 +135,7 @@ int	ft_unset(t_cmd *cmd);
 int	ft_execute(t_cmd *cmd, int p, const int prev_exit, int r);
 
 // utils.c
-int		ft_cop(char *str);
+int	ft_cop(char *str);
 
 // env_list
 void	ft_add_env_node(t_env *env, char *str);
@@ -147,7 +150,11 @@ t_env	*ft_envp_to_list(char **envp);
 
 char	**ft_list_to_envp(t_env *env);
 
-//signal
+// signal
 void	ctrl_c(int sig);
+void	ctrl_d(t_main_vars *sig);
+
+//exit 
+//void	ft_minishell_exit(t_main_vars **p_mv);
 
 #endif

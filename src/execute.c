@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/15 18:58:26 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/17 14:10:54 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int	ft_execve(t_cmd *cmd)
 		else if (WIFSIGNALED(status))
 			status = 128 + WTERMSIG(status);
 	}
+	printf("status = %d\n", status);
 	if (status != 0)
 		return(ft_perror("error: ft_execve.\n", status));
 	return(status);
