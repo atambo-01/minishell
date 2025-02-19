@@ -6,22 +6,11 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/18 18:56:19 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/19 23:48:22 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-#define BUFFER_SIZE 1024
-
-void	ft_print_file(int fd)
-{
-	char	buffer[BUFFER_SIZE];
-	ssize_t	bytes_read;
-
-	while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
-		write(STDOUT_FILENO, buffer, bytes_read);
-}
 
 char *ft_strjoin_path(const char *dir, const char *name)
 {
@@ -155,72 +144,26 @@ int    ft_redir_append(t_cmd *cmd, int i, int fd[], int *i_fd)
 	return (0);
 }
 
-int	ft_heredoc_write(int fd, char *delim)
+int ft_heredoc(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
-	pid_t	pid;
-	int		status;
-	char	*line;
-
-//	printf("entering heredorc write\n");
-	pid = fork();
-	if (pid == 0)
+	char *line;
+    
+	pipe(&fd[*i_fd]);
+    while ((line = readline("> ")))
 	{
-//		printf("child process\n");
-		while(1)
+        if (strcmp(line, cmd->redir[i + 1]) == 0) 
 		{
-			line = readline("> ");
-			if (!line)
-				break;
-			else if (ft_strcmp(line, delim) == 0)
-			{
-				free(line);
-				break;
-			}
-			write(fd, line, ft_strlen(line));
-			write(fd, "\n", 1);
-			free(line);
-		}
-		exit(0);
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
-		return(status);
-	}
-}
-
-int		ft_heredoc(t_cmd *cmd, int i, int fd[], int *i_fd)
-{
-	int		j;
-	char	*num;
-	char	*name;
-
-	printf("enter heredoc fd = %d\n", *i_fd);
-	j = 1;
-	while(1)
-	{
-		num = ft_itoa(j);
-		name = ft_strjoin("minishell_temp_", num);
-		free(num);
-		if (access(name, F_OK) == 0)
-			j++;
-		else
-			break;
-		free(name);
-	}
-//	printf("exit heredoc loop\n");
-	fd[*i_fd] = open(name, O_CREAT | O_RDWR, 0644);
-	free(name);
-	if (fd[*i_fd] == -1)
-		return (ft_perror("error: open\n", -1));
-	ft_heredoc_write(fd[*i_fd], cmd->redir[i + 1]);
-	printf("\n-----------------------------\n");
-	ft_print_file(fd[*i_fd]);
-	printf("\n--------------------------------\n");
+            free(line);
+            break;
+        }
+        write(fd[*i_fd + 1], line, strlen(line));
+        write(fd[*i_fd + 1], "\n", 1);
+        free(line);
+    }
 	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-		return (ft_perror("dup2: redirecting stdin\n", -1));
-	(*i_fd)++;
-	return(0);
+		return (ft_perror("heredoc: dup2\n", 1));
+	(*i_fd) += 2;
+    return (0);
 }
 
 int	count_redir(t_cmd *cmd)
@@ -238,7 +181,6 @@ int	mod_fd(t_cmd *cmd, int i, int fd[], int *i_fd)
 	int cop;
 
 	cop = ft_cop(cmd->redir[i]);
-//	printf("enter mod fd %d\n", cop);
 	if (cop == 2)
 		return (ft_redir_out(cmd, i, fd, i_fd));
 	else if (cop == 3)
@@ -249,7 +191,6 @@ int	mod_fd(t_cmd *cmd, int i, int fd[], int *i_fd)
 	}
 	else if (cop == 5)
 	{
-//		printf("cop 5 heredoc\n");
 		return (ft_heredoc(cmd, i, fd, i_fd));
 	}
 	return (0);
@@ -314,7 +255,6 @@ int	ft_redirect(t_cmd *cmd)
 			return (-1);
 		i++;
 	}
-//	printf("execute from redirect\n");
 	close_fd(fd, i_fd);
 	status = ft_execute(cmd, 0, 0);
 	restore_fd(fd);
