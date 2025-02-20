@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/14 09:24:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/20 02:11:36 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,8 +93,8 @@ char *pre_ft_get_token(char *line, t_env *env, const int prev_exit)
 		return (NULL);
 	if (!(trim = ft_strtrim(line, " ")))
 		return (NULL);
-    if (!(exp = ft_expand(trim, env, prev_exit)))
-        return (NULL);
+    exp = ft_expand(trim, env, prev_exit);
+    free(trim);
     return (exp);
 }
 
