@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/20 02:04:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/20 13:24:51 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -234,7 +234,6 @@ void	restore_fd(int fd[])
 	close(fd[0]);
 	close(fd[1]);
 	close(fd[2]);
-	free(fd);
 }
 
 int	ft_redirect(t_cmd *cmd)
@@ -248,7 +247,6 @@ int	ft_redirect(t_cmd *cmd)
 	if (!cmd->redir)
 		return (1);
 	fd = ft_malloc(sizeof(int) * (count_redir(cmd) + 3));
-	printf("redir malloc = %d\n", (count_redir(cmd) + 3));
 	if (bckp_fd(fd) != 0)
 		return (ft_perror("error: saving std fds\n", -1));
 	i = 0;
@@ -263,6 +261,7 @@ int	ft_redirect(t_cmd *cmd)
 	close_fd(fd, i_fd);
 	status = ft_execute(cmd, 0, 0);
 	restore_fd(fd);
+	free(fd);
 	return (status);
 }
 

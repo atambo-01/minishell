@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/18 13:28:36 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/20 14:00:53 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	add_cmd(t_list *token, t_cmd **cmd, t_env *env)
 		return ;
 	new = ft_malloc(sizeof(t_cmd));
 	new->n = ft_strdup(token->s);
-	if (!token->next || ft_cop(token->next->s))
+	if (!token->next || ft_cop(token->next->s) == 1)
 	{
-		new->params = (char **)ft_malloc(sizeof(char *) * 2);
-		new->params[0] = strdup(new->n);
+		new->params = ft_malloc(sizeof(char *) * (2));
+		new->params[0] = strdup(token->s);
 		new->params[1] = NULL;
 	}
 	new->env = env;
@@ -75,14 +75,15 @@ int	ft_count_params(t_list *token)
 	i = 0;
 	if (!token)
 		return (0);
-	while (token && (ft_cop(token->s) != 1))
+	while (token)
 	{
 		if (ft_cop(token->s) == 0)
 			i++;
-		else
+		else if (ft_cop(token->s) > 1)
 			token = token->next;
-		if (token)
-			token = token->next;
+		else if (ft_cop(token->s) == 1)
+			break;
+		token = token->next;
 	}
 	return (i);
 }
@@ -118,6 +119,7 @@ void	add_params(t_list **token, t_cmd *cmd)
 	if (!*token || !cmd)
 		return ;
 	i = ft_count_params(*token);
+	printf("params count = %d\n", i);
 	add_redir(*token, cmd);	
 	cmd->params = ft_malloc(sizeof(char *) * (i + 2));
 	i = 1;

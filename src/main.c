@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:30:17 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/20 02:21:53 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/20 13:37:02 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,22 +146,39 @@ void	ft_free_cmd(t_cmd **p_cmd)
 	while(cmd)
 	{
 		next = cmd->nc;
-		n = 0;
-		while(cmd->params[n] != NULL)
+	/*
+	*/
+		if (cmd->redir)
 		{
-			free(cmd->params[n]);
-			n++;
+			n = 0;
+			while(cmd->redir[n])
+			{
+				free(cmd->redir[n]);
+				n++;
+			}
+			free(cmd->redir);
 		}
-		ft_free_pp((void ***)&(cmd->params));
-		cmd->params = NULL;
+		if (cmd->params)
+		{
+			n = 0;
+			while(cmd->params[n] != NULL)
+			{
+				free(cmd->params[n]);
+				n++;
+			}
+			free(cmd->params);
+		}
+//		ft_free_pp((void ***)&(cmd->params));
+//		ft_free_pp((void ***)&(cmd->redir));
 		free(cmd->n);
+
 		free(cmd->path);
-		cmd->env = NULL;	
+
+
 		free(cmd);
 		cmd = next;
 		
 	}
-	*p_cmd = NULL;
 }
 
 int	main(int ac, char **av, char **envp)
@@ -185,7 +202,7 @@ int	main(int ac, char **av, char **envp)
 	 			{
 	 	//			ft_cmd_ls(mv.cmd);
 	 				mv.exit = ft_execute(mv.cmd, 1, 1);
-	 				//ft_free_cmd(&(mv.cmd));
+	 				ft_free_cmd(&(mv.cmd));
 	 			}
 				ft_free_token(&(mv.token));
 	 		}
