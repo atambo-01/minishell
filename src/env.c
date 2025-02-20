@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/15 12:06:16 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/18 17:46:45 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	ft_env(t_cmd *cmd)
 	if (!cmd)
 		return (1);
 	if (cmd->params[1])
-		return (ft_perror("env: too many arguments", 2));
+		return (ft_perror("env: too many arguments\n", 2));
 	temp = cmd->env;
 	while (temp)
 	{

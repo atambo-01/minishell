@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/18 12:50:43 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/20 13:12:28 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,49 @@ int	ft_echo(t_cmd *cmd)
 	return (0);
 }
 
+int	ft_pwd(void)
+{
+	char	*buff;
+
+	buff = ft_malloc(PATH_MAX);
+	getcwd(buff, PATH_MAX);
+	printf("%s\n", buff);
+	ft_free_p((void **)&buff);
+	return (0);
+}
+
 int	ft_cd(t_cmd *cmd)
 {
 	t_env	*home;
 
-	home = NULL;
-	if (cmd->params[1])
-		return (chdir(cmd->params[1]));
-	else
+	if (cmd->params[2])
+		return (ft_perror("cd: too many arguments\n", 1));
+	if (!cmd->params[1])
 	{
 		home = ft_get_env(cmd->env, "HOME");
-		if (!home)
-			return (ft_perror("minishell: cd: HOME not set.", -1));
-		return (chdir(home->value));
+		if (!home || !home->value)
+			return (ft_perror("minishell: cd: HOME not set.", 1));
+		chdir(home->value);
+		return (0);
 	}
+	chdir(cmd->params[1]);
+	return (0);
 }
 
 int	ft_builtin(t_cmd *cmd)
 {
-	if	(ft_strcmp(cmd->n, "cd") == 0)
+	if (ft_strcmp(cmd->n, "cd") == 0)
 		return (ft_cd(cmd));
 	else if (ft_strcmp(cmd->n, "echo") == 0)
 		return (ft_echo(cmd));
-/*	else if (ft_strcmp(cmd->n, "env") == 0)
+	else if (ft_strcmp(cmd->n, "env") == 0)
 		return (ft_env(cmd));
 	else if (ft_strcmp(cmd->n, "unset") == 0)
-	    return (ft_unset(cmd->n, ft_envp));
-	else if (ft_strcmp(cmd->n, "exit") == 0)
+		return (ft_unset(cmd));
+	else if (ft_strcmp(cmd->n, "export") == 0)
+		return (ft_export(cmd->params, &(cmd->env)));
+	/*else if (ft_strcmp(cmd->n, "exit") == 0)
 		return (ft_exit(cmd->n, prev_exit));
 */
-	return (127);	
+	return (127);
 }

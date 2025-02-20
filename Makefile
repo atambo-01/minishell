@@ -19,7 +19,6 @@ INCLUDES	=	-Iincludes
 SOURCES		=	src/main.c\
 				src/parsing.c\
 				src/parsing_plus.c\
-				src/pwd.c\
 				src/get_cmd.c\
 				src/pipe.c\
 				src/get_subtoken.c\

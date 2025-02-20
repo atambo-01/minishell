@@ -117,7 +117,6 @@ static void	ft_minishell_init(t_main_vars *mv, char **envp)
 	mv->exit = -1;
 	mv->env = ft_envp_to_list(envp);
 	ft_add_env_node(mv->env, "SHELL=minishell");
-	ft_add_env_node(mv->env, "HOME=");
 }
 
 static void  ft_minishell_exit(t_main_vars **p_mv)
