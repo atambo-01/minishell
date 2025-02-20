@@ -171,10 +171,10 @@ int	main(int ac, char **av, char **envp)
 	t_main_vars mv;
 
 	ft_minishell_init(&mv, envp);
-	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
 	while (1)
 	{
+		signal(SIGQUIT, SIG_IGN);
+		signal(SIGINT, ctrl_c);
 		mv.line = readline("minishell_prompt > ");
 		ctrl_d(&mv);
 		if (ft_strlen(mv.line) > 0)

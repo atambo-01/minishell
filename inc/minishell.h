@@ -88,6 +88,7 @@ void	add_ctrl_op(t_list **p_token, int cop);
 void	ft_free_token(t_list **p_token);
 void	ft_token_ls(t_list *token);
 void	ft_free_cmd(t_cmd **p_cmd);
+void    ctrl_c(int sig);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
