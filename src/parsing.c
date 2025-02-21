@@ -6,12 +6,11 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/14 09:24:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 10:23:01 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
 
 void	ft_process_quotes(char ch, t_count *c)
 {
@@ -25,8 +24,7 @@ void	ft_process_quotes(char ch, t_count *c)
 		c->q = 0;
 }
 
-
-void	ft_handle_pipe(char*line, t_list **token, t_count *c)
+void	ft_handle_pipe(char *line, t_list **token, t_count *c)
 {
 	if (c->k >= 1 && line[c->k - 1] != ' ')
 	{
@@ -36,7 +34,7 @@ void	ft_handle_pipe(char*line, t_list **token, t_count *c)
 	add_pipe(token);
 	skip_spaces(line, c);
 	c->last = c->k + 1;
-//	c->k += 1;
+	//	c->k += 1;
 }
 
 void	ft_handle_ctrl_op(char *line, t_list **token, t_count *c, int cop)
@@ -54,9 +52,8 @@ void	ft_handle_ctrl_op(char *line, t_list **token, t_count *c, int cop)
 	c->last = c->k + 1;
 }
 
-
-void	ft_handle_space_or_end(char*line, t_list **token, t_count *c)
-{	
+void	ft_handle_space_or_end(char *line, t_list **token, t_count *c)
+{
 	c->end = 0;
 	if (line[c->k + 1] == 0)
 		c->end = 1;
@@ -72,7 +69,7 @@ void	ft_get_token_if(char *line, t_list **token, t_count *c)
 
 	cop = ft_cop(&line[c->k]);
 	ft_process_quotes(line[c->k], c);
-	if ( c->q == 0 && cop != 0)
+	if (c->q == 0 && cop != 0)
 	{
 		ft_handle_ctrl_op(line, token, c, cop);
 	}
@@ -82,44 +79,37 @@ void	ft_get_token_if(char *line, t_list **token, t_count *c)
 	}
 }
 
-char *pre_ft_get_token(char *line, t_env *env, const int prev_exit)
+char	*pre_ft_get_token(char *line, t_env *env, const int prev_exit)
 {
-    char *trim;
-    char *exp;
+	char	*trim;
+	char	*exp;
 
-    if (ft_check_quotes(line) != 0) 
-        return (NULL);
+	if (ft_check_quotes(line) != 0)
+		return (NULL);
 	if (ft_cop_syntax(line) != 0)
 		return (NULL);
 	if (!(trim = ft_strtrim(line, " ")))
 		return (NULL);
-    if (!(exp = ft_expand(trim, env, prev_exit)))
-        return (NULL);
-    return (exp);
+	if (!(exp = ft_expand(trim, env, prev_exit)))
+		return (NULL);
+	return (exp);
 }
 
-t_list *ft_get_token(char *line, t_env *env, const int prev_exit)
+t_list	*ft_get_token(char *line, t_env *env, const int prev_exit)
 {
-    t_count c;
-    t_list  *token;
-    char    *exp;
+	t_count	c;
+	t_list	*token;
+	char	*exp;
 
-    if (!(exp = pre_ft_get_token(line, env, prev_exit)))
-        return (NULL);
-
-    token = NULL;
-    ft_counter(&c);
-    while (exp[c.k])
-    {
+	if (!(exp = pre_ft_get_token(line, env, prev_exit)))
+		return (NULL);
+	token = NULL;
+	ft_counter(&c);
+	while (exp[c.k])
+	{
 		ft_get_token_if(exp, &token, &c);
-        (c.k)++;
-    }
-    free(exp);
-    return (token);
+		(c.k)++;
+	}
+	free(exp);
+	return (token);
 }
-
-
-
-
-
-

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_subtoken.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 09:51:03 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/06 21:41:38 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 10:24:33 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ char	*ft_get_subtoken(char *old)
 		{
 			c.q = old[c.i];
 			c.i++;
-			while(old[c.i] && old[c.i] != c.q)
+			while (old[c.i] && old[c.i] != c.q)
 			{
 				new[c.k] = old[c.i];
 				c.i++;

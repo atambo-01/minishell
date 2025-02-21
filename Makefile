@@ -17,8 +17,10 @@ OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
 
 SOURCES		=	src/main.c\
+				src/aux_main.c\
 				src/parsing.c\
 				src/parsing_plus.c\
+				src/aux_get_cmd.c\
 				src/get_cmd.c\
 				src/pipe.c\
 				src/get_subtoken.c\
@@ -27,6 +29,9 @@ SOURCES		=	src/main.c\
 				src/env_list.c\
 				src/aux_env_list.c\
 				src/aux2_env_list.c\
+				src/aux_execute.c\
+				src/aux2_execute.c\
+				src/redirect.c\
 				src/execute.c\
 				src/builtins.c\
 				src/env.c\

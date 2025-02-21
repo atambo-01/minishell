@@ -2,14 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+
-	+:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+
-	+#+        */
-/*                                                +#+#+#+#+#+
-	+#+           */
-/*   Created: 2025/02/12 14:03:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/16 15:43:27 by atambo           ###   ########.fr       */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/21 17:15:28 by eneto             #+#    #+#             */
+/*   Updated: 2025/02/21 17:15:28 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +16,7 @@
 # include "../libft/libft.h"
 # include <fcntl.h>
 # include <limits.h>
+#include <string.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include <signal.h>
@@ -88,7 +86,7 @@ void	add_ctrl_op(t_list **p_token, int cop);
 void	ft_free_token(t_list **p_token);
 void	ft_token_ls(t_list *token);
 void	ft_free_cmd(t_cmd **p_cmd);
-void    ctrl_c(int sig);
+void	ctrl_c(int sig);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
@@ -109,11 +107,14 @@ void	ft_subtoken_handle_quotes(char *old, char *new, t_count *c);
 char	*ft_get_subtoken(char *old);
 
 // get_cmd.c
-t_cmd	*get_tail_cmd(t_cmd *cmd);
-void	add_cmd(t_list *token, t_cmd **cmd, t_env *env);
 int	ft_count_params(t_list *token);
+int	ft_count_redir(t_list *token);
+int	ft_count_params(t_list *token);
+void	add_cmd(t_list *token, t_cmd **cmd, t_env *env);
 void	add_params(t_list **token, t_cmd *p_cmd);
+t_cmd	*get_tail_cmd(t_cmd *cmd);
 t_cmd	*get_cmd(t_list *token, t_env *env);
+t_cmd	*get_tail_cmd(t_cmd *cmd);
 
 // pipe.c
 int	ft_pipe(t_cmd *cmd);
@@ -133,8 +134,25 @@ int	ft_pwd(void);
 int	ft_unset(t_cmd *cmd);
 
 // execute
+void	ft_execve_sigint(int sig);
+void	ft_execve_sigquit(int sig);
+void	ft_execve_sigquit_2(int sig);
 int	ft_execute(t_cmd *cmd, int p, int r);
 
+// path
+char	*ft_strjoin_path(const char *dir, const char *name);
+int	ft_test_paths(t_cmd *cmd, char ***p_paths);
+int	ft_get_path(t_cmd *cmd);
+
+// redirect
+void	close_fd(int fd[], int i_fd);
+int	ft_redir_out(t_cmd *cmd, int i, int fd[], int *i_fd);
+int	ft_redir_in(t_cmd *cmd, int i, int fd[], int *i_fd);
+int	ft_redir_append(t_cmd *cmd, int i, int fd[], int *i_fd);
+int	count_redir(t_cmd *cmd);
+int	ft_redirect(t_cmd *cmd);
+int	bckp_fd(int fd[]);
+int	mod_fd(t_cmd *cmd, int i, int fd[], int *i_fd);
 // utils.c
 int	ft_cop(char *str);
 
@@ -152,10 +170,14 @@ t_env	*ft_envp_to_list(char **envp);
 char	**ft_list_to_envp(t_env *env);
 
 // signal
+void	sig_call(void);
 void	ctrl_c(int sig);
 void	ctrl_d(t_main_vars *sig);
 
-//exit 
-//void	ft_minishell_exit(t_main_vars **p_mv);
+// exit
+// static void	ft_minishell_exit(t_main_vars **p_mv);
+
+// init
+// static void	ft_minishell_init(t_main_vars *mv, char **envp);
 
 #endif

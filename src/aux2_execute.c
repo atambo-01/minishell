@@ -1,38 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal.c                                           :+:      :+:    :+:   */
+/*   aux2_execute.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/16 14:14:05 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/21 16:38:34 by eneto            ###   ########.fr       */
+/*   Created: 2025/02/21 17:43:41 by eneto             #+#    #+#             */
+/*   Updated: 2025/02/21 17:56:02 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ctrl_c(int sig)
+void	ft_execve_sigint(int sig)
 {
+	(void)sig;
 	write(1, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
 }
 
-void	ctrl_d(t_main_vars *sig)
+void	ft_execve_sigquit(int sig)
 {
-	if (sig->line == NULL)
+	(void)sig;
+	write(1, "Quit\n", 5);
+	exit(0);
+}
+
+void	ft_execve_sigquit_2(int sig)
+{
+	(void)sig;
+	write(1, "Quit\n", 5);
+}
+
+int	bckp_fd(int fd[])
+{
+	fd[0] = dup(STDIN_FILENO);
+	fd[1] = dup(STDOUT_FILENO);
+	fd[2] = dup(STDERR_FILENO);
+	if (fd[0] == -1 || fd[1] == -1 || fd[2] == -1)
 	{
-		write(1, "exit\n", 5);
-		// ft_minishell_exit(&sig);
-		exit(1);
+		close(fd[0]);
+		close(fd[1]);
+		close(fd[2]);
+		return (1);
 	}
-	return ;
-}
-
-void	sig_call(void)
-{
-	signal(SIGINT, ctrl_c);
-	signal(SIGQUIT, SIG_IGN);
+	return (0);
 }

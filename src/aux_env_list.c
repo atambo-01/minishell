@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:15:47 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/16 18:21:21 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/21 18:04:34 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ t_env	*ft_envp_to_list(char **envp)
 	}
 	return (head);
 }
+
 char	**ft_list_to_envp(t_env *env)
 {
 	char	**envp;

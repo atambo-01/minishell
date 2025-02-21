@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_plus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/13 21:45:57 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 10:24:45 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ void	add_pipe(t_list **p_token)
 	}
 }
 
-
 void	add_ctrl_op(t_list **p_token, int cop)
 {
 	t_list	*curr;
@@ -101,11 +100,11 @@ void	add_ctrl_op(t_list **p_token, int cop)
 		token->s = ft_strdup("|");
 	else if (cop == 2)
 		token->s = ft_strdup(">");
-	else if (cop == 3 ) 
+	else if (cop == 3)
 		token->s = ft_strdup("<");
 	else if (cop == 4)
 		token->s = ft_strdup(">>");
-	else if (cop == 5)	
+	else if (cop == 5)
 		token->s = ft_strdup("<<");
 	token->next = NULL;
 	if (!*p_token)
@@ -116,4 +115,3 @@ void	add_ctrl_op(t_list **p_token, int cop)
 		curr->next = token;
 	}
 }
-

@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:19:53 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/18 12:52:09 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/21 19:33:25 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ int	handle_second_fork(t_cmd *cmd, int *fd)
 		ft_execute(cmd->nc, 1, 1);
 		exit(EXIT_FAILURE);
 	}
-	return(pid);
+	return (pid);
 }
 
 int	ft_pipe(t_cmd *cmd)
 {
-	int	fd[2];
-	int	status;
+	int		fd[2];
+	int		status;
 	pid_t	pid_0;
 	pid_t	pid_1;
 
@@ -75,5 +75,5 @@ int	ft_pipe(t_cmd *cmd)
 	close(fd[1]);
 	waitpid(pid_0, &status, 0);
 	waitpid(pid_1, &status, 0);
-	return(status);
+	return (status);
 }
