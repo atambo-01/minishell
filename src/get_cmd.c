@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/20 14:00:53 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 03:16:49 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void	add_cmd(t_list *token, t_cmd **cmd, t_env *env)
 		new->pc = curr;
 	}
 }
+
 int	ft_count_redir(t_list *token)
 {
 	int	i;
@@ -119,7 +120,6 @@ void	add_params(t_list **token, t_cmd *cmd)
 	if (!*token || !cmd)
 		return ;
 	i = ft_count_params(*token);
-	printf("params count = %d\n", i);
 	add_redir(*token, cmd);	
 	cmd->params = ft_malloc(sizeof(char *) * (i + 2));
 	i = 1;

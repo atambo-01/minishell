@@ -1,40 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_env.c                                           :+:      :+:    :+:   */
+/*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/12 19:31:26 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/18 17:46:45 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/*
 int	ft_env(t_cmd *cmd)
 {
-	int		i;
-	int		count;
+	t_env	*temp;
 
-	count = 0;
-	while (env->params && env->params[count])
-		count++;
-	i = 0;
-	if (count == 1)
+	temp = NULL;
+	if (!cmd)
+		return (1);
+	if (cmd->params[1])
+		return (ft_perror("env: too many arguments\n", 2));
+	temp = cmd->env;
+	while (temp)
 	{
-		while (cmd->env)
+		if (temp->value != NULL)
 		{
-			printf("%s", cmd->env->name)
-			if(cmd->env->value)
-				printf("=%s", cmd->env->value)
+			printf("%s", temp->name);
+			printf("=%s", temp->value);
 			printf("\n");
-			cmd->env = cmd->env->next
 		}
-		return(0)
+		temp = temp->next;
 	}
-	else
-		return (ft_perror("Erro: env: too many arguments", 2));
+	return (0);
 }
-*/

@@ -6,12 +6,11 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/20 02:11:36 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 03:32:25 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
 
 void	ft_process_quotes(char ch, t_count *c)
 {
@@ -25,7 +24,6 @@ void	ft_process_quotes(char ch, t_count *c)
 		c->q = 0;
 }
 
-
 void	ft_handle_pipe(char*line, t_list **token, t_count *c)
 {
 	if (c->k >= 1 && line[c->k - 1] != ' ')
@@ -36,7 +34,6 @@ void	ft_handle_pipe(char*line, t_list **token, t_count *c)
 	add_pipe(token);
 	skip_spaces(line, c);
 	c->last = c->k + 1;
-//	c->k += 1;
 }
 
 void	ft_handle_ctrl_op(char *line, t_list **token, t_count *c, int cop)
@@ -98,7 +95,7 @@ char *pre_ft_get_token(char *line, t_env *env, const int prev_exit)
     return (exp);
 }
 
-t_list *ft_get_token(char *line, t_env *env, const int prev_exit)
+t_list *ft_token(char *line, t_env *env, const int prev_exit)
 {
     t_count c;
     t_list  *token;
@@ -117,9 +114,3 @@ t_list *ft_get_token(char *line, t_env *env, const int prev_exit)
     free(exp);
     return (token);
 }
-
-
-
-
-
-

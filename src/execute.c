@@ -6,19 +6,20 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/20 13:24:51 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 03:04:07 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-
-char *ft_strjoin_path(const char *dir, const char *name)
+char	*ft_strjoin_path(const char *dir, const char *name)
 {
-	char *full_path;
-	size_t len_dir = strlen(dir);
-	size_t len_name = strlen(name);
+	char	*full_path;
+	size_t	len_dir;
+	size_t	len_name;
 
+	len_dir = strlen(dir);
+	len_name = strlen(name);
 	full_path = ft_malloc(len_dir + len_name + 2);
 	if (!full_path)
 		return (NULL);
@@ -34,15 +35,13 @@ int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 	char	*full_path;
 	char	**paths;
 
-	if (!p_paths || !*p_paths)
-		return (1);
 	i = 0;
 	paths = *p_paths;
 	while (paths[i])
 	{
 		full_path = ft_strjoin_path(paths[i], cmd->n);
 		if (full_path == NULL)
-			break;
+			break ;
 		if (access(full_path, F_OK | X_OK) == 0)
 		{
 			cmd->path = full_path;
@@ -51,7 +50,7 @@ int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 		free(full_path);
 		i++;
 	}
-	return(1);
+	return (1);
 }
 
 int	ft_get_path(t_cmd *cmd)
@@ -69,15 +68,33 @@ int	ft_get_path(t_cmd *cmd)
 	r = 0;
 	path_env = getenv("PATH");
 	if (!path_env || !cmd || !cmd->n)
-		return (2);
+		return (1);
 	paths = ft_split(path_env, ':');
 	if (!paths)
-		return (3);
+		return (2);
 	r = ft_test_paths(cmd, &paths);
 	ft_free_pp((void ***)&paths);
 	if (r == 0)
-		return(r);
-	return (4);
+		return (r);
+	return (3);
+}
+
+void	ft_execve_sigint(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+}
+
+void	ft_execve_sigquit(int sig)
+{
+	(void)sig;
+	exit(0);
+}
+
+void	ft_execve_sigquit_2(int sig)
+{
+	(void)sig;
+	write(1, "Quit\n", 5);
 }
 
 int	ft_execve(t_cmd *cmd)
@@ -85,10 +102,11 @@ int	ft_execve(t_cmd *cmd)
 	pid_t	pid;
 	int		status;
 	char	**env_p;
-	
+
 	status = 0;
 	env_p = NULL;
 	pid = fork();
+	signal(SIGQUIT, ft_execve_sigquit);
 	if (pid == -1)
 		return (ft_perror("fork", -1));
 	if (pid == 0)
@@ -101,46 +119,47 @@ int	ft_execve(t_cmd *cmd)
 	}
 	else
 	{
+		signal(SIGQUIT, ft_execve_sigquit_2);
+		signal(SIGINT, ft_execve_sigint);
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			status = 128 + WTERMSIG(status);
+	//	signal(SIGINT, ctrl_c);
 	}
-	if (status != 0)
-		return(ft_perror("minishell: ft_execve.\n", status));
-	return(status);
+	return (status);
 }
 
-int    ft_redir_out(t_cmd *cmd, int i, int fd[], int *i_fd)
+int	ft_redir_out(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
-    fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
-    if (fd[*i_fd] == -1)
-        return (ft_perror("minshell: Permission denied\n", -1));
-    if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
-		return (ft_perror("redirect output: redirecting stdout\n", -1));
-	(*i_fd)++;
-	return (0);
-}
-
-int    ft_redir_in(t_cmd *cmd, int i, int fd[], int *i_fd)
-{
-    fd[*i_fd] = open(cmd->redir[i + 1],O_RDONLY);
-    if (fd[*i_fd] == -1)
+	fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	if (fd[*i_fd] == -1)
 		return (ft_perror("minshell: Permission denied\n", -1));
-    if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-		return (ft_perror("redirect input: redirecting stdin\n", -1));
+	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
+		return (ft_perror("dup2: redirecting stdout\n", -1));
 	(*i_fd)++;
 	return (0);
 }
 
-int    ft_redir_append(t_cmd *cmd, int i, int fd[], int *i_fd)
+int	ft_redir_in(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
-    fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
-    if (fd[*i_fd] == -1)
-       	return (ft_perror("minshell: Permission denied\n", -1));
-    if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
-		return (ft_perror("redirect append: redirecting stdout\n", -1));
+	fd[*i_fd] = open(cmd->redir[i + 1], O_RDONLY);
+	if (fd[*i_fd] == -1)
+		return (ft_perror("minshell: Permission denied\n", -1));
+	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
+		return (ft_perror("dup2: redirecting stdin\n", -1));
+	(*i_fd)++;
+	return (0);
+}
+
+int	ft_redir_append(t_cmd *cmd, int i, int fd[], int *i_fd)
+{
+	fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
+	if (fd[*i_fd] == -1)
+		return (ft_perror("minshell: Permission denied\n", -1));
+	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
+		return (ft_perror("dup2: redirecting stdout\n", -1));
 	(*i_fd)++;
 	return (0);
 }
@@ -149,43 +168,15 @@ int	count_redir(t_cmd *cmd)
 {
 	int	i;
 
-	if (!cmd->redir)
-		return (0);
 	i = 0;
-	while(cmd->redir[i])
-	{	
+	while (cmd->redir[i])
 		i++;
-	}
 	return (i);
 }
 
-int ft_heredoc(t_cmd *cmd, int i, int fd[], int *i_fd)
-{
-	char *line;
-   
-//	printf("pipe() using fd[%d] and fd[%d] (allocated size = %d)\n", *i_fd, *i_fd + 1, count_redir(cmd) + 3);
-	pipe(&fd[*i_fd]);
-    while ((line = readline("> ")))
-	{
-        if (strcmp(line, cmd->redir[i + 1]) == 0) 
-		{
-            free(line);
-            break;
-        }
-        write(fd[*i_fd + 1], line, strlen(line));
-        write(fd[*i_fd + 1], "\n", 1);
-        free(line);
-    }
-	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-		return (ft_perror("heredoc: dup2\n", 1));
-	(*i_fd) += 2;
-    return (0);
-}
-
-
 int	mod_fd(t_cmd *cmd, int i, int fd[], int *i_fd)
 {
-	int cop;
+	int	cop;
 
 	cop = ft_cop(cmd->redir[i]);
 	if (cop == 2)
@@ -193,9 +184,15 @@ int	mod_fd(t_cmd *cmd, int i, int fd[], int *i_fd)
 	else if (cop == 3)
 		return (ft_redir_in(cmd, i, fd, i_fd));
 	else if (cop == 4)
+	{
 		return (ft_redir_append(cmd, i, fd, i_fd));
-	else if (cop == 5)
+	}
+	/*
+	else if (ft_cop(cmd->params[i]) == 5)
+	{
 		return (ft_heredoc(cmd, i, fd, i_fd));
+	}
+*/
 	return (0);
 }
 
@@ -265,29 +262,28 @@ int	ft_redirect(t_cmd *cmd)
 	return (status);
 }
 
-int ft_execute(t_cmd *cmd, int p, int r)
+int	ft_execute(t_cmd *cmd, int p, int r)
 {
-	pid_t   pid;
-	int		status;
-	
+	pid_t pid;
+	int status;
+
 	status = 0;
 	if (!cmd)
 		return (-1);
-	if(cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
-		return(ft_pipe(cmd->nc));
-	if (r && cmd->redir && cmd->redir[0])
+	if (cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
+		return (ft_pipe(cmd->nc));
+	if (r && cmd->redir)
 		return (ft_redirect(cmd));
-	if (ft_builtin(cmd) != 127)
+	status = ft_builtin(cmd);
+	if (status != 127)
 		return (status);
 	else if (ft_get_path(cmd) == 0)
 		return (ft_execve(cmd));
-	else 
+	else
 	{
-			ft_putstr_fd(cmd->n, 1);
-			ft_putstr_fd(": command not found\n", 1);
-			return (127);
+		ft_putstr_fd(cmd->n, 1);
+		ft_putstr_fd(": command not found\n", 1);
+		return (127);
 	}
 	return (status);
 }
-
-

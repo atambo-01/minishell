@@ -19,18 +19,20 @@ INCLUDES	=	-Iincludes
 SOURCES		=	src/main.c\
 				src/parsing.c\
 				src/parsing_plus.c\
-				src/pwd.c\
 				src/get_cmd.c\
 				src/pipe.c\
 				src/get_subtoken.c\
 				src/utils.c\
 				src/expand.c\
 				src/env_list.c\
+				src/aux_env_list.c\
+				src/aux2_env_list.c\
 				src/execute.c\
 				src/builtins.c\
-				src/ft_env.c\
-				src/ft_export.c\
-				src/ft_aux_ex.c\
+				src/env.c\
+				src/export.c\
+				src/signal.c\
+				src/ft_unset.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

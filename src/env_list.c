@@ -1,163 +1,92 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   env_list.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/15 12:08:23 by eneto             #+#    #+#             */
+/*   Updated: 2025/02/19 15:39:05 by eneto            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/minishell.h"
 
-t_env	*ft_get_env(t_env *env, const char *name)
+static int	ft_init_env_values(t_env *node, char *env)
 {
-	if (!env)
-		return(NULL);
-	while(env)
+	char	*equal;
+	char *msg = "aqui\0";
+
+	equal = ft_strchr(env, '=');
+	if (equal)
 	{
-		if (ft_strcmp(env->name, name) == 0)
-			return(env);
-		env = env->next;
+		node->name = ft_substr(env, 0, equal - env);
+		node->value = ft_strdup(equal + 1);
 	}
-	return(NULL);
+	else
+	{
+		node->name = ft_strdup(env);
+		node->value = NULL;
+	}
+	if (!node->name || (equal && !node->value))
+	{
+		free(node->name);
+		free(node->value);
+		free(node);
+		return (0);
+	}
+	return (1);
 }
 
 t_env	*ft_create_env_node(const char *env)
 {
-	t_env	*new_node;
-	char	*equal_sign;
+	t_env	*node;
 
-	new_node = ft_malloc(sizeof(t_env));
-	if (!new_node)
+	node = ft_malloc(sizeof(t_env));
+	if (!node)
 		return (NULL);
-	equal_sign = ft_strchr(env, '=');
-	if (equal_sign)
-	{
-		new_node->name = ft_substr(env, 0, equal_sign - env);
-		new_node->value = ft_strdup(equal_sign + 1);
-	}
-	else
-	{
-		new_node->name = ft_strdup((char *)env);
-		new_node->value = NULL;
-	}
-	if (!new_node->name || (equal_sign && !new_node->value))
-	{
-		free(new_node->name);
-		free(new_node->value);
-		free(new_node);
+	if (!ft_init_env_values(node, (char *)env))
 		return (NULL);
-	}
-	new_node->next = NULL;
-	return (new_node);
+	node->next = NULL;
+	return (node);
 }
-
-void	ft_remove_env_node(t_env **head, char *name)
-{
-	t_env	*current;
-	t_env	*prev;
-
-	current = *head;
-	prev = NULL;
-	while (current)
-	{
-		if (ft_strcmp(current->name, name) == 0)
-		{
-			if (prev)
-				prev->next = current->next;
-			else
-				*head = current->next;
-			free(current->name);
-			free(current->value);
-			free(current);
-			return;
-		}
-		prev = current;
-		current = current->next;
-	}
-}
-
 void	ft_add_env_node(t_env *env, char *str)
 {
 	t_env	*new_node;
+	char	*name;
+	char	*value;
 
 	if (!env || !str)
-		return;
-	while (env->next)
+		return ;
+	if (ft_strchr(str, '=') == NULL)
 	{
-		if (ft_strncmp(env->name, str, ft_strlen(env->name)) == 0)
+		name = ft_strdup(str);
+		value = NULL;
+	}
+	else
+	{
+		name = ft_substr(str, 0, ft_strchr(str, '=') - str);
+		value = ft_strdup(ft_strchr(str, '=') + 1);
+	}
+	while (env)
+	{
+		if (ft_strcmp(env->name, name) == 0)
 		{
 			if (env->value != NULL)
 				free(env->value);
-			env->value = NULL;
-			if (ft_strchr(str, '='))
-				env->value = ft_strdup(ft_strchr(str, '=') + 1);
-			return;
+			env->value = value;
+			return ;
 		}
+		if (env->next == NULL)
+			break ;
 		env = env->next;
 	}
-	new_node = ft_create_env_node(str);
+	new_node = ft_create_env_node_2(name, value);
 	if (!new_node)
-		return;
+		return ;
+	free(name);
+	free(value);
 	env->next = new_node;
-}
-
-t_env	*ft_envp_to_list(char **envp)
-{
-	t_env	*head;
-	t_env	*new_node;
-	t_env	*current;
-	int		i;
-
-	head = NULL;
-	i = 0;
-	if (!envp || !*envp)
-		return (NULL);
-	while (envp[i])
-	{
-		new_node = ft_create_env_node(envp[i++]);
-		if (!new_node)
-			return (NULL);
-		if (!head)
-			head = new_node;
-		else
-		{
-			current = head;
-			while (current->next)
-				current = current->next;
-			current->next = new_node;
-		}
-	}
-	return (head);
-}
-
-char    **ft_list_to_envp(t_env *env)
-{
-    char    **envp;
-    t_env   *tmp;
-    int     size;
-    int     i;
-	char	*tmp_str;
-
-    tmp = env;
-    size = 0;
-    while (tmp)
-    {
-        size++;
-        tmp = tmp->next;
-    }
-    envp = (char **)malloc(sizeof(char *) * (size + 1));
-    if (!envp)
-        return (NULL);
-    i = 0;
-    while (env)
-    {
-		if (env->value)
-		{
-			tmp_str = ft_strjoin(env->name, "=");
-			envp[i] = ft_strjoin(tmp_str, env->value);
-			free(tmp_str);
-		}
-		else
-			envp[i] = ft_strdup(env->name);
-        if (!envp[i])
-            return (NULL);
-        env = env->next;
-        i++;
-    }
-    envp[i] = NULL;
-    return (envp);
 }
 
 void	ft_free_env(t_env **p_env)
@@ -166,9 +95,9 @@ void	ft_free_env(t_env **p_env)
 	t_env	*next;
 
 	if (!p_env || !*p_env || !(*p_env)->name)
-		return;
+		return ;
 	env = *p_env;
-	while(env)
+	while (env)
 	{
 		next = env->next;
 		free(env->name);
@@ -178,19 +107,5 @@ void	ft_free_env(t_env **p_env)
 		free(env);
 		env = NULL;
 		env = next;
-	}
-}
-
-void	ft_list_env(t_env *env)
-{
-	if (!env)
-		return ;
-	while(env)
-	{
-		printf("%s", env->name);
-		if (env->value != NULL)
-			printf("=%s", env->value);
-		printf("\n");
-		env = env->next;
 	}
 }
