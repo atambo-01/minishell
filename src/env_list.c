@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:08:23 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/21 20:40:31 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 21:06:40 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ void	ft_add_env_node(t_env *env, char *str)
 	if (!env || !str)
 		return ;
 	value = NULL;
-	name = ft_strdup(str);
-	if (ft_strchr(str, '='))
+	if (ft_strchr(str, '=') == NULL)
+		name = ft_strdup(str);
+	if (ft_strchr(str, '=') != NULL)
 	{
 		name = ft_substr(str, 0, ft_strchr(str, '=') - str);
 		value = ft_strdup(ft_strchr(str, '=') + 1);

@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/21 20:41:35 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 22:55:28 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,9 +204,10 @@ void	ft_minishell_exit(t_main_vars *mv)
 
 int	main(int ac, char **av, char **envp)
 {
-	t_main_vars mv;
+	t_main_vars	mv;
 
 	ft_minishell_init(&mv, envp);
+//	ft_list_env(mv.env);
 	while (1)
 	{
 		ft_signal((int []){1, 1, 0, 0, 0});

@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:15:47 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/16 18:21:21 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/21 22:18:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,34 +25,39 @@ t_env	*ft_get_env(t_env *env, const char *name)
 	return (NULL);
 }
 
-t_env	*ft_envp_to_list(char **envp)
+t_env   *ft_envp_to_list(char **envp)
 {
-	t_env	*head;
-	t_env	*new_node;
-	t_env	*current;
-	int		i;
+    t_env   *head;
+    t_env   *new_node;
+    t_env   *current;
+    int     i;
 
-	head = NULL;
-	i = 0;
-	if (!envp || !*envp)
-		return (NULL);
-	while (envp[i])
-	{
-		new_node = ft_create_env_node(envp[i++]);
-		if (!new_node)
-			return (NULL);
-		if (!head)
-			head = new_node;
-		else
-		{
-			current = head;
-			while (current->next)
-				current = current->next;
-			current->next = new_node;
-		}
-	}
-	return (head);
+    head = NULL;
+    current = NULL;
+    i = 0;
+    if (!envp || !*envp)
+        return (NULL);
+    while (envp[i])
+    {
+        new_node = ft_create_env_node(envp[i]);
+        if (!new_node)
+            return (NULL);
+        if (!head)
+        {
+            head = new_node;
+            current = head;  // Initialize current
+        }
+        else
+        {
+            current->next = new_node;
+            current = new_node;  // Move current forward
+        }
+        i++;
+    }
+    return (head);
 }
+
+
 char	**ft_list_to_envp(t_env *env)
 {
 	char	**envp;
