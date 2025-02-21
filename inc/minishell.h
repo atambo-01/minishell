@@ -17,7 +17,7 @@
 # define RESET	"\x1B[0m"
 # define SHELL	"minishell"			
 
-extern int g_exit;
+extern int g_signal;
 
 typedef struct s_pipe
 {
@@ -109,12 +109,12 @@ t_cmd	*get_cmd(t_list *token, t_env *env);
 int	ft_pipe(t_cmd *cmd);
 
 // builtins.c
-int	ft_builtin(t_cmd *cmd);
-int	ft_mtxlen(char **mtx);
-int	ft_vfy_name(char *name, char **env);
-int	ft_is_valid_name(char *name);
+int		ft_builtin(t_cmd *cmd);
+int		ft_mtxlen(char **mtx);
+int		ft_vfy_name(char *name, char **env);
+int		ft_is_valid_name(char *name);
 void	print_ex(t_env **envp);
-
+int		ft_run_builtin(t_cmd *cmd);
 int	ft_echo(t_cmd *cmd);
 int	ft_export(char **args, t_env **envp);
 int	ft_env(t_cmd *cmd);
@@ -145,6 +145,10 @@ char	**ft_list_to_envp(t_env *env);
 // signal
 void	ctrl_c(int sig);
 void	ctrl_d(t_main_vars *sig);
+void	ft_signal(int opt[]);
+void    ft_execve_sigint(int sig);
+void    ft_execve_sigquit(int sig);
+void    ft_execve_sigquit_2(int sig);
 
 //exit 
 //void	ft_minishell_exit(t_main_vars **p_mv);

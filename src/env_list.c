@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:08:23 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/19 15:39:05 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/21 19:36:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,18 @@ void	ft_free_env(t_env **p_env)
 	if (!p_env || !*p_env || !(*p_env)->name)
 		return ;
 	env = *p_env;
+	next = NULL;
 	while (env)
 	{
-		next = env->next;
+		if (env->next)
+			next = env->next;
 		free(env->name);
-		free(env->value);
+		if (env->value)
+			free(env->value);
 		env->name = NULL;
 		env->value = NULL;
 		free(env);
-		env = NULL;
 		env = next;
 	}
+	//env = NULL;
 }

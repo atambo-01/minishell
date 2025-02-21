@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/21 03:04:07 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 17:58:33 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,21 @@ void	ft_execve_sigint(int sig)
 {
 	(void)sig;
 	write(1, "\n", 1);
+	g_signal = SIGINT;
 }
 
 void	ft_execve_sigquit(int sig)
 {
 	(void)sig;
 	exit(0);
+	g_signal = SIGQUIT;
 }
 
 void	ft_execve_sigquit_2(int sig)
 {
 	(void)sig;
 	write(1, "Quit\n", 5);
+	g_signal = SIGQUIT;
 }
 
 int	ft_execve(t_cmd *cmd)
@@ -106,7 +109,7 @@ int	ft_execve(t_cmd *cmd)
 	status = 0;
 	env_p = NULL;
 	pid = fork();
-	signal(SIGQUIT, ft_execve_sigquit);
+	ft_signal((int []){0, 0, 1, 0, 0});
 	if (pid == -1)
 		return (ft_perror("fork", -1));
 	if (pid == 0)
@@ -119,14 +122,12 @@ int	ft_execve(t_cmd *cmd)
 	}
 	else
 	{
-		signal(SIGQUIT, ft_execve_sigquit_2);
-		signal(SIGINT, ft_execve_sigint);
+		ft_signal((int []){0, 0, 0, 1, 1});
 		waitpid(pid, &status, 0);
 		if (WIFEXITED(status))
 			status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 			status = 128 + WTERMSIG(status);
-	//	signal(SIGINT, ctrl_c);
 	}
 	return (status);
 }
@@ -274,7 +275,7 @@ int	ft_execute(t_cmd *cmd, int p, int r)
 		return (ft_pipe(cmd->nc));
 	if (r && cmd->redir)
 		return (ft_redirect(cmd));
-	status = ft_builtin(cmd);
+	status = ft_run_builtin(cmd);
 	if (status != 127)
 		return (status);
 	else if (ft_get_path(cmd) == 0)

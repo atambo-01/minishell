@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:14:05 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/20 13:49:11 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/21 19:24:33 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ void	ctrl_c(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	g_signal = SIGINT;
 }
 
 void	ctrl_d(t_main_vars *sig)
 {
+	g_signal = 0;
 	if (sig->line == NULL)
 	{
 		write(1, "exit\n", 5);
