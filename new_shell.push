@@ -1,0 +1,1 @@
+PS1="\[\e[1;32m\]MyShell>\[\e[0m\] " bash --noprofile --norc

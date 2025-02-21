@@ -53,13 +53,13 @@ typedef struct s_cmd
 
 typedef struct s_count
 {
-	int i;
-	int j;
-	int k;
-	int last;
-	int q;
-	int temp;
-	int end;
+	int 	i;
+	int 	j;
+	int 	k;
+	int 	last;
+	int 	q;
+	int 	temp;
+	int 	end;
 } t_count;
 
 typedef struct s_main_vars
@@ -72,8 +72,8 @@ typedef struct s_main_vars
 } t_main_vars;
 
 char	*ft_expand(char *line, t_env *env, const int prev_exi);
-int	ft_check_quotes(char *line);
-int	ft_cop_syntax(char *line);
+int		ft_check_quotes(char *line);
+int		ft_cop_syntax(char *line);
 void	add_ctrl_op(t_list **p_token, int cop);
 void	ft_free_token(t_list **p_token);
 void	ft_token_ls(t_list *token);

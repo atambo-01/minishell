@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:08:23 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/21 19:36:56 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 20:40:31 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,9 @@ void	ft_add_env_node(t_env *env, char *str)
 
 	if (!env || !str)
 		return ;
-	if (ft_strchr(str, '=') == NULL)
-	{
-		name = ft_strdup(str);
-		value = NULL;
-	}
-	else
+	value = NULL;
+	name = ft_strdup(str);
+	if (ft_strchr(str, '='))
 	{
 		name = ft_substr(str, 0, ft_strchr(str, '=') - str);
 		value = ft_strdup(ft_strchr(str, '=') + 1);
@@ -89,26 +86,25 @@ void	ft_add_env_node(t_env *env, char *str)
 	env->next = new_node;
 }
 
-void	ft_free_env(t_env **p_env)
-{
-	t_env	*env;
-	t_env	*next;
 
-	if (!p_env || !*p_env || !(*p_env)->name)
-		return ;
-	env = *p_env;
-	next = NULL;
-	while (env)
-	{
-		if (env->next)
-			next = env->next;
-		free(env->name);
-		if (env->value)
-			free(env->value);
-		env->name = NULL;
-		env->value = NULL;
-		free(env);
-		env = next;
-	}
-	//env = NULL;
+void    ft_free_env(t_env **p_env)
+{
+    t_env   *env;
+    t_env   *next;
+
+    if (!p_env || !*p_env || !(*p_env)->name)
+        return;
+    env = *p_env;
+    while(env)
+    {
+        next = env->next;
+        free(env->name);
+        free(env->value);
+        env->name = NULL;
+        env->value = NULL;
+        free(env);
+        env = NULL;
+        env = next;
+    }
 }
+

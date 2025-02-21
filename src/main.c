@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/21 19:35:25 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 20:41:35 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ static void	ft_minishell_init(t_main_vars *mv, char **envp)
 	mv->line = NULL;
 	mv->exit = 0;
 	mv->env = ft_envp_to_list(envp);
-	ft_add_env_node(mv->env, "SHELL=minishell");
 }
 
 
@@ -198,10 +197,6 @@ void	ft_minishell_exit(t_main_vars *mv)
 
 	if (!mv)
 		return ;
-	/*	mv = *p_mv;
-		if (mv->line)
-		ft_free_p((void **)&(mv->line));
-		*/
 	ft_free_env(&(mv->env));
 	free(mv->line);
 	rl_clear_history();
@@ -233,5 +228,5 @@ int	main(int ac, char **av, char **envp)
 			ft_main_while_free(&mv);	
 		}
 	}
-//	ft_minishell_exit(&mv);
+	ft_minishell_exit(&mv);
 }
