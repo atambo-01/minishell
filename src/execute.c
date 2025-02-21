@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/21 17:58:33 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/21 23:44:29 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,7 +275,7 @@ int	ft_execute(t_cmd *cmd, int p, int r)
 		return (ft_pipe(cmd->nc));
 	if (r && cmd->redir)
 		return (ft_redirect(cmd));
-	status = ft_run_builtin(cmd);
+	status = ft_builtin(cmd);
 	if (status != 127)
 		return (status);
 	else if (ft_get_path(cmd) == 0)
