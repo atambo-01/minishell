@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/20 13:12:28 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/22 10:20:45 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,15 +74,15 @@ int	ft_cd(t_cmd *cmd)
 
 	if (cmd->params[2])
 		return (ft_perror("cd: too many arguments\n", 1));
-	if (!cmd->params[1])
+	if (cmd->params[0])
+		chdir(cmd->params[1]);
+	else if (!cmd->params[1])
 	{
-		home = ft_get_env(cmd->env, "HOME");
-		if (!home || !home->value)
-			return (ft_perror("minishell: cd: HOME not set.", 1));
-		chdir(home->value);
-		return (0);
+		ft_perror("cd: ", 1);
+		ft_perror(cmd->params[1], 1);
+		ft_perror(": No such file or directory\n", 1);
+		return (1);
 	}
-	chdir(cmd->params[1]);
 	return (0);
 }
 
