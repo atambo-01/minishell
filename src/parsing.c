@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/21 03:32:25 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 07:59:26 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,8 @@ t_list *ft_token(char *line, t_env *env, const int prev_exit)
     t_list  *token;
     char    *exp;
 
-    if (!(exp = pre_ft_get_token(line, env, prev_exit)))
+    exp = pre_ft_get_token(line, env, prev_exit);
+	if (!exp)
         return (NULL);
 
     token = NULL;

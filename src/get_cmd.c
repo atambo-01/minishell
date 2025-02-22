@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/21 03:16:49 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 10:47:44 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,9 +155,7 @@ t_cmd	*get_cmd(t_list *token, t_env *env)
 			token = token->next->next;
 		}
 		else
-		{
 			add_params(&token, get_tail_cmd(cmd));
-		}
 	}
 	return (cmd);
 }

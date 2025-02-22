@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/21 22:55:28 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 08:10:59 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,25 +169,11 @@ void	ft_main_while_free(t_main_vars *mv)
 		ft_free_cmd(&(mv->cmd));
 }
 
-void	ft_signal(int opt[])
-{	
-	if (opt[0])
-		signal(SIGQUIT, SIG_IGN);
-	if (opt[1])
-		signal(SIGINT, ctrl_c);
-	if (opt[2])
-		signal(SIGQUIT, ft_execve_sigquit);
-	if (opt[3])
-		signal(SIGQUIT, ft_execve_sigquit_2);
-	if (opt[4])
-		signal(SIGINT, ft_execve_sigint);
-}
-
 int		exit_update(int i)
 {
 	if (g_signal == SIGINT)
 		return (130);
-	if (g_signal == SIGQUIT)
+	else if (g_signal == SIGQUIT)
 		return (131);
 	return(i);
 }
@@ -210,7 +196,8 @@ int	main(int ac, char **av, char **envp)
 //	ft_list_env(mv.env);
 	while (1)
 	{
-		ft_signal((int []){1, 1, 0, 0, 0});
+		mv.exit = exit_update(mv.exit);
+		ft_signal((int []){1, 1, 0, 0, 0, 0});
 		mv.line = readline(COLOR BOLD "minishell_prompt > " RESET);
 		ctrl_d(&mv);
 		if (ft_strlen(mv.line) > 0)
@@ -224,7 +211,10 @@ int	main(int ac, char **av, char **envp)
 			{
 				mv.cmd = get_cmd(mv.token, mv.env);
 				if (mv.cmd != NULL)
+				{
+					ft_cmd_ls(mv.cmd);
 					mv.exit = ft_execute(mv.cmd, 1, 1);
+				}
 			}
 			ft_main_while_free(&mv);	
 		}

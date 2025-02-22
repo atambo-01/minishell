@@ -149,7 +149,7 @@ void	ft_signal(int opt[]);
 void    ft_execve_sigint(int sig);
 void    ft_execve_sigquit(int sig);
 void    ft_execve_sigquit_2(int sig);
-
+void	ft_builtin_int(int sig);
 //exit 
 //void	ft_minishell_exit(t_main_vars **p_mv);
 
