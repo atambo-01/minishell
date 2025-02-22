@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/22 07:53:42 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 18:04:31 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,14 @@ int	ft_env(t_cmd *cmd)
 		temp = cmd->env;
 		while (temp)
 		{
-			if (g_signal)
+			if (g_signal == SIGINT || g_signal == SIGQUIT)
 				return (0);
 			if (temp->value != NULL)
 			{
 				printf("%s", temp->name);
 				printf("=%s", temp->value);
 				printf("\n");
+				sleep(2);
 			}
 			temp = temp->next;
 		}

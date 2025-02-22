@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 07:48:12 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 18:07:18 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int	ft_execve(t_cmd *cmd)
 	status = 0;
 	env_p = NULL;
 	pid = fork();
-	ft_signal((int []){0, 0, 1, 0, 0, 0});
+	ft_signal((int []){0, 0, 1, 1, 0, 0});
 	if (pid == -1)
 		return (ft_perror("fork", -1));
 	if (pid == 0)

@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 08:10:59 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 17:48:45 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void	ft_free_token(t_list **p_token)
 
 static void	ft_minishell_init(t_main_vars *mv, char **envp)
 {
+	g_signal = 0;
 	mv->token = NULL;
 	mv->cmd = NULL;
 	mv->line = NULL;
@@ -171,11 +172,15 @@ void	ft_main_while_free(t_main_vars *mv)
 
 int		exit_update(int i)
 {
+	int ret;
+
+	ret = i;
 	if (g_signal == SIGINT)
-		return (130);
+		ret = 130;
 	else if (g_signal == SIGQUIT)
-		return (131);
-	return(i);
+		ret = 131;
+	g_signal = 0;
+	return(ret);
 }
 
 void	ft_minishell_exit(t_main_vars *mv)
@@ -196,10 +201,8 @@ int	main(int ac, char **av, char **envp)
 //	ft_list_env(mv.env);
 	while (1)
 	{
-		mv.exit = exit_update(mv.exit);
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
 		mv.line = readline(COLOR BOLD "minishell_prompt > " RESET);
-		ctrl_d(&mv);
 		if (ft_strlen(mv.line) > 0)
 		{
 			mv.exit = exit_update(mv.exit);
@@ -212,7 +215,7 @@ int	main(int ac, char **av, char **envp)
 				mv.cmd = get_cmd(mv.token, mv.env);
 				if (mv.cmd != NULL)
 				{
-					ft_cmd_ls(mv.cmd);
+		//			ft_cmd_ls(mv.cmd);
 					mv.exit = ft_execute(mv.cmd, 1, 1);
 				}
 			}
