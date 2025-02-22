@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   aux2_env_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:21:43 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/16 18:22:40 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/22 23:39:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_list_env(t_env *env)
+void	ft_token_env(t_env *env)
 {
 	if (!env)
 		return ;

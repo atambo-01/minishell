@@ -27,11 +27,11 @@ typedef struct s_pipe
 	const char *c1;
 } t_pipe;
 
-typedef struct s_list
+typedef struct s_token
 {
 	char *s;
-	struct s_list *next;
-} t_list;
+	struct s_token *next;
+} t_token;
 
 typedef struct s_env
 {
@@ -64,7 +64,7 @@ typedef struct s_count
 
 typedef struct s_main_vars
 {
-	t_list *token;
+	t_token *token;
 	t_cmd *cmd;
 	char *line;
 	int exit;
@@ -74,24 +74,24 @@ typedef struct s_main_vars
 char	*ft_expand(char *line, t_env *env, const int prev_exi);
 int		ft_check_quotes(char *line);
 int		ft_cop_syntax(char *line);
-void	add_ctrl_op(t_list **p_token, int cop);
-void	ft_free_token(t_list **p_token);
-void	ft_token_ls(t_list *token);
+void	add_ctrl_op(t_token **p_token, int cop);
+void	ft_free_token(t_token **p_token);
+void	ft_token_ls(t_token *token);
 void	ft_free_cmd(t_cmd **p_cmd);
 void    ctrl_c(int sig);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
-void	ft_handle_pipe(char *line, t_list **token, t_count *c);
-void	ft_handle_space_or_end(char *line, t_list **token, t_count *c);
-void	ft_get_token_if(char *line, t_list **p_token, t_count *c);
-t_list	*ft_token(char *line, t_env *env, const int prev_exit);
+void	ft_handle_pipe(char *line, t_token **token, t_count *c);
+void	ft_handle_space_or_end(char *line, t_token **token, t_count *c);
+void	ft_get_token_if(char *line, t_token **p_token, t_count *c);
+t_token	*ft_token(char *line, t_env *env, const int prev_exit);
 
 // parsing_plus.c
 void	ft_counter(t_count *c);
 void	ft_counter_free(t_count **c);
-void	add_token(char *line, t_list **p_token, t_count *c);
-void	add_pipe(t_list **p_token);
+void	add_token(char *line, t_token **p_token, t_count *c);
+void	add_pipe(t_token **p_token);
 void	skip_spaces(char *line, t_count *c);
 
 //	get_subtoken.c
@@ -100,10 +100,10 @@ char	*ft_get_subtoken(char *old);
 
 // get_cmd.c
 t_cmd	*get_tail_cmd(t_cmd *cmd);
-void	add_cmd(t_list *token, t_cmd **cmd, t_env *env);
-int	ft_count_params(t_list *token);
-void	add_params(t_list **token, t_cmd *p_cmd);
-t_cmd	*get_cmd(t_list *token, t_env *env);
+void	add_cmd(t_token *token, t_cmd **cmd, t_env *env);
+int	ft_count_params(t_token *token);
+void	add_params(t_token **token, t_cmd *p_cmd);
+t_cmd	*get_cmd(t_token *token, t_env *env);
 
 // pipe.c
 int	ft_pipe(t_cmd *cmd);
@@ -132,7 +132,7 @@ int	ft_cop(char *str);
 // env_list
 void	ft_add_env_node(t_env *env, char *str);
 void	ft_free_env(t_env **p_env);
-void	ft_list_env(t_env *env);
+void	ft_token_env(t_env *env);
 void	ft_remove_env_node(t_env **head, char *name);
 
 t_env	*ft_get_env(t_env *env, const char *name);
@@ -140,7 +140,7 @@ t_env	*ft_create_env_node(const char *env);
 t_env	*ft_create_env_node_2(char *name, char *value);
 t_env	*ft_envp_to_list(char **envp);
 
-char	**ft_list_to_envp(t_env *env);
+char	**ft_token_to_envp(t_env *env);
 
 // signal
 void	ctrl_c(int sig);
@@ -150,6 +150,10 @@ void    ft_execve_sigint(int sig);
 void    ft_execve_sigquit(int sig);
 void    ft_execve_sigquit_2(int sig);
 void	ft_builtin_int(int sig);
+
+//redir.c
+void	add_redir(t_token *token, t_cmd *cmd);
+
 //exit 
 //void	ft_minishell_exit(t_main_vars **p_mv);
 

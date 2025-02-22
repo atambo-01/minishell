@@ -33,6 +33,7 @@ SOURCES		=	src/main.c\
 				src/export.c\
 				src/signal.c\
 				src/ft_unset.c\
+				src/redir.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

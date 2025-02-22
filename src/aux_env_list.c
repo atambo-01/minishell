@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   aux_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:15:47 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/21 22:18:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 23:39:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_env   *ft_envp_to_list(char **envp)
 }
 
 
-char	**ft_list_to_envp(t_env *env)
+char	**ft_token_to_envp(t_env *env)
 {
 	char	**envp;
 	t_env	*tmp;

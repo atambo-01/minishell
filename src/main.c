@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 17:48:45 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 21:02:47 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int g_signal;
 
-int	ft_list_size(t_list *head)
+int	ft_token_size(t_token *head)
 {
 	int i;
 
@@ -29,14 +29,14 @@ int	ft_list_size(t_list *head)
 	return (i);
 }
 
-void	ft_token_ls(t_list *token)
+void	ft_token_ls(t_token *token)
 {
 	int i;
 
 	i = 0;
 	if (!token || !token->s)
 		return ;
-	i = ft_list_size(token);
+	i = ft_token_size(token);
 	while (i-- > -1)
 	{
 		printf("{%s}", token->s);
@@ -56,23 +56,13 @@ void	ft_cmd_ls(t_cmd *cmd)
 	{
 		if (cmd && cmd->n)
 		{
-			printf("cmd_ls = %s\t: ", cmd->n);
+			printf("cmd_ls = %s\t:", cmd->n);
 			if (cmd->params)
 			{
 				i = 0;
 				while (cmd->params[i])
 				{
-					printf("{%s}", cmd->params[i]);
-					i++;
-				}
-			}
-			if (cmd->redir)
-			{
-				printf(" : ");
-				i = 0;
-				while (cmd->redir[i])
-				{
-					printf("{%s}", cmd->redir[i]);
+					printf(" {%s} ", cmd->params[i]);
 					i++;
 				}
 			}
@@ -86,10 +76,10 @@ void	ft_cmd_ls(t_cmd *cmd)
 	return ;
 }
 
-void	ft_free_token(t_list **p_token)
+void	ft_free_token(t_token **p_token)
 {
-	t_list *token;
-	t_list *next;
+	t_token *token;
+	t_token *next;
 
 	if (!p_token || !*p_token || !(*p_token)->s)
 		return ;
@@ -198,7 +188,7 @@ int	main(int ac, char **av, char **envp)
 	t_main_vars	mv;
 
 	ft_minishell_init(&mv, envp);
-//	ft_list_env(mv.env);
+//	ft_token_env(mv.env);
 	while (1)
 	{
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
@@ -212,15 +202,16 @@ int	main(int ac, char **av, char **envp)
 			mv.token = ft_token(mv.line, mv.env, mv.exit);
 			if (mv.token != NULL)
 			{
+				ft_token_ls(mv.token);
 				mv.cmd = get_cmd(mv.token, mv.env);
 				if (mv.cmd != NULL)
 				{
-		//			ft_cmd_ls(mv.cmd);
-					mv.exit = ft_execute(mv.cmd, 1, 1);
+					ft_cmd_ls(mv.cmd);
+				//	mv.exit = ft_execute(mv.cmd, 1, 1);
 				}
 			}
-			ft_main_while_free(&mv);	
+		//	ft_main_while_free(&mv);	
 		}
 	}
-	ft_minishell_exit(&mv);
+	//ft_minishell_exit(&mv);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_plus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/13 21:45:57 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 23:39:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	skip_spaces(char *line, t_count *c)
 	}
 }
 
-t_list	*ft_get_tail(t_list *node)
+t_token	*ft_get_tail(t_token *node)
 {
 	if (!node)
 		return (NULL);
@@ -45,16 +45,16 @@ void	ft_counter(t_count *c)
 	(c)->end = 0;
 }
 
-void	add_token(char *line, t_list **p_token, t_count *c)
+void	add_token(char *line, t_token **p_token, t_count *c)
 {
 	char	*process;
-	t_list	*token;
-	t_list	*curr;
+	t_token	*token;
+	t_token	*curr;
 
 	token = NULL;
 	if (!line || !c)
 		return ;
-	token = ft_malloc(sizeof(t_list));
+	token = ft_malloc(sizeof(t_token));
 	token->s = ft_malloc(sizeof(char *) * (c->temp + 1));
 	ft_strlcpy(token->s, &line[c->last], c->temp);
 	process = ft_get_subtoken(token->s);
@@ -69,14 +69,14 @@ void	add_token(char *line, t_list **p_token, t_count *c)
 	}
 }
 
-void	add_pipe(t_list **p_token)
+void	add_pipe(t_token **p_token)
 {
-	t_list	*curr;
-	t_list	*token;
+	t_token	*curr;
+	t_token	*token;
 
 	if (!p_token || !*p_token)
 		return ;
-	token = ft_malloc(sizeof(t_list));
+	token = ft_malloc(sizeof(t_token));
 	token->s = ft_strdup("|");
 	token->next = NULL;
 	if (!*p_token)
@@ -89,14 +89,14 @@ void	add_pipe(t_list **p_token)
 }
 
 
-void	add_ctrl_op(t_list **p_token, int cop)
+void	add_ctrl_op(t_token **p_token, int cop)
 {
-	t_list	*curr;
-	t_list	*token;
+	t_token	*curr;
+	t_token	*token;
 
 	if (!p_token || !*p_token)
 		return ;
-	token = ft_malloc(sizeof(t_list));
+	token = ft_malloc(sizeof(t_token));
 	if (cop == 1)
 		token->s = ft_strdup("|");
 	else if (cop == 2)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 18:07:18 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/22 23:39:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ int	ft_execve(t_cmd *cmd)
 		return (ft_perror("fork", -1));
 	if (pid == 0)
 	{
-		env_p = ft_list_to_envp(cmd->env);
+		env_p = ft_token_to_envp(cmd->env);
 		if (!env_p || !*env_p)
 			exit(1);
 		if (execve(cmd->path, cmd->params, env_p) == -1)
@@ -139,137 +139,6 @@ int	ft_execve(t_cmd *cmd)
 	return (status);
 }
 
-int	ft_redir_out(t_cmd *cmd, int i, int fd[], int *i_fd)
-{
-	fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_TRUNC | O_WRONLY, 0644);
-	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", -1));
-	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
-		return (ft_perror("dup2: redirecting stdout\n", -1));
-	(*i_fd)++;
-	return (0);
-}
-
-int	ft_redir_in(t_cmd *cmd, int i, int fd[], int *i_fd)
-{
-	fd[*i_fd] = open(cmd->redir[i + 1], O_RDONLY);
-	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", -1));
-	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-		return (ft_perror("dup2: redirecting stdin\n", -1));
-	(*i_fd)++;
-	return (0);
-}
-
-int	ft_redir_append(t_cmd *cmd, int i, int fd[], int *i_fd)
-{
-	fd[*i_fd] = open(cmd->redir[i + 1], O_CREAT | O_APPEND | O_WRONLY, 0644);
-	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", -1));
-	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
-		return (ft_perror("dup2: redirecting stdout\n", -1));
-	(*i_fd)++;
-	return (0);
-}
-
-int	count_redir(t_cmd *cmd)
-{
-	int	i;
-
-	i = 0;
-	while (cmd->redir[i])
-		i++;
-	return (i);
-}
-
-int	mod_fd(t_cmd *cmd, int i, int fd[], int *i_fd)
-{
-	int	cop;
-
-	cop = ft_cop(cmd->redir[i]);
-	if (cop == 2)
-		return (ft_redir_out(cmd, i, fd, i_fd));
-	else if (cop == 3)
-		return (ft_redir_in(cmd, i, fd, i_fd));
-	else if (cop == 4)
-	{
-		return (ft_redir_append(cmd, i, fd, i_fd));
-	}
-	/*
-	else if (ft_cop(cmd->params[i]) == 5)
-	{
-		return (ft_heredoc(cmd, i, fd, i_fd));
-	}
-*/
-	return (0);
-}
-
-int	bckp_fd(int fd[])
-{
-	fd[0] = dup(STDIN_FILENO);
-	fd[1] = dup(STDOUT_FILENO);
-	fd[2] = dup(STDERR_FILENO);
-	if (fd[0] == -1 || fd[1] == -1 || fd[2] == -1)
-	{
-		close(fd[0]);
-		close(fd[1]);
-		close(fd[2]);
-		return (ft_perror("redirect: bckup fd\n", 1));
-	}
-	return (0);
-}
-
-void	close_fd(int fd[], int i_fd)
-{
-	int j;
-
-	j = 3;
-	while(j < i_fd)
-	{
-		close(fd[j]);
-		j++;
-	}
-}
-
-void	restore_fd(int fd[])
-{
-	dup2(fd[0], STDIN_FILENO);
-	dup2(fd[1], STDOUT_FILENO);
-	dup2(fd[2], STDERR_FILENO);
-	close(fd[0]);
-	close(fd[1]);
-	close(fd[2]);
-}
-
-int	ft_redirect(t_cmd *cmd)
-{
-	int	*fd;
-	int r;
-	int	i;
-	int	i_fd;
-	int status;
-
-	if (!cmd->redir)
-		return (1);
-	fd = ft_malloc(sizeof(int) * (count_redir(cmd) + 3));
-	if (bckp_fd(fd) != 0)
-		return (ft_perror("error: saving std fds\n", -1));
-	i = 0;
-	i_fd = 3;
-	while(cmd->redir[i])
-	{
-		r = mod_fd(cmd, i, fd, &i_fd);
-		if (r == -1)
-			return (-1);
-		i++;
-	}
-	close_fd(fd, i_fd);
-	status = ft_execute(cmd, 0, 0);
-	restore_fd(fd);
-	free(fd);
-	return (status);
-}
-
 int	ft_execute(t_cmd *cmd, int p, int r)
 {
 	pid_t pid;
@@ -280,8 +149,7 @@ int	ft_execute(t_cmd *cmd, int p, int r)
 		return (-1);
 	if (cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
 		return (ft_pipe(cmd->nc));
-	if (r && cmd->redir)
-		return (ft_redirect(cmd));
+	//ft_redir(mv.token);
 	status = ft_builtin(cmd);
 	if (status != 127)
 		return (status);
