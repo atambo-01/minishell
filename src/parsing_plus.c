@@ -6,13 +6,13 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 23:39:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 00:49:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	skip_spaces(char *line, t_count *c)
+void	ft_skip_spaces(char *line, t_count *c)
 {
 	if (!line || !c)
 		return ;
@@ -45,7 +45,7 @@ void	ft_counter(t_count *c)
 	(c)->end = 0;
 }
 
-void	add_token(char *line, t_token **p_token, t_count *c)
+void	ft_add_token(char *line, t_token **p_token, t_count *c)
 {
 	char	*process;
 	t_token	*token;
@@ -69,7 +69,7 @@ void	add_token(char *line, t_token **p_token, t_count *c)
 	}
 }
 
-void	add_pipe(t_token **p_token)
+void	ft_add_pipe(t_token **p_token)
 {
 	t_token	*curr;
 	t_token	*token;
@@ -89,7 +89,7 @@ void	add_pipe(t_token **p_token)
 }
 
 
-void	add_ctrl_op(t_token **p_token, int cop)
+void	ft_add_ctrl_op(t_token **p_token, int cop)
 {
 	t_token	*curr;
 	t_token	*token;

@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/13 15:36:29 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 01:21:22 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void get_env_value(char *var_name, char *dest, t_env *env)
+void ft_get_env_value(char *var_name, char *dest, t_env *env)
 {
     while (env)
     {
@@ -94,7 +94,7 @@ char	*ft_expand(char *line, t_env *env, const int prev_exit)
             end = start;
             while (ft_isalnum(line[end]) || line[end] == '_')
                 end++;
-            var_name = malloc(sizeof(char) * (end - start + 1));
+            var_name = ft_malloc(sizeof(char) * (end - start + 1));
             if (!var_name)
             {
                 free(exp_line);
@@ -102,7 +102,7 @@ char	*ft_expand(char *line, t_env *env, const int prev_exit)
             }
             strncpy(var_name, &line[start], end - start);
             var_name[end - start] = '\0';
-            get_env_value(var_name, &exp_line[x], env);
+            ft_get_env_value(var_name, &exp_line[x], env);
             x += strlen(&exp_line[x]);  // Move x forward
             free(var_name);
             i = end - 1;  // Move past the variable

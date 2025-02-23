@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 21:02:47 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 01:58:57 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ void	ft_main_while_free(t_main_vars *mv)
 		ft_free_cmd(&(mv->cmd));
 }
 
-int		exit_update(int i)
+int		ft_exit_update(int i)
 {
 	int ret;
 
@@ -195,7 +195,7 @@ int	main(int ac, char **av, char **envp)
 		mv.line = readline(COLOR BOLD "minishell_prompt > " RESET);
 		if (ft_strlen(mv.line) > 0)
 		{
-			mv.exit = exit_update(mv.exit);
+			mv.exit = ft_exit_update(mv.exit);
 			add_history(mv.line);
 			if (ft_strcmp(mv.line, "exit") == 0)
 				break ;
@@ -203,7 +203,7 @@ int	main(int ac, char **av, char **envp)
 			if (mv.token != NULL)
 			{
 				ft_token_ls(mv.token);
-				mv.cmd = get_cmd(mv.token, mv.env);
+				mv.cmd = ft_get_cmd(mv.token, mv.env);
 				if (mv.cmd != NULL)
 				{
 					ft_cmd_ls(mv.cmd);

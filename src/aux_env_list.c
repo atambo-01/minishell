@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:15:47 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/22 23:39:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 00:49:43 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**ft_token_to_envp(t_env *env)
 		size++;
 		tmp = tmp->next;
 	}
-	envp = (char **)malloc(sizeof(char *) * (size + 1));
+	envp = (char **)ft_malloc(sizeof(char *) * (size + 1));
 	if (!envp)
 		return (NULL);
 	i = 0;

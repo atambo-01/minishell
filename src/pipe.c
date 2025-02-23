@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/21 02:24:40 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 01:20:09 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-int	handle_first_fork(t_cmd *cmd, int *fd)
+int	ft_handle_first_fork(t_cmd *cmd, int *fd)
 {
 	pid_t	pid;
 
@@ -33,7 +33,7 @@ int	handle_first_fork(t_cmd *cmd, int *fd)
 	return (pid);
 }
 
-int	handle_second_fork(t_cmd *cmd, int *fd)
+int	ft_handle_second_fork(t_cmd *cmd, int *fd)
 {
 	pid_t	pid;
 
@@ -65,12 +65,9 @@ int	ft_pipe(t_cmd *cmd)
 	pid_0 = 0;
 	pid_1 = 0;
 	if (pipe(fd) == -1)
-	{
-		perror("pipe");
-		exit(EXIT_FAILURE);
-	}
-	pid_0 = handle_first_fork(cmd, fd);
-	pid_1 = handle_second_fork(cmd, fd);
+		exit(ft_perror("pipe", EXIT_FAILURE));
+	pid_0 = ft_handle_first_fork(cmd, fd);
+	pid_1 = ft_handle_second_fork(cmd, fd);
 	close(fd[0]);
 	close(fd[1]);
 	waitpid(pid_0, &status, 0);

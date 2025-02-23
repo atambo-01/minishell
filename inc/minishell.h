@@ -74,11 +74,11 @@ typedef struct s_main_vars
 char	*ft_expand(char *line, t_env *env, const int prev_exi);
 int		ft_check_quotes(char *line);
 int		ft_cop_syntax(char *line);
-void	add_ctrl_op(t_token **p_token, int cop);
+void	ft_add_ctrl_op(t_token **p_token, int cop);
 void	ft_free_token(t_token **p_token);
 void	ft_token_ls(t_token *token);
 void	ft_free_cmd(t_cmd **p_cmd);
-void    ctrl_c(int sig);
+void    ft_ctrl_c(int sig);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
@@ -90,20 +90,20 @@ t_token	*ft_token(char *line, t_env *env, const int prev_exit);
 // parsing_plus.c
 void	ft_counter(t_count *c);
 void	ft_counter_free(t_count **c);
-void	add_token(char *line, t_token **p_token, t_count *c);
-void	add_pipe(t_token **p_token);
-void	skip_spaces(char *line, t_count *c);
+void	ft_add_token(char *line, t_token **p_token, t_count *c);
+void	ft_add_pipe(t_token **p_token);
+void	ft_skip_spaces(char *line, t_count *c);
 
 //	get_subtoken.c
 void	ft_subtoken_handle_quotes(char *old, char *new, t_count *c);
 char	*ft_get_subtoken(char *old);
 
 // get_cmd.c
-t_cmd	*get_tail_cmd(t_cmd *cmd);
-void	add_cmd(t_token *token, t_cmd **cmd, t_env *env);
-int	ft_count_params(t_token *token);
-void	add_params(t_token **token, t_cmd *p_cmd);
-t_cmd	*get_cmd(t_token *token, t_env *env);
+t_cmd	*ft_get_tail_cmd(t_cmd *cmd);
+void	ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env);
+int		ft_count_params(t_token *token);
+void	ft_add_params(t_token **token, t_cmd *p_cmd);
+t_cmd	*ft_get_cmd(t_token *token, t_env *env);
 
 // pipe.c
 int	ft_pipe(t_cmd *cmd);
@@ -113,7 +113,7 @@ int		ft_builtin(t_cmd *cmd);
 int		ft_mtxlen(char **mtx);
 int		ft_vfy_name(char *name, char **env);
 int		ft_is_valid_name(char *name);
-void	print_ex(t_env **envp);
+void	ft_print_ex(t_env **envp);
 int		ft_run_builtin(t_cmd *cmd);
 int	ft_echo(t_cmd *cmd);
 int	ft_export(char **args, t_env **envp);
@@ -143,8 +143,8 @@ t_env	*ft_envp_to_list(char **envp);
 char	**ft_token_to_envp(t_env *env);
 
 // signal
-void	ctrl_c(int sig);
-void	ctrl_d(t_main_vars *sig);
+void	ft_ctrl_c(int sig);
+void	ft_ctrl_d(t_main_vars *sig);
 void	ft_signal(int opt[]);
 void    ft_execve_sigint(int sig);
 void    ft_execve_sigquit(int sig);
@@ -152,7 +152,7 @@ void    ft_execve_sigquit_2(int sig);
 void	ft_builtin_int(int sig);
 
 //redir.c
-void	add_redir(t_token *token, t_cmd *cmd);
+void	ft_add_redir(t_token *token, t_cmd *cmd);
 
 //exit 
 //void	ft_minishell_exit(t_main_vars **p_mv);

@@ -6,14 +6,14 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 23:46:22 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 01:21:24 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 #include <string.h>
 
-t_cmd	*get_tail_cmd(t_cmd *cmd)
+t_cmd	*ft_get_tail_cmd(t_cmd *cmd)
 {
 	if (!cmd)
 		return (NULL);
@@ -22,7 +22,7 @@ t_cmd	*get_tail_cmd(t_cmd *cmd)
 	return (cmd);
 }
 
-void	add_cmd(t_token *token, t_cmd **cmd, t_env *env)
+void	ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env)
 {
 	t_cmd	*curr;
 	t_cmd	*new;
@@ -45,7 +45,7 @@ void	add_cmd(t_token *token, t_cmd **cmd, t_env *env)
 		*cmd = new;
 	else
 	{
-		curr = get_tail_cmd(*cmd);
+		curr = ft_get_tail_cmd(*cmd);
 		curr->nc = new;
 		new->pc = curr;
 	}
@@ -70,14 +70,14 @@ int	ft_count_params(t_token *token)
 	return (i);
 }
 
-void	add_params(t_token **token, t_cmd *cmd)
+void	ft_add_params(t_token **token, t_cmd *cmd)
 {
 	int		i;
 
 	if (!*token || !cmd)
 		return ;
 	i = ft_count_params(*token);
-	add_redir(*token, cmd);	
+	ft_add_redir(*token, cmd);	
 	cmd->params = ft_malloc(sizeof(char *) * (i + 2));
 	i = 1;
 	cmd->params[0] = cmd->n;
@@ -96,25 +96,25 @@ void	add_params(t_token **token, t_cmd *cmd)
 	cmd->params[i] = NULL;
 }
 
-t_cmd	*get_cmd(t_token *head, t_env *env)
+t_cmd	*ft_get_cmd(t_token *head, t_env *env)
 {
 	t_cmd	*cmd;
 	t_token	*token;
 
 	cmd = NULL;
 	token = head;
-	add_cmd(token, &cmd, env);
+	ft_add_cmd(token, &cmd, env);
 	token = token->next;
 	while (token && token->s)
 	{
 		if (token->s && ft_cop(token->s) == 1)
 		{
-			add_cmd(token, &cmd, env);
-			add_cmd(token->next, &cmd, env);
+			ft_add_cmd(token, &cmd, env);
+			ft_add_cmd(token->next, &cmd, env);
 			token = token->next->next;
 		}
 		else
-			add_params(&token, get_tail_cmd(cmd));
+			ft_add_params(&token, ft_get_tail_cmd(cmd));
 	}
 	return (cmd);
 }

@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 23:42:21 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 02:02:55 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_count_redir(t_token *token)
 	return (i);
 }
 
-void	add_redir(t_token *token, t_cmd *cmd)
+void	ft_add_redir(t_token *token, t_cmd *cmd)
 {
 	int	i;
 
@@ -43,10 +43,10 @@ void	add_redir(t_token *token, t_cmd *cmd)
 	{
 		if (ft_cop(token->s) >= 1)
 		{
-			cmd->redir[i] = strdup(token->s);
+			cmd->redir[i] = token->s;
 			i++;
 			token = token->next;
-			cmd->redir[i] = strdup(token->s);
+			cmd->redir[i] = token->s;
 			i++;
 		}
 		if (token)
@@ -88,20 +88,8 @@ int	ft_redir_append(t_token *token, int fd[], int *i_fd)
 	return (0);
 }
 
-int	count_redir(t_token *token)
-{
-	int	i;
 
-	i = 0;
-	while (token)
-	{
-		token = token->next;
-		i++;
-	}
-	return (i);
-}
-
-int	mod_fd(t_token *token, int fd[], int *i_fd)
+int	ft_mod_fd(t_token *token, int fd[], int *i_fd)
 {
 	int	cop;
 
@@ -121,7 +109,7 @@ int	mod_fd(t_token *token, int fd[], int *i_fd)
 	return (0);
 }
 
-int	bckp_fd(int fd[])
+int	ft_bckp_fd(int fd[])
 {
 	fd[0] = dup(STDIN_FILENO);
 	fd[1] = dup(STDOUT_FILENO);
@@ -136,7 +124,7 @@ int	bckp_fd(int fd[])
 	return (0);
 }
 
-void	close_fd(int fd[], int i_fd)
+void	ft_close_fd(int fd[], int i_fd)
 {
 	int j;
 
@@ -148,7 +136,7 @@ void	close_fd(int fd[], int i_fd)
 	}
 }
 
-void	restore_fd(int fd[])
+void	ft_restore_fd(int fd[])
 {
 	dup2(fd[0], STDIN_FILENO);
 	dup2(fd[1], STDOUT_FILENO);
@@ -158,31 +146,31 @@ void	restore_fd(int fd[])
 	close(fd[2]);
 }
 
-int	ft_redirect(t_token *token)
+int	ft_get_redir(t_token *head)
 {
-	int	*fd;
-	int r;
-	int	i;
-	int	i_fd;
-	int status;
+	int		*fd;
+	int		r;
+	int		i;
+	int		i_fd;
+	int		status;
+	t_token	*token;
 
-	if (!token)
-		return (1);
-	fd = ft_malloc(sizeof(int) * (count_redir(token) + 3));
-	if (bckp_fd(fd) != 0)
+	token = head;
+	fd = ft_malloc(sizeof(int) * (ft_count_redir(token) + 3));
+	if (ft_bckp_fd(fd) != 0)
 		return (ft_perror("error: saving std fds\n", -1));
 	i = 0;
 	i_fd = 3;
 	while(token)
 	{
-		r = mod_fd(token, fd, &i_fd);
+		r = ft_mod_fd(token, fd, &i_fd);
 		if (r == -1)
 			return (-1);
 		i++;
 	}
-	close_fd(fd, i_fd);
+	ft_close_fd(fd, i_fd);
 //	status = ft_execute(cmd, 0, 0);
-	restore_fd(fd);
+	ft_restore_fd(fd);
 	free(fd);
 	return (status);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/21 23:46:14 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 01:21:23 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_is_valid_name(char *name)
 	return (0);
 }
 
-void	print_ex(t_env **env)
+void	ft_print_ex(t_env **env)
 {
 	int		i;
 	t_env	*temp;
@@ -66,7 +66,7 @@ int	ft_export(char **args, t_env **envp)
 	i = 1;
 	if (!args[1])
 	{
-		print_ex(envp);
+		ft_print_ex(envp);
 		return (0);
 	}
 	else

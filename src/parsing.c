@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 23:39:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 01:58:02 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void	ft_handle_pipe(char*line, t_token **token, t_count *c)
 	if (c->k >= 1 && line[c->k - 1] != ' ')
 	{
 		c->temp = c->k - c->last + 1;
-		add_token(line, token, c);
+		ft_add_token(line, token, c);
 	}
-	add_pipe(token);
-	skip_spaces(line, c);
+	ft_add_pipe(token);
+	ft_skip_spaces(line, c);
 	c->last = c->k + 1;
 }
 
@@ -41,13 +41,13 @@ void	ft_handle_ctrl_op(char *line, t_token **token, t_count *c, int cop)
 	if (c->k >= 1 && line[c->k - 1] != ' ')
 	{
 		c->temp = c->k - c->last + 1;
-		add_token(line, token, c);
+		ft_add_token(line, token, c);
 	}
-	add_ctrl_op(token, cop);
-	skip_spaces(line, c);
+	ft_add_ctrl_op(token, cop);
+	ft_skip_spaces(line, c);
 	if (cop >= 4)
 		c->k += 1;
-	skip_spaces(line, c);
+	ft_skip_spaces(line, c);
 	c->last = c->k + 1;
 }
 
@@ -58,8 +58,8 @@ void	ft_handle_space_or_end(char*line, t_token **token, t_count *c)
 	if (line[c->k + 1] == 0)
 		c->end = 1;
 	c->temp = c->k + c->end - c->last + 1;
-	add_token(line, token, c);
-	skip_spaces(line, c);
+	ft_add_token(line, token, c);
+	ft_skip_spaces(line, c);
 	c->last = c->k + 1;
 }
 
@@ -79,7 +79,7 @@ void	ft_get_token_if(char *line, t_token **token, t_count *c)
 	}
 }
 
-char *pre_ft_get_token(char *line, t_env *env, const int prev_exit)
+char *ft_pre_get_token(char *line, t_env *env, const int prev_exit)
 {
     char *trim;
     char *exp;
@@ -101,7 +101,7 @@ t_token *ft_token(char *line, t_env *env, const int prev_exit)
     t_token  *token;
     char    *exp;
 
-    exp = pre_ft_get_token(line, env, prev_exit);
+    exp = ft_pre_get_token(line, env, prev_exit);
 	if (!exp)
         return (NULL);
 

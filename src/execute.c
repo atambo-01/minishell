@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/22 23:39:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 01:21:20 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ char	*ft_strjoin_path(const char *dir, const char *name)
 	size_t	len_dir;
 	size_t	len_name;
 
-	len_dir = strlen(dir);
-	len_name = strlen(name);
+	len_dir = ft_strlen(dir);
+	len_name = ft_strlen(name);
 	full_path = ft_malloc(len_dir + len_name + 2);
 	if (!full_path)
 		return (NULL);
