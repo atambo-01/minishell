@@ -2,15 +2,18 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+
 # include <fcntl.h>
+# include <stdio.h>
 # include <limits.h>
+# include <signal.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/wait.h>
+# include <sys/stat.h>
+# include <sys/types.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <signal.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <sys/wait.h>
-# include <unistd.h>
 
 # define COLOR	"\033[34m"
 # define BOLD   "\x1B[1m"

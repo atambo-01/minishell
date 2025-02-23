@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/23 01:21:20 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 12:51:41 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,36 +107,44 @@ void	ft_builtin_int(int sig)
 	g_signal = SIGINT;
 }
 
-int	ft_execve(t_cmd *cmd)
+int ft_execve_child(t_cmd *cmd)
 {
-	pid_t	pid;
-	int		status;
-	char	**env_p;
+    char **env_p;
 
-	status = 0;
-	env_p = NULL;
-	pid = fork();
-	ft_signal((int []){0, 0, 1, 1, 0, 0});
-	if (pid == -1)
-		return (ft_perror("fork", -1));
-	if (pid == 0)
-	{
-		env_p = ft_token_to_envp(cmd->env);
-		if (!env_p || !*env_p)
-			exit(1);
-		if (execve(cmd->path, cmd->params, env_p) == -1)
-			exit(2);
+    env_p = ft_token_to_envp(cmd->env);
+    if (!env_p || !*env_p)
+        exit(1);
+    if (execve(cmd->path, cmd->params, env_p) == -1)
+        exit(2);
+    return (0);
+}
+
+int ft_execve(t_cmd *cmd)
+{
+    pid_t   pid;
+    int     status;
+    struct stat path_stat;
+
+    status = 0;
+    if (stat(cmd->path, &path_stat) == 0 && S_ISDIR(path_stat.st_mode))
+    {
+		ft_perror("minishell: ", 1);
+		ft_perror(cmd->path, 1);
+		return (ft_perror(" Is a directory\n", 126));
 	}
-	else
-	{
-		ft_signal((int []){0, 0, 0, 1, 1, 0});
-		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			status = 128 + WTERMSIG(status);
-	}
-	return (status);
+    pid = fork();
+    ft_signal((int []){0, 0, 1, 1, 0, 0});
+    if (pid == -1)
+        return (ft_perror("fork", -1));
+    if (pid == 0)
+        ft_execve_child(cmd);
+    ft_signal((int []){0, 0, 0, 1, 1, 0});
+    waitpid(pid, &status, 0);
+    if (WIFEXITED(status))
+        status = WEXITSTATUS(status);
+    else if (WIFSIGNALED(status))
+        status = 128 + WTERMSIG(status);
+    return (status);
 }
 
 int	ft_execute(t_cmd *cmd, int p, int r)

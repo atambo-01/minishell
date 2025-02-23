@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/23 02:59:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 12:56:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,7 +199,7 @@ int	main(int ac, char **av, char **envp)
 				if (mv.cmd != NULL)
 				{
 					ft_cmd_ls(mv.cmd);
-				//	mv.exit = ft_execute(mv.cmd, 1, 1);
+					mv.exit = ft_execute(mv.cmd, 1, 1);
 				}
 			}
 		//	ft_main_while_free(&mv);	
