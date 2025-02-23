@@ -90,7 +90,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		sig_call();
-		mv.line = readline("minishell_prompt > ");
+		mv.line = readline(COLOR BOLD "minishell_prompt > " RESET);
 		ctrl_d(&mv);
 		if (ft_strlen(mv.line) > 0)
 		{

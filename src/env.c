@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/18 17:46:45 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/22 12:58:32 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ int	ft_env(t_cmd *cmd)
 	if (!cmd)
 		return (1);
 	if (cmd->params[1])
-		return (ft_perror("env: too many arguments\n", 2));
+	{
+		ft_perror("cd: ", 1);
+		ft_perror(cmd->params[1], 1);
+		ft_perror(": No such file or directory\n", 1);
+	}
 	temp = cmd->env;
 	while (temp)
 	{
@@ -32,5 +36,14 @@ int	ft_env(t_cmd *cmd)
 		}
 		temp = temp->next;
 	}
+	return (0);
+}
+
+int ft_exit(char **args)
+{
+	(void)args;
+	//ft_minishell_exit(args);
+	free(&args);
+	exit(0);
 	return (0);
 }
