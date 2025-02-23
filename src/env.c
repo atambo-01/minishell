@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/22 12:58:32 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/23 14:14:05 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_env(t_cmd *cmd)
 	return (0);
 }
 
-int ft_exit(char **args)
+int	ft_exit(char **args)
 {
 	(void)args;
 	//ft_minishell_exit(args);
