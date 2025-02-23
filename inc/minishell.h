@@ -48,7 +48,6 @@ typedef struct s_cmd
 	char			*path;
 	t_env			*env;
 	char			**params;
-	char			**redir;
 } t_cmd;
 
 typedef struct s_count
@@ -65,10 +64,12 @@ typedef struct s_count
 typedef struct s_main_vars
 {
 	t_token *token;
-	t_cmd *cmd;
-	char *line;
-	int exit;
-	t_env *env;
+	t_cmd 	*cmd;
+	char 	*line;
+	int		*fd;
+	int		fd_c;
+	int 	exit;
+	t_env 	*env;
 } t_main_vars;
 
 char	*ft_expand(char *line, t_env *env, const int prev_exi);
@@ -152,7 +153,8 @@ void    ft_execve_sigquit_2(int sig);
 void	ft_builtin_int(int sig);
 
 //redir.c
-void	ft_add_redir(t_token *token, t_cmd *cmd);
+int ft_get_redir(t_token *head, int *fd, int *count);
+
 
 //exit 
 //void	ft_minishell_exit(t_main_vars **p_mv);

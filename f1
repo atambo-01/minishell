@@ -1,0 +1,7 @@
+cmd_ls = echo	: {echo}  {hello} 
+[?2004h[34m[1mminishell_prompt > [0m^C[?2004l
+[34m[1mminishell_prompt > [0m[?2004h^C[?2004l
+[34m[1mminishell_prompt > [0m[?2004h^C[?2004l
+[34m[1mminishell_prompt > [0m[?2004h^C[?2004l
+[34m[1mminishell_prompt > [0m[?2004hexit
+[?2004l

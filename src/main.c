@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/23 01:58:57 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 02:59:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,7 @@ static void	ft_minishell_init(t_main_vars *mv, char **envp)
 	mv->token = NULL;
 	mv->cmd = NULL;
 	mv->line = NULL;
+	mv->fd = NULL;
 	mv->exit = 0;
 	mv->env = ft_envp_to_list(envp);
 }
@@ -118,16 +119,6 @@ void	ft_free_cmd(t_cmd **p_cmd)
 	while (cmd)
 	{
 		next = cmd->nc;
-		if (cmd->redir)
-		{
-			n = 0;
-			while(cmd->redir[n])
-			{
-				free(cmd->redir[n]);
-				n++;
-			}
-			free(cmd->redir);
-		}
 		if (cmd->params)
 		{
 			n = 0;
@@ -203,6 +194,7 @@ int	main(int ac, char **av, char **envp)
 			if (mv.token != NULL)
 			{
 				ft_token_ls(mv.token);
+				ft_get_redir(mv.token, mv.fd, &mv.fd_c);
 				mv.cmd = ft_get_cmd(mv.token, mv.env);
 				if (mv.cmd != NULL)
 				{

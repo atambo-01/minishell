@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/23 02:02:55 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 02:59:57 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,32 +31,9 @@ int	ft_count_redir(t_token *token)
 	return (i);
 }
 
-void	ft_add_redir(t_token *token, t_cmd *cmd)
-{
-	int	i;
-
-	if (!token || !cmd || ((i = ft_count_redir(token)) <= 0))
-		return ;
-	cmd->redir = ft_malloc(sizeof(char *) * (i + 1));
-	i = 0;
-	while(token)
-	{
-		if (ft_cop(token->s) >= 1)
-		{
-			cmd->redir[i] = token->s;
-			i++;
-			token = token->next;
-			cmd->redir[i] = token->s;
-			i++;
-		}
-		if (token)
-			token = token->next;
-	}
-	cmd->redir[i] = NULL;
-}
-
 int	ft_redir_out(t_token *token, int fd[], int *i_fd)
 {
+	printf("redir out\n");
 	fd[*i_fd] = open(token->next->s, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	if (fd[*i_fd] == -1)
 		return (ft_perror("minshell: Permission denied\n", -1));
@@ -68,6 +45,7 @@ int	ft_redir_out(t_token *token, int fd[], int *i_fd)
 
 int	ft_redir_in(t_token *token, int fd[], int *i_fd)
 {
+	printf("redir in\n");
 	fd[*i_fd] = open(token->next->s, O_RDONLY);
 	if (fd[*i_fd] == -1)
 		return (ft_perror("minshell: Permission denied\n", -1));
@@ -79,6 +57,7 @@ int	ft_redir_in(t_token *token, int fd[], int *i_fd)
 
 int	ft_redir_append(t_token *token, int fd[], int *i_fd)
 {
+	printf("redir append\n");
 	fd[*i_fd] = open(token->next->s, O_CREAT | O_APPEND | O_WRONLY, 0644);
 	if (fd[*i_fd] == -1)
 		return (ft_perror("minshell: Permission denied\n", -1));
@@ -146,31 +125,25 @@ void	ft_restore_fd(int fd[])
 	close(fd[2]);
 }
 
-int	ft_get_redir(t_token *head)
+int	ft_get_redir(t_token *head, int *fd, int *count)
 {
-	int		*fd;
 	int		r;
-	int		i;
 	int		i_fd;
-	int		status;
 	t_token	*token;
 
 	token = head;
-	fd = ft_malloc(sizeof(int) * (ft_count_redir(token) + 3));
+	*count = ft_count_redir(token) + 3;
+	fd = ft_malloc(sizeof(int) * (*count));
 	if (ft_bckp_fd(fd) != 0)
 		return (ft_perror("error: saving std fds\n", -1));
-	i = 0;
 	i_fd = 3;
 	while(token)
 	{
 		r = ft_mod_fd(token, fd, &i_fd);
 		if (r == -1)
 			return (-1);
-		i++;
+		token = token->next;
 	}
 	ft_close_fd(fd, i_fd);
-//	status = ft_execute(cmd, 0, 0);
-	ft_restore_fd(fd);
-	free(fd);
-	return (status);
+	return (i_fd);
 }

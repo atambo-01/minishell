@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/23 01:21:24 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/23 02:45:03 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env)
 	new->env = env;
 	new->nc = NULL;
 	new->pc = NULL;
-	new->redir = NULL;
 	if (!*cmd)
 		*cmd = new;
 	else
@@ -77,7 +76,6 @@ void	ft_add_params(t_token **token, t_cmd *cmd)
 	if (!*token || !cmd)
 		return ;
 	i = ft_count_params(*token);
-	ft_add_redir(*token, cmd);	
 	cmd->params = ft_malloc(sizeof(char *) * (i + 2));
 	i = 1;
 	cmd->params[0] = cmd->n;
