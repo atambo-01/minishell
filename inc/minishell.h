@@ -104,13 +104,16 @@ char	*ft_get_subtoken(char *old);
 
 // get_cmd.c
 t_cmd	*ft_get_tail_cmd(t_cmd *cmd);
-void	ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env);
+t_token	*ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env);
 int		ft_count_params(t_token *token);
 void	ft_add_params(t_token **token, t_cmd *p_cmd);
 t_cmd	*ft_get_cmd(t_token *token, t_env *env);
+t_token *ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env);
 
 // pipe.c
-int	ft_pipe(t_cmd *cmd);
+int	ft_pipe(t_cmd *cmd, t_main_vars *mv);
+void    ft_restore_fd(int fd[]);
+int ft_bckp_fd(int fd[]);
 
 // builtins.c
 int		ft_builtin(t_cmd *cmd);
@@ -127,8 +130,7 @@ int	ft_pwd(void);
 int	ft_unset(t_cmd *cmd);
 
 // execute
-int		ft_execute(t_cmd *cmd, int p, int r);
-int	ft_execute(t_cmd *cmd, int p, int r);
+int		ft_execute(t_cmd *cmd, int p, int r, t_main_vars *mv);
 
 // utils.c
 int	ft_cop(char *str);
@@ -156,8 +158,9 @@ void    ft_execve_sigquit_2(int sig);
 void	ft_builtin_int(int sig);
 
 //redir.c
-int ft_get_redir(t_token *head, int *fd, int *count);
-
+int		ft_get_redir(t_token *head, int **fd, int *count);
+void    ft_close_fd(int fd[], int i_fd);
+void    ft_restore_fd(int fd[]);
 
 //exit 
 //void	ft_minishell_exit(t_main_vars **p_mv);
