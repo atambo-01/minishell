@@ -6,28 +6,56 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/25 21:42:37 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/26 17:50:21 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
+/*
+int ft_heredoc(t_token *token, int i, int fd[], int *i_fd)
+{
+    char *line;
+    
+    pipe(&fd[*i_fd]);
+    while ((line = readline("> ")))
+    {
+        if (strcmp(line, ) == 0) 
+        {
+            free(line);
+            break;
+        }
+        write(fd[*i_fd + 1], line, strlen(line));
+        write(fd[*i_fd + 1], "\n", 1);
+        free(line);
+    }
+    if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
+        return (ft_perror("heredoc: dup2\n", 1));
+    (*i_fd) += 2;
+    return (0);
+}
+*/
+
 int	ft_count_redir(t_token *token)
 {
-	int	i;
-
+	int		i;
+	t_token	*curr;
+	
 	i = 0;
 	if (!token)
 		return (0);
-	while (token && (ft_cop(token->s) != 1))
+	curr = token;
+	while (curr && (ft_cop(curr->s) != 1))
 	{
-		if (ft_cop(token->s) > 1)
+		if (ft_cop(curr->s) > 1)
 		{
-			i += 2;
-			token = token->next;
-		}	
-		token = token->next;
+			if (curr->next)
+				i++;
+		}
+		if (curr)
+			curr = curr->next;
 	}
+	printf("i = %d\n", i);
 	return (i);
 }
 
@@ -75,16 +103,12 @@ int	ft_mod_fd(t_token *token, int fd[], int *i_fd)
 	cop = ft_cop(token->s);
 	if (cop == 2)
 		return (ft_redir_out(token, fd, i_fd));
-	/*
 	else if (cop == 3)
 		return (ft_redir_in(token, fd, i_fd));
 	else if (cop == 4)
 	        return (ft_redir_append(token, fd, i_fd));
-	else if (ft_cop(cmd->params[i]) == 5)
-	{
-		return (ft_heredoc(cmd, i, fd, i_fd));
-	}
-*/
+//	else if (cop == 5)
+//		return (ft_heredoc(cmd, i, fd, i_fd));
 	return (0);
 }
 

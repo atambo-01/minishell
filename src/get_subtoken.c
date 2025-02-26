@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 09:51:03 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/06 21:41:38 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/26 19:12:07 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,5 @@ char	*ft_get_subtoken(char *old)
 			c.k++;
 		}
 	}
-	free(old);
-	old = NULL;
 	return (new);
 }

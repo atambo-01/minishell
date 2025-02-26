@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/26 01:00:47 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/26 19:06:05 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,10 @@ int	main(int ac, char **av, char **envp)
 			if (mv.token != NULL)
 			{
 				ft_token_ls(mv.token);
+				if (ft_count_redir(mv.token) > 0)
+				{
+					ft_get_redir(mv.token, &(mv.fd), &(mv.fd_c));
+				}
 				mv.cmd = ft_get_cmd(mv.token, mv.env);
 				ft_bckp_fd(mv.fd);
 				if (mv.cmd != NULL)
@@ -208,12 +212,10 @@ int	main(int ac, char **av, char **envp)
 						ft_pipe(&mv, mv.cmd, mv.token);
 					else 
 					{	
-						if (ft_count_redir(mv.token) > 0)
-							ft_get_redir(mv.token, &(mv.fd), &(mv.fd_c));
 						mv.exit = ft_execute(mv.cmd);
 						ft_restore_fd(mv.fd);
 					}
-				}
+				}	
 			}
 		//	ft_main_while_free(&mv);	
 		}
