@@ -111,9 +111,10 @@ t_cmd	*ft_get_cmd(t_token *token, t_env *env);
 t_token *ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env);
 
 // pipe.c
-int	ft_pipe(t_cmd *cmd, t_main_vars *mv);
+int		ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token);
 void    ft_restore_fd(int fd[]);
-int ft_bckp_fd(int fd[]);
+int 	ft_bckp_fd(int fd[]);
+t_token *ft_get_pipe(t_token *token);
 
 // builtins.c
 int		ft_builtin(t_cmd *cmd);
@@ -122,18 +123,18 @@ int		ft_vfy_name(char *name, char **env);
 int		ft_is_valid_name(char *name);
 void	ft_print_ex(t_env **envp);
 int		ft_run_builtin(t_cmd *cmd);
-int	ft_echo(t_cmd *cmd);
-int	ft_export(char **args, t_env **envp);
-int	ft_env(t_cmd *cmd);
-int	ft_cd(t_cmd *cmd);
-int	ft_pwd(void);
-int	ft_unset(t_cmd *cmd);
+int		ft_echo(t_cmd *cmd);
+int		ft_export(char **args, t_env **envp);
+int		ft_env(t_cmd *cmd);
+int		ft_cd(t_cmd *cmd);
+int		ft_pwd(void);
+int		ft_unset(t_cmd *cmd);
 
 // execute
-int		ft_execute(t_cmd *cmd, int p, int r, t_main_vars *mv);
+int		ft_execute(t_cmd *cmd);
 
 // utils.c
-int	ft_cop(char *str);
+int		ft_cop(char *str);
 
 // env_list
 void	ft_add_env_node(t_env *env, char *str);
@@ -159,6 +160,7 @@ void	ft_builtin_int(int sig);
 
 //redir.c
 int		ft_get_redir(t_token *head, int **fd, int *count);
+int 	ft_count_redir(t_token *token);
 void    ft_close_fd(int fd[], int i_fd);
 void    ft_restore_fd(int fd[]);
 

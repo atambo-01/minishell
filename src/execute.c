@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/23 19:16:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/25 22:48:21 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,12 @@ int ft_execve(t_cmd *cmd)
 		return (ft_perror(" Is a directory\n", 126));
 	}
     pid = fork();
-    ft_signal((int []){0, 0, 1, 1, 0, 0});
+    ft_signal((int []){0, 0, 0, 0, 0, 0});
     if (pid == -1)
         return (ft_perror("fork", -1));
     if (pid == 0)
         ft_execve_child(cmd);
-    ft_signal((int []){0, 0, 0, 1, 1, 0});
+    ft_signal((int []){0, 0, 0, 0, 0, 0});
     waitpid(pid, &status, 0);
     if (WIFEXITED(status))
         status = WEXITSTATUS(status);
@@ -147,7 +147,7 @@ int ft_execve(t_cmd *cmd)
     return (status);
 }
 
-int	ft_execute(t_cmd *cmd, int p, int r, t_main_vars *mv)
+int	ft_execute(t_cmd *cmd)
 {
 	pid_t pid;
 	int status;
@@ -155,10 +155,6 @@ int	ft_execute(t_cmd *cmd, int p, int r, t_main_vars *mv)
 	status = 0;
 	if (!cmd)
 		return (-1);
-	if (cmd->nc && p == 1 && ft_strcmp(cmd->nc->n, "|") == 0)
-		return (ft_pipe(cmd->nc, mv));
-	if (r)
-		ft_get_redir(mv->token, &(mv->fd), &(mv->fd_c));
 	status = ft_builtin(cmd);
 	if (status != 127)
 		return (status);
@@ -170,6 +166,5 @@ int	ft_execute(t_cmd *cmd, int p, int r, t_main_vars *mv)
 		ft_putstr_fd(": command not found\n", 1);
 		status = 127;
 	}
-	ft_restore_fd(mv->fd);
 	return (status);
 }

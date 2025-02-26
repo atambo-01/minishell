@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/23 01:58:02 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/26 01:02:45 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,8 @@ char *ft_pre_get_token(char *line, t_env *env, const int prev_exit)
     char *trim;
     char *exp;
 
-    if (ft_check_quotes(line) != 0) 
-        return (NULL);
+    if (ft_check_quotes(line) != 0)
+		return (NULL);
 	if (ft_cop_syntax(line) != 0)
 		return (NULL);
 	if (!(trim = ft_strtrim(line, " ")))

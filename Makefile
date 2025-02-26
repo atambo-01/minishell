@@ -6,12 +6,12 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/02/12 16:11:07 by atambo           ###   ########.fr        #
+#    Updated: 2025/02/26 00:55:30 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	cc
-CFLAGS		=	-g #-Wall -Wextra -Werror
+CFLAGS		=	-g -Wall -Wextra -Werror
 NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes

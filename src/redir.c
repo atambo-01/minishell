@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/23 19:21:40 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/25 21:42:37 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,11 +75,11 @@ int	ft_mod_fd(t_token *token, int fd[], int *i_fd)
 	cop = ft_cop(token->s);
 	if (cop == 2)
 		return (ft_redir_out(token, fd, i_fd));
+	/*
 	else if (cop == 3)
 		return (ft_redir_in(token, fd, i_fd));
 	else if (cop == 4)
 	        return (ft_redir_append(token, fd, i_fd));
-	/*
 	else if (ft_cop(cmd->params[i]) == 5)
 	{
 		return (ft_heredoc(cmd, i, fd, i_fd));
@@ -134,7 +134,11 @@ int	ft_get_redir(t_token *head, int **fd, int *count)
 	t_token	*token;
 
 	token = head;
-	*count = ft_count_redir(token) + 3;
+	*count = ft_count_redir(token);
+	if (*count == 0)
+		return (0);
+	else 
+		*count += 3;
 	i_fd = 3;
 	while(token)
 	{
@@ -143,5 +147,6 @@ int	ft_get_redir(t_token *head, int **fd, int *count)
 			return (-1);
 		token = token->next;
 	}
+	ft_close_fd(*fd, i_fd);
 	return (i_fd);
 }
