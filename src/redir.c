@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/26 17:50:21 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 15:39:03 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ int	ft_count_redir(t_token *token)
 		if (curr)
 			curr = curr->next;
 	}
-	printf("i = %d\n", i);
 	return (i);
 }
 

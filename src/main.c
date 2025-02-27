@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/26 19:06:05 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 15:45:05 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ int	main(int ac, char **av, char **envp)
 //	ft_token_env(mv.env);
 	while (1)
 	{
-		ft_signal((int []){0, 0, 0, 0, 0, 0});
+		ft_signal((int []){1, 1, 0, 0, 0, 0});
 		mv.line = readline(COLOR BOLD "minishell_prompt > " RESET);
 	//	sleep(5);
 		if (ft_strlen(mv.line) > 0)
@@ -198,24 +198,24 @@ int	main(int ac, char **av, char **envp)
 			mv.token = ft_token(mv.line, mv.env, mv.exit);
 			if (mv.token != NULL)
 			{
-				ft_token_ls(mv.token);
-				if (ft_count_redir(mv.token) > 0)
-				{
-					ft_get_redir(mv.token, &(mv.fd), &(mv.fd_c));
-				}
+		//		ft_token_ls(mv.token);
 				mv.cmd = ft_get_cmd(mv.token, mv.env);
 				ft_bckp_fd(mv.fd);
 				if (mv.cmd != NULL)
 				{
-					ft_cmd_ls(mv.cmd);
+		//			ft_cmd_ls(mv.cmd);
 					if (ft_get_pipe(mv.token) != NULL)
 						ft_pipe(&mv, mv.cmd, mv.token);
 					else 
-					{	
+					{
+						if (ft_count_redir(mv.token) > 0)
+							ft_get_redir(mv.token, &(mv.fd), &(mv.fd_c));
 						mv.exit = ft_execute(mv.cmd);
 						ft_restore_fd(mv.fd);
 					}
-				}	
+				}
+				else if (ft_count_redir(mv.token) > 0)
+					ft_get_redir(mv.token, &(mv.fd), &(mv.fd_c));
 			}
 		//	ft_main_while_free(&mv);	
 		}

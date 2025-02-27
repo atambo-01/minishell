@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:14:05 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/24 11:46:42 by eneto            ###   ########.fr       */
+/*   Updated: 2025/02/27 15:44:37 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,16 +36,16 @@ void	ft_ctrl_d(t_main_vars *mv)
 void    ft_signal(int opt[])
 {
     if (opt[0])
-        signal(SIGQUIT, SIG_IGN);
+        signal(SIGQUIT, SIG_IGN); //main
     if (opt[1])
-        signal(SIGINT, ft_ctrl_c);
+        signal(SIGINT, ft_ctrl_c); //main
     if (opt[2])
-        signal(SIGQUIT, ft_execve_sigquit);
+        signal(SIGQUIT, ft_execve_sigquit); //execve
     if (opt[3])
-        signal(SIGQUIT, ft_execve_sigquit_2);
+        signal(SIGQUIT, ft_execve_sigquit_2); //execve
     if (opt[4])
-        signal(SIGINT, ft_execve_sigint);
+        signal(SIGINT, ft_execve_sigint); //execve
 	if (opt[5])
-		signal(SIGINT, ft_builtin_int);
+		signal(SIGINT, ft_builtin_int); //builtins
 }
 

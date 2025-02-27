@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/25 22:48:21 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 15:56:46 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,8 @@ void	ft_execve_sigint(int sig)
 void	ft_execve_sigquit(int sig)
 {
 	(void)sig;
-	exit(0);
 	g_signal = SIGQUIT;
+	exit(0);
 }
 
 void	ft_execve_sigquit_2(int sig)
@@ -133,7 +133,7 @@ int ft_execve(t_cmd *cmd)
 		return (ft_perror(" Is a directory\n", 126));
 	}
     pid = fork();
-    ft_signal((int []){0, 0, 0, 0, 0, 0});
+    ft_signal((int []){0, 0, 1, 1, 1, 0});
     if (pid == -1)
         return (ft_perror("fork", -1));
     if (pid == 0)
