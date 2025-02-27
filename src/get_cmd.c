@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/26 19:10:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:22:09 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ t_token	*ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env)
 	if (!token || !cmd || ft_cop(token->s) != 1)
 		return (token);
 	new = ft_malloc(sizeof(t_cmd));
-	new->n = token->s;
+	new->n = ft_get_subtoken(token->s);
 	new->env = env;
 	new->nc = NULL;
 	new->pc = NULL;

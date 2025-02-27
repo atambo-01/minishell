@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 15:56:46 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:36:21 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ int	ft_get_path(t_cmd *cmd)
 	int		r;
 	char	*path_env;
 	char	**paths;
-	char	*full_path;
 
 	if (ft_strchr(cmd->n, '/') != NULL)
 	{
@@ -66,7 +65,7 @@ int	ft_get_path(t_cmd *cmd)
 		return(0);
 	}
 	r = 0;
-	path_env = getenv("PATH");
+	path_env = ft_getenv(cmd->env, "PATH");
 	if (!path_env || !cmd || !cmd->n)
 		return (1);
 	paths = ft_split(path_env, ':');

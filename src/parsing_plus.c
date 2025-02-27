@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/26 18:58:08 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:20:32 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,6 @@ void	ft_add_token(char *line, t_token **p_token, t_count *c)
 	token = ft_malloc(sizeof(t_token));
 	token->s = ft_malloc(sizeof(char *) * (c->temp + 1));
 	ft_strlcpy(token->s, &line[c->last], c->temp);
-//	process = ft_get_subtoken(token->s);
-//	token->s = process;
 	token->next = NULL;
 	if (!*p_token)
 		*p_token = token;

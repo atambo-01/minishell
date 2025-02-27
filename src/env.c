@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/22 18:04:31 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:25:28 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ int	ft_env(t_cmd *cmd)
 				printf("%s", temp->name);
 				printf("=%s", temp->value);
 				printf("\n");
-				sleep(2);
 			}
 			temp = temp->next;
 		}

@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:14:05 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/27 15:44:37 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:19:51 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	ft_ctrl_c(int sig)
 
 void	ft_ctrl_d(t_main_vars *mv)
 {
-	g_signal = SIGQUIT;
 	if (mv->line == NULL)
 	{
 		write(1, "exit\n", 5);

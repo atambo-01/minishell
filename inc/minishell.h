@@ -142,7 +142,7 @@ void	ft_free_env(t_env **p_env);
 void	ft_token_env(t_env *env);
 void	ft_remove_env_node(t_env **head, char *name);
 
-t_env	*ft_get_env(t_env *env, const char *name);
+char	*ft_getenv(t_env *env, const char *name);
 t_env	*ft_create_env_node(const char *env);
 t_env	*ft_create_env_node_2(char *name, char *value);
 t_env	*ft_envp_to_list(char **envp);

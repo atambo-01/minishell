@@ -6,20 +6,20 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:15:47 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/23 00:49:43 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 17:36:40 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_env	*ft_get_env(t_env *env, const char *name)
+char	*ft_getenv(t_env *env, const char *name)
 {
 	if (!env)
 		return (NULL);
 	while (env)
 	{
 		if (ft_strcmp(env->name, name) == 0)
-			return (env);
+			return (env->value);
 		env = env->next;
 	}
 	return (NULL);
