@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/28 03:22:26 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/28 19:15:11 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,46 +176,61 @@ void	ft_minishell_exit(t_main_vars *mv)
 	free(mv->line);
 	rl_clear_history();
 }
-int	ft_is_numeric(char *str)
+
+int ft_exit_atoi(char *str)
 {
-	if (*str == '-' || *str == '+')
-		str++;
-	if (!ft_isdigit(*str))
-		return(0);
-	while(ft_isdigit(*str))
-		str++;
-	if (*str == '\0')
-		return(1);
+    int i = 0;
+    long num = 0;
+    char quote = 0;
+
+    while (str[i])
+    {
+        if (str[i] == '"' || str[i] == '\'')
+        {
+            if (quote == 0)
+                quote = str[i];
+            else if (quote == str[i])
+                quote = 0;
+        }
+        else if (!quote)
+        {
+            if (str[i] < '0' || str[i] > '9')
+                return (-1);
+            num = num * 10 + (str[i] - '0');
+            if (num > INT_MAX)
+                return (-1);
+        }
+        i++;
+    }
+    return (num);
 }
+
 
 int    ft_exit(t_main_vars *mv)
 {
-    int		num;
-	char	*temp;	
-	
-	temp = ft_get_subtoken(mv->token->s);
-	if (ft_strcmp(temp, "exit") != 0)
-	{
-		free(temp);
+	int	status;
+
+	status = 0;
+	if (ft_strcmp(mv->token->s, "exit") != 0)
 		return(0);
-	}
-	free(temp);
-	
-	ft_main_while_free(mv);
-
-	printf("exit\n");
-	if (!mv->token->next)
-		exit(0)	;	
-	else if (mv->token->next)
-	{
-		if (ft_is_numeric(mv->token->next->s) == 0)
-			exit(ft_perror("minishell: exit: numeric argument needed\n", 2));
+	if (mv->token->next)
+	{	
 		if (mv->token->next->next)
-			return(ft_perror("exit: to many arguments\n", 1));
-		exit(ft_atoi(mv->token->next->s));
+			status = 2;
+		num = ft_exit_atoi(mv->token->next->s, int status);
 	}
+//	ft_exit_clean();
+	printf("exit\n");
+	if (status == 1)
+		ft_perror("minishell: exit: need a numeric argument\n", 0);
+	else if (status == 0 || status == 2)
+	{	
+		if (status == 2)
+			ft_perror("minishell: exit: to many arguments\n", 0);
+		return(status);
+	}
+	exit(ft_abs(status));
 }
-
 
 int	main(int ac, char **av, char **envp)
 {
@@ -229,18 +244,18 @@ int	main(int ac, char **av, char **envp)
 	{
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
 		mv.line = readline(COLOR BOLD "攻殻機動隊 > " RESET);
-	//	sleep(5);
+		ft_ctrl_d(&mv);
 		if (ft_strlen(mv.line) > 0)
 		{
 			mv.exit = ft_exit_update(mv.exit);
 			add_history(mv.line);
 			mv.token = ft_token(mv.line, mv.env, mv.exit);
-			if (ft_exit(&mv) != 0)
-				mv.exit = 1;
+			ft_token_ls(mv.token);
+			if (ft_exit(&mv) == 2)
+				mv.exit = 2;
 			else if (mv.token != NULL)
 			{
 
-			//	ft_token_ls(mv.token);
 				mv.cmd = ft_get_cmd(mv.token, mv.env);
 				ft_bckp_fd(mv.fd);
 				if (mv.cmd != NULL)
