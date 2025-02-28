@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/28 19:15:11 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/28 23:18:00 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,20 +181,18 @@ int ft_exit_atoi(char *str)
 {
     int i = 0;
     long num = 0;
-    char quote = 0;
 
     while (str[i])
     {
+		if (str[i] == '-' && (i = 0 || i == 1))
+			return(-1);
+		else  if (str[i] == '+' && (i == 0 || i ==1))
+			i++;
         if (str[i] == '"' || str[i] == '\'')
+			i++;
+        else
         {
-            if (quote == 0)
-                quote = str[i];
-            else if (quote == str[i])
-                quote = 0;
-        }
-        else if (!quote)
-        {
-            if (str[i] < '0' || str[i] > '9')
+            if (!ft_isdigit(str[i]))
                 return (-1);
             num = num * 10 + (str[i] - '0');
             if (num > INT_MAX)
@@ -209,27 +207,26 @@ int ft_exit_atoi(char *str)
 int    ft_exit(t_main_vars *mv)
 {
 	int	status;
+	int	num;
 
 	status = 0;
 	if (ft_strcmp(mv->token->s, "exit") != 0)
-		return(0);
+		return (0);
 	if (mv->token->next)
 	{	
 		if (mv->token->next->next)
 			status = 2;
-		num = ft_exit_atoi(mv->token->next->s, int status);
+		num = ft_exit_atoi(mv->token->next->s);
 	}
 //	ft_exit_clean();
 	printf("exit\n");
-	if (status == 1)
-		ft_perror("minishell: exit: need a numeric argument\n", 0);
-	else if (status == 0 || status == 2)
-	{	
-		if (status == 2)
-			ft_perror("minishell: exit: to many arguments\n", 0);
-		return(status);
-	}
-	exit(ft_abs(status));
+	if (num == -1)
+		status = ft_perror("minishell: exit: need a numeric argument\n", 1);
+	else if (status == 2)
+		return (ft_perror("minishell: exit: to many arguments\n", status));
+	else
+		status = num;
+	exit(status);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -243,7 +240,7 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
-		mv.line = readline(COLOR BOLD "攻殻機動隊 > " RESET);
+		mv.line = readline(COLOR BOLD "攻殻_機動隊 > " RESET);
 		ft_ctrl_d(&mv);
 		if (ft_strlen(mv.line) > 0)
 		{
