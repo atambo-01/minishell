@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 15:39:20 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 23:08:01 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_handle_pipe(char*line, t_token **token, t_count *c)
 
 void	ft_handle_ctrl_op(char *line, t_token **token, t_count *c, int cop)
 {
-	if (c->k >= 1 && line[c->k - 1] != ' ')
+	if (c->k > 0 && line[c->k - 1] != ' ')
 	{
 		c->temp = c->k - c->last + 1;
 		ft_add_token(line, token, c);

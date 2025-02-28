@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 17:20:32 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/27 23:06:20 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,6 @@ void	ft_add_ctrl_op(t_token **p_token, int cop)
 	t_token	*curr;
 	t_token	*token;
 
-	if (!p_token || !*p_token)
-		return ;
 	token = ft_malloc(sizeof(t_token));
 	if (cop == 1)
 		token->s = ft_strdup("|");

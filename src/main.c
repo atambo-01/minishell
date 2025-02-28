@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 15:45:05 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/28 03:22:26 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ void	ft_free_cmd(t_cmd **p_cmd)
 
 void	ft_main_while_free(t_main_vars *mv)
 {
+	ft_restore_fd(mv->fd);	
 	if (mv->line)
 		free(mv->line);
 	if (mv->token)
@@ -175,6 +176,46 @@ void	ft_minishell_exit(t_main_vars *mv)
 	free(mv->line);
 	rl_clear_history();
 }
+int	ft_is_numeric(char *str)
+{
+	if (*str == '-' || *str == '+')
+		str++;
+	if (!ft_isdigit(*str))
+		return(0);
+	while(ft_isdigit(*str))
+		str++;
+	if (*str == '\0')
+		return(1);
+}
+
+int    ft_exit(t_main_vars *mv)
+{
+    int		num;
+	char	*temp;	
+	
+	temp = ft_get_subtoken(mv->token->s);
+	if (ft_strcmp(temp, "exit") != 0)
+	{
+		free(temp);
+		return(0);
+	}
+	free(temp);
+	
+	ft_main_while_free(mv);
+
+	printf("exit\n");
+	if (!mv->token->next)
+		exit(0)	;	
+	else if (mv->token->next)
+	{
+		if (ft_is_numeric(mv->token->next->s) == 0)
+			exit(ft_perror("minishell: exit: numeric argument needed\n", 2));
+		if (mv->token->next->next)
+			return(ft_perror("exit: to many arguments\n", 1));
+		exit(ft_atoi(mv->token->next->s));
+	}
+}
+
 
 int	main(int ac, char **av, char **envp)
 {
@@ -187,38 +228,44 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
-		mv.line = readline(COLOR BOLD "minishell_prompt > " RESET);
+		mv.line = readline(COLOR BOLD "攻殻機動隊 > " RESET);
 	//	sleep(5);
 		if (ft_strlen(mv.line) > 0)
 		{
 			mv.exit = ft_exit_update(mv.exit);
 			add_history(mv.line);
-			if (ft_strcmp(mv.line, "exit") == 0)
-				break ;
 			mv.token = ft_token(mv.line, mv.env, mv.exit);
-			if (mv.token != NULL)
+			if (ft_exit(&mv) != 0)
+				mv.exit = 1;
+			else if (mv.token != NULL)
 			{
-		//		ft_token_ls(mv.token);
+
+			//	ft_token_ls(mv.token);
 				mv.cmd = ft_get_cmd(mv.token, mv.env);
 				ft_bckp_fd(mv.fd);
 				if (mv.cmd != NULL)
 				{
-		//			ft_cmd_ls(mv.cmd);
+				//	ft_cmd_ls(mv.cmd);
 					if (ft_get_pipe(mv.token) != NULL)
 						ft_pipe(&mv, mv.cmd, mv.token);
 					else 
 					{
 						if (ft_count_redir(mv.token) > 0)
-							ft_get_redir(mv.token, &(mv.fd), &(mv.fd_c));
-						mv.exit = ft_execute(mv.cmd);
-						ft_restore_fd(mv.fd);
+						{	
+							int redir = ft_get_redir(mv.token, &(mv.fd), &(mv.fd_c));
+							if (redir == 0)
+								mv.exit = ft_execute(mv.cmd);
+							else
+								mv.exit = redir;
+						}
+						else
+							mv.exit = ft_execute(mv.cmd);
 					}
 				}
 				else if (ft_count_redir(mv.token) > 0)
 					ft_get_redir(mv.token, &(mv.fd), &(mv.fd_c));
 			}
-		//	ft_main_while_free(&mv);	
+			ft_main_while_free(&mv);
 		}
 	}
-	//ft_minishell_exit(&mv);
 }

@@ -6,21 +6,23 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 15:39:03 by atambo           ###   ########.fr       */
+/*   Updated: 2025/02/28 00:43:15 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-/*
-int ft_heredoc(t_token *token, int i, int fd[], int *i_fd)
+
+int ft_heredoc(t_token *token, int fd[], int *i_fd)
 {
     char *line;
-    
+    char *temp;
+
+	temp = ft_get_subtoken(token->next->s);
     pipe(&fd[*i_fd]);
     while ((line = readline("> ")))
     {
-        if (strcmp(line, ) == 0) 
+        if (ft_strcmp(line, temp) == 0) 
         {
             free(line);
             break;
@@ -29,12 +31,13 @@ int ft_heredoc(t_token *token, int i, int fd[], int *i_fd)
         write(fd[*i_fd + 1], "\n", 1);
         free(line);
     }
-    if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-        return (ft_perror("heredoc: dup2\n", 1));
+	free(temp);
+	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
+		return (ft_perror("heredoc: dup2\n", 1));
     (*i_fd) += 2;
     return (0);
 }
-*/
+
 
 int	ft_count_redir(t_token *token)
 {
@@ -60,36 +63,47 @@ int	ft_count_redir(t_token *token)
 
 int	ft_redir_out(t_token *token, int fd[], int *i_fd)
 {
+	char *temp;
+
+	temp = ft_get_subtoken(token->next->s);
 //	printf("redir out\n");
 	fd[*i_fd] = open(token->next->s, O_CREAT | O_TRUNC | O_WRONLY, 0644);
+	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", -1));
+		return (ft_perror("minshell: Permission denied\n", 1));
 	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
-		return (ft_perror("dup2: redirecting stdout\n", -1));
+		return (ft_perror("dup2: redirecting stdout\n", 1));
 	(*i_fd)++;
 	return (0);
 }
 
 int	ft_redir_in(t_token *token, int fd[], int *i_fd)
 {
-//	printf("redir in\n");
+	char *temp;
+
+	//	printf("redir in\n");
+	temp = ft_get_subtoken(token->next->s);
 	fd[*i_fd] = open(token->next->s, O_RDONLY);
+	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", -1));
+		return (ft_perror("minshell: Permission denied\n", 1));
 	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-		return (ft_perror("dup2: redirecting stdin\n", -1));
+		return (ft_perror("dup2: redirecting stdin\n", 1));
 	(*i_fd)++;
 	return (0);
 }
 
 int	ft_redir_append(t_token *token, int fd[], int *i_fd)
 {
-//	printf("redir append\n");
+	char *temp;
+
+	temp = ft_get_subtoken(token->next->s);
 	fd[*i_fd] = open(token->next->s, O_CREAT | O_APPEND | O_WRONLY, 0644);
+	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", -1));
+		return (ft_perror("minshell: Permission denied\n", 1));
 	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
-		return (ft_perror("dup2: redirecting stdout\n", -1));
+		return (ft_perror("dup2: redirecting stdout\n", 1));
 	(*i_fd)++;
 	return (0);
 }
@@ -106,8 +120,8 @@ int	ft_mod_fd(t_token *token, int fd[], int *i_fd)
 		return (ft_redir_in(token, fd, i_fd));
 	else if (cop == 4)
 	        return (ft_redir_append(token, fd, i_fd));
-//	else if (cop == 5)
-//		return (ft_heredoc(cmd, i, fd, i_fd));
+	else if (cop == 5)
+		return (ft_heredoc(token, fd, i_fd));
 	return (0);
 }
 
@@ -166,10 +180,10 @@ int	ft_get_redir(t_token *head, int **fd, int *count)
 	while(token)
 	{
 		r = ft_mod_fd(token, *fd, &i_fd);
-		if (r == -1)
-			return (-1);
+		if (r == 1)
+			return (1);
 		token = token->next;
 	}
 	ft_close_fd(*fd, i_fd);
-	return (i_fd);
+	return (0);
 }
