@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:49:13 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/01 04:10:43 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 19:44:07 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void    ft_free_token(t_token **p_token)
         token = NULL;
 }
 
-ettatic  void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av)
+void	ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av)
 {
         (void)ac;
         (void)av;

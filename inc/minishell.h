@@ -76,7 +76,6 @@ typedef struct s_main_vars
 } t_main_vars;
 
 // main.c +
-
 char	*ft_expand(char *line, t_env *env, const int prev_exi);
 int		ft_check_quotes(char *line);
 int		ft_cop_syntax(char *line);
@@ -84,6 +83,8 @@ void	ft_add_ctrl_op(t_token **p_token, int cop);
 void	ft_free_token(t_token **p_token);
 void	ft_token_ls(t_token *token);
 void	ft_free_cmd(t_cmd **p_cmd);
+void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
+void    ft_main_while_free(t_main_vars *mv);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
