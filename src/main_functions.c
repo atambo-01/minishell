@@ -1,0 +1,92 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_functions.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/01 03:49:13 by atambo            #+#    #+#             */
+/*   Updated: 2025/03/01 04:10:43 by atambo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../inc/minishell.h"
+
+int     ft_exit_update(int i)
+{
+        int     ret;
+
+        ret = i;
+        if (g_signal == SIGINT)
+                ret = 130;
+        else if (g_signal == SIGQUIT)
+                ret = 131;
+        g_signal = 0;
+        return (ret);
+}
+
+void    ft_free_token(t_token **p_token)
+{
+        t_token *token;
+        t_token *next;
+
+        if (!p_token || !*p_token || !(*p_token)->s)
+                return ;
+        token = *p_token;
+        while (token)
+        {
+                next = token->next;
+                free(token->s);
+                token->s = NULL;
+                free(token);
+                token = next;
+        }
+        token = NULL;
+}
+
+ettatic  void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av)
+{
+        (void)ac;
+        (void)av;
+        g_signal = 0;
+        mv->token = NULL;
+        mv->cmd = NULL;
+        mv->line = NULL;
+        mv->fd = NULL;
+        mv->exit = 0;
+        mv->env = ft_envp_to_list(envp);
+        mv->fd = ft_malloc(sizeof(int) * (10000));
+        ft_bckp_fd(mv->fd);
+}
+
+void    ft_free_cmd(t_cmd **p_cmd)
+{
+        t_cmd   *cmd;
+        t_cmd   *next;
+
+        if (!p_cmd || !*p_cmd)
+                return ;
+        cmd = *p_cmd;
+        while (cmd)
+        {
+                next = cmd->nc;
+                cmd->env = NULL;
+                if (cmd->params)
+                        ft_free_pp((void ***)&(cmd->params));
+                ft_free_p((void *)&(cmd->n));
+                ft_free_p((void *)&(cmd->path));
+                ft_free_p((void *)&(cmd));
+                cmd = next;
+        }
+}
+
+void    ft_main_while_free(t_main_vars *mv)
+{
+        ft_restore_fd(mv->fd);
+        if (mv->line)
+                free(mv->line);
+        if (mv->token)
+                ft_free_token(&(mv->token));
+        if (mv->cmd)
+                ft_free_cmd(&(mv->cmd));
+}

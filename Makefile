@@ -6,12 +6,12 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/02/26 01:14:59 by atambo           ###   ########.fr        #
+#    Updated: 2025/03/01 04:03:13 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	cc
-CFLAGS		=	-g #-Wall -Wextra -Werror
+CFLAGS		=	-g -Wall -Wextra -Werror
 NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
@@ -34,6 +34,8 @@ SOURCES		=	src/main.c\
 				src/signal.c\
 				src/ft_unset.c\
 				src/redir.c\
+				src/main_functions.c\
+				src/main_aux.c
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

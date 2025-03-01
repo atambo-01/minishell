@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/27 17:25:28 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 02:35:22 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 
 int	ft_env(t_cmd *cmd)
 {
-
 	t_env	*temp;
 	while(!g_signal)
 	{
@@ -38,4 +37,5 @@ int	ft_env(t_cmd *cmd)
 		}
 		return (0);
 	}
+	return (0);
 }

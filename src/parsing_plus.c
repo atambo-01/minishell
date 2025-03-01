@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 23:06:20 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 02:28:19 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ void	ft_counter(t_count *c)
 
 void	ft_add_token(char *line, t_token **p_token, t_count *c)
 {
-	char	*process;
 	t_token	*token;
 	t_token	*curr;
 

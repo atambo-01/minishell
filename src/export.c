@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/27 17:32:00 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 02:36:09 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,8 @@ int	ft_is_valid_name(char *name)
 
 void	ft_print_ex(t_env **env)
 {
-	int		i;
 	t_env	*temp;
 
-	i = 1;
 	temp = (*env)->next;
 	while (temp)
 	{

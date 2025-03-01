@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 17:36:21 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 02:33:13 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,6 @@ int ft_execve(t_cmd *cmd)
 
 int	ft_execute(t_cmd *cmd)
 {
-	pid_t pid;
 	int status;
 
 	status = 0;

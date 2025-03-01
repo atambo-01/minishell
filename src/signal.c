@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:14:05 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/27 17:19:51 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 02:49:27 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void	ft_ctrl_c(int sig)
 {
+	(void)sig;
 	g_signal = SIGINT;
 	write(1, "\n", 1);
 	rl_on_new_line();
@@ -32,18 +33,18 @@ void	ft_ctrl_d(t_main_vars *mv)
 	return ;
 }
 
-void    ft_signal(int opt[])
+void	ft_signal(int opt[])
 {
-    if (opt[0])
-        signal(SIGQUIT, SIG_IGN); //main
-    if (opt[1])
-        signal(SIGINT, ft_ctrl_c); //main
-    if (opt[2])
-        signal(SIGQUIT, ft_execve_sigquit); //execve
-    if (opt[3])
-        signal(SIGQUIT, ft_execve_sigquit_2); //execve
-    if (opt[4])
-        signal(SIGINT, ft_execve_sigint); //execve
+	if (opt[0])
+		signal(SIGQUIT, SIG_IGN); //main
+	if (opt[1])
+		signal(SIGINT, ft_ctrl_c); //main
+	if (opt[2])
+		signal(SIGQUIT, ft_execve_sigquit); //execve
+	if (opt[3])
+		signal(SIGQUIT, ft_execve_sigquit_2); //execve
+	if (opt[4])
+		signal(SIGINT, ft_execve_sigint); //execve
 	if (opt[5])
 		signal(SIGINT, ft_builtin_int); //builtins
 }

@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:08:23 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/21 21:06:40 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 02:30:55 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 static int	ft_init_env_values(t_env *node, char *env)
 {
 	char	*equal;
-	char *msg = "aqui\0";
 
 	equal = ft_strchr(env, '=');
 	if (equal)

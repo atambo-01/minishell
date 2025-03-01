@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/26 14:16:37 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 02:29:32 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	ft_handle_first_fork(t_main_vars* mv, t_cmd *cmd, int *fd, t_token *token)
 		dup2(fd[1], STDOUT_FILENO);
 		close(fd[0]);
 		close(fd[1]);
-		if (ft_count_redir(token));
+		if (ft_count_redir(token))
 			ft_get_redir(token, &(mv->fd), &(mv->fd_c));
 		exit(ft_execute(cmd));
 	}
@@ -69,7 +69,7 @@ int	ft_handle_second_fork(t_main_vars *mv, t_cmd *cmd, int *fd, t_token *token)
 			ft_pipe(mv, cmd, token);
 		else 
 		{	
-			if (ft_count_redir(token));
+			if (ft_count_redir(token))
 				ft_get_redir(token, &(mv->fd), &(mv->fd_c));
 			exit(ft_execute(cmd));
 		}
