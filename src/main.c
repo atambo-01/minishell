@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:53:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/01 01:13:30 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/01 01:22:16 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,8 @@ int    ft_exit(t_main_vars *mv)
 			status = 2;
 		num = ft_exit_atoi(mv->token->next->s);
 	}
-	ft_exit_free(mv);
+	if (status != 2)
+		ft_exit_free(mv);
 	printf("exit\n");
 	if (num == -1)
 		status = ft_perror("minishell: exit: need a numeric argument\n", 1);
