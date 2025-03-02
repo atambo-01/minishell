@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:15:47 by eneto             #+#    #+#             */
-/*   Updated: 2025/02/27 17:36:40 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/02 11:53:11 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,12 @@ char	*ft_getenv(t_env *env, const char *name)
 	while (env)
 	{
 		if (ft_strcmp(env->name, name) == 0)
-			return (env->value);
+		{
+			if (env->value)
+				return (env->value);
+			else
+				return ("no name or =");
+		}
 		env = env->next;
 	}
 	return (NULL);

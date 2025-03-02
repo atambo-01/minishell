@@ -85,6 +85,7 @@ void	ft_token_ls(t_token *token);
 void	ft_free_cmd(t_cmd **p_cmd);
 void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
 void    ft_main_while_free(t_main_vars *mv);
+int     ft_exit_update(int i);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);

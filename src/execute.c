@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/01 02:33:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/02 00:55:18 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 	char	*full_path;
 	char	**paths;
 
+	if (cmd->n[0] == '\0')
+		return (1);
 	i = 0;
 	paths = *p_paths;
 	while (paths[i])
@@ -160,9 +162,8 @@ int	ft_execute(t_cmd *cmd)
 		return (ft_execve(cmd));
 	else
 	{
-		ft_putstr_fd(cmd->n, 1);
-		ft_putstr_fd(": command not found\n", 1);
-		status = 127;
+		ft_perror(cmd->n, 1);
+		status = ft_perror(": command not found\n", 127);
 	}
 	return (status);
 }

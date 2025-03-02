@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/01 04:01:22 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/02 01:27:55 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	main(int ac, char **av, char **envp)
 	ft_shell_init(&mv, envp, ac, av);
 	while (1)
 	{
-		ft_main_while_free(&mv);
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
+		ft_main_while_free(&mv);
 		mv.line = readline(COLOR BOLD "攻殻_機動隊 > " RESET);
 		ft_ctrl_d(&mv);
 		if (ft_strlen(mv.line) == 0)
