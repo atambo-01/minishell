@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/28 00:43:15 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 02:26:18 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int ft_heredoc(t_token *token, int fd[], int *i_fd)
     }
 	free(temp);
 	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-		return (ft_perror("heredoc: dup2\n", 1));
+		return (ft_perror("minshell: heredoc: dup2\n", 1));
     (*i_fd) += 2;
     return (0);
 }
@@ -66,13 +66,12 @@ int	ft_redir_out(t_token *token, int fd[], int *i_fd)
 	char *temp;
 
 	temp = ft_get_subtoken(token->next->s);
-//	printf("redir out\n");
 	fd[*i_fd] = open(token->next->s, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", 1));
+		return (ft_perror("minshell: Permission denied\n", 126));
 	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
-		return (ft_perror("dup2: redirecting stdout\n", 1));
+		return (ft_perror("minishell: error redirecting stdout\n", 1));
 	(*i_fd)++;
 	return (0);
 }
@@ -86,7 +85,7 @@ int	ft_redir_in(t_token *token, int fd[], int *i_fd)
 	fd[*i_fd] = open(token->next->s, O_RDONLY);
 	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", 1));
+		return (ft_perror("minshell: Permission denied\n", 126));
 	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
 		return (ft_perror("dup2: redirecting stdin\n", 1));
 	(*i_fd)++;
@@ -101,7 +100,7 @@ int	ft_redir_append(t_token *token, int fd[], int *i_fd)
 	fd[*i_fd] = open(token->next->s, O_CREAT | O_APPEND | O_WRONLY, 0644);
 	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", 1));
+		return (ft_perror("minshell: Permission denied\n", 126));
 	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
 		return (ft_perror("dup2: redirecting stdout\n", 1));
 	(*i_fd)++;
@@ -135,7 +134,7 @@ int	ft_bckp_fd(int fd[])
 		close(fd[0]);
 		close(fd[1]);
 		close(fd[2]);
-		return (ft_perror("redirect: bckup fd\n", 1));
+		return (ft_perror("minishell: redirect: bckup fd\n", 1));
 	}
 	return (0);
 }

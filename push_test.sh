@@ -1,3 +1,4 @@
+echo > push_valgrind_log.txt && \
 clear && \
 make re && \
 clear && \

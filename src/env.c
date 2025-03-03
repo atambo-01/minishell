@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 18:09:11 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/01 02:35:22 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 02:21:18 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	ft_env(t_cmd *cmd)
 	{
 		temp = NULL;
 		if (!cmd)
-			return (1);
+			return (ft_perror("minishell: env: t_cmd *cmd = NULL\n", 1));
 		if (cmd->params[1])
-			return (ft_perror("env: too many arguments\n", 2));
+			return (ft_perror("minshell: env: too many arguments\n", 2));
 		temp = cmd->env;
 		while (temp)
 		{

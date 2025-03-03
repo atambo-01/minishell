@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:14:05 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/01 02:49:27 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 03:24:49 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,10 @@ void	ft_ctrl_d(t_main_vars *mv)
 {
 	if (mv->line == NULL)
 	{
-		write(1, "exit\n", 5);
-		// ft_minishell_exit(&sig);
-		exit(1);
+		mv->token = ft_malloc(sizeof(t_token));
+		mv->token->s = ft_strdup("exit");
+		mv->token->next = NULL;
+		ft_exit(mv);
 	}
 	return ;
 }

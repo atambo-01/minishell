@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 23:08:01 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 03:06:53 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,29 +79,36 @@ void	ft_get_token_if(char *line, t_token **token, t_count *c)
 	}
 }
 
-char *ft_pre_get_token(char *line, t_env *env, const int prev_exit)
+char *ft_pre_get_token(char *line, t_env *env, int exit, t_main_vars *mv)
 {
-    char *trim;
-    char *exp;
+	char	*exp;
+	char	*trim;
+	int		status;
 
-    if (ft_check_quotes(line) != 0)
-		return (NULL);
-	if (ft_cop_syntax(line) != 0)
-		return (NULL);
-	if (!(trim = ft_strtrim(line, " ")))
-		return (NULL);
-    exp = ft_expand(trim, env, prev_exit);
-    free(trim);
-    return (exp);
+	status = 0;
+	status = ft_check_quotes(line);
+	if (status == 0)
+	{
+		status = ft_cop_syntax(line);
+		if (status == 0)
+		{
+			trim = ft_strtrim(line, " ");
+			exp = ft_expand(trim, env, exit);
+			free(trim);
+			return (exp);
+		}
+	}
+	mv->exit = status;
+	return (NULL);
 }
 
-t_token *ft_token(char *line, t_env *env, const int prev_exit)
+t_token *ft_token(char *line, t_env *env, int prev_exit, t_main_vars *mv)
 {
-    t_count c;
-    t_token  *token;
-    char    *exp;
+    t_count 	c;
+	char    	*exp;
+    t_token  	*token;
 
-    exp = ft_pre_get_token(line, env, prev_exit);
+    exp = ft_pre_get_token(line, env, prev_exit, mv);
 	if (!exp)
         return (NULL);
 

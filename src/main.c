@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/02 01:27:55 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 03:41:47 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_exit(t_main_vars *mv)
 	int	num;
 
 	status = 0;
-	num = 0;
+	num = mv->exit;
 	if (ft_strcmp(mv->token->s, "exit") != 0)
 		return (0);
 	if (mv->token->next)
@@ -115,17 +115,35 @@ int	main(int ac, char **av, char **envp)
 	t_main_vars	mv;
 
 	ft_shell_init(&mv, envp, ac, av);
+	int i = -1;
 	while (1)
 	{
+		i++;
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
 		ft_main_while_free(&mv);
 		mv.line = readline(COLOR BOLD "攻殻_機動隊 > " RESET);
+		/*	
+	 	if (i == 0)
+		{
+			mv.line = ft_strdup("asd");
+		}
+		if (i == 1)
+		{
+			mv.line = ft_strdup("echo hello");
+			sleep(2);
+		}
+		if (i == 2)
+		{
+			mv.line = ft_strdup("exit");
+			sleep(2);
+		}
+		*/
 		ft_ctrl_d(&mv);
 		if (ft_strlen(mv.line) == 0)
 			continue ;
 		mv.exit = ft_exit_update(mv.exit);
 		add_history(mv.line);
-		mv.token = ft_token(mv.line, mv.env, mv.exit);
+		mv.token = ft_token(mv.line, mv.env, mv.exit, &mv);
 		if (!mv.token)
 			continue ;
 		if (ft_exit(&mv) == 2)

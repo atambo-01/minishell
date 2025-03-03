@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/02/27 22:43:01 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 03:12:46 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ int	ft_check_quotes(char *line)
 		i++;
 	}
 	if (q != 0)
-		printf("error: unclosed quotes\n");
-	return(q);
+		return(ft_perror("minishell: error, unclosed quotes\n", 2));
+	return(0);
 }
 
 char	*ft_expand(char *line, t_env *env, const int prev_exit)

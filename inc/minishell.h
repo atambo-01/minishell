@@ -86,13 +86,15 @@ void	ft_free_cmd(t_cmd **p_cmd);
 void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
 void    ft_main_while_free(t_main_vars *mv);
 int     ft_exit_update(int i);
+int 	ft_exit(t_main_vars *mv);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
 void	ft_handle_pipe(char *line, t_token **token, t_count *c);
 void	ft_handle_space_or_end(char *line, t_token **token, t_count *c);
 void	ft_get_token_if(char *line, t_token **p_token, t_count *c);
-t_token	*ft_token(char *line, t_env *env, const int prev_exit);
+char 	*ft_pre_get_token(char *line, t_env *env, int exit, t_main_vars *mv);
+t_token	*ft_token(char *line, t_env *env, int prev_exit, t_main_vars *mv);
 
 // parsing_plus.c
 void	ft_counter(t_count *c);

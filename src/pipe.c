@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/01 02:29:32 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 02:22:32 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int	ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token)
 	pid_0 = 0;
 	pid_1 = 0;
 	if (pipe(fd) == -1)
-		exit(ft_perror("pipe", EXIT_FAILURE));
+		return(ft_perror("minishell: pipe fd error\n", 1));
 	pid_0 = ft_handle_first_fork(mv, cmd, fd, token);
 	token = ft_get_pipe(token);
 	pid_1 = ft_handle_second_fork(mv, cmd->nc->nc, fd, token);
