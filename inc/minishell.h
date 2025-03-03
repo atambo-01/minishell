@@ -126,7 +126,7 @@ int		ft_builtin(t_cmd *cmd);
 int		ft_mtxlen(char **mtx);
 int		ft_vfy_name(char *name, char **env);
 int		ft_is_valid_name(char *name);
-void	ft_print_ex(t_env **envp);
+int		ft_print_ex(t_env **envp);
 int		ft_run_builtin(t_cmd *cmd);
 int		ft_echo(t_cmd *cmd);
 int		ft_export(char **args, t_env **envp);

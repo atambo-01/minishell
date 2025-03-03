@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/01 02:36:09 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 11:01:34 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,15 @@ int	ft_is_valid_name(char *name)
 	}
 	if (f != 0)
 	{
-		ft_putstr_fd("minishell> export: ", 2);
-		ft_putstr_fd(name, 2);
-		ft_putstr_fd(": not a valid identifier\n", 2);
+		ft_perror("minishell: export: ", 2);
+		ft_perror(name, 2);
+		ft_perror(": not a valid identifier\n", 2);
 		return (f);
 	}
 	return (0);
 }
 
-void	ft_print_ex(t_env **env)
+int	ft_print_ex(t_env **env)
 {
 	t_env	*temp;
 
@@ -53,6 +53,7 @@ void	ft_print_ex(t_env **env)
 			printf("declare -x %s\n", temp->name);
 		temp = temp->next;
 	}
+	return (0);
 }
 
 int	ft_export(char **args, t_env **envp)
@@ -62,21 +63,18 @@ int	ft_export(char **args, t_env **envp)
 
 	i = 1;
 	if (!args[1])
-	{
-		ft_print_ex(envp);
-		return (0);
-	}
+		return (ft_print_ex(envp));
 	else
 	{
 		while (args[i])
 		{
 			tmp = ft_strchr(args[i], '=');
-			if (!tmp)
+			if (tmp == NULL && ft_is_valid_name(args[i]) == 0)
 			{
-				if (!ft_is_valid_name(args[i]))
+				if (ft_getenv(*envp, args[i]) == NULL)
 					ft_add_env_node(*envp, args[i]);
 			}
-			else if (!ft_is_valid_name(args[i]))
+			else if (ft_is_valid_name(args[i]) == 0)
 				ft_add_env_node(*envp, args[i]);
 			i++;
 		}
