@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 10:34:39 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/03 03:06:53 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 13:29:55 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char *ft_pre_get_token(char *line, t_env *env, int exit, t_main_vars *mv)
 		status = ft_cop_syntax(line);
 		if (status == 0)
 		{
-			trim = ft_strtrim(line, " ");
+			trim = ft_strtrim(line, " \t");
 			exp = ft_expand(trim, env, exit);
 			free(trim);
 			return (exp);

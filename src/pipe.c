@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/03 02:22:32 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 12:33:09 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	ft_handle_second_fork(t_main_vars *mv, t_cmd *cmd, int *fd, t_token *token)
 		close(fd[1]);
 		close(fd[0]);
 		if (ft_get_pipe(token) != NULL)
-			ft_pipe(mv, cmd, token);
+			exit(ft_pipe(mv, cmd, token));
 		else 
 		{	
 			if (ft_count_redir(token))

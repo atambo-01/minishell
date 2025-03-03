@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_plus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/01 02:28:19 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/03 13:33:00 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	ft_skip_spaces(char *line, t_count *c)
 		return ;
 	if (line[c->k + 1] != 0)
 	{
-		while (line[c->k + 1] == ' ')
+		while (line[c->k + 1] == ' ' || line[c->k + 1] == '\t')
 			(c->k)++;
 	}
 }

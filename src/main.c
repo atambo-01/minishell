@@ -123,18 +123,20 @@ int	main(int ac, char **av, char **envp)
 		ft_main_while_free(&mv);
 		mv.line = readline(COLOR BOLD "攻殻_機動隊 > " RESET);
 	 	/*
+		*/
+		/*
 		if (i == 0)
 		{
-			mv.line = ft_strdup("exit 1234");
+			mv.line = ft_strdup("exit 42");
 		}
 		if (i == 1)
 		{
-			mv.line = ft_strdup("echo hello");
+			mv.line = ft_strdup("");
 			sleep(2);
 		}
 		if (i == 2)
 		{
-			mv.line = ft_strdup("exit");
+			mv.line = ft_strdup("");
 			sleep(2);
 		}
 		*/

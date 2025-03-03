@@ -15,7 +15,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-# define COLOR	"\033[34m"
+#define COLOR  "\033[94m"
 # define BOLD   "\x1B[1m"
 # define RESET	"\x1B[0m"
 # define SHELL	"minishell"			
