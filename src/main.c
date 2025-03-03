@@ -19,9 +19,9 @@ void	ft_exit_free(t_main_vars *mv)
 	if (!mv)
 		return ;
 	ft_restore_fd(mv->fd);
+	rl_clear_history();
 	ft_free_env(&(mv->env));
 	free(mv->line);
-	rl_clear_history();
 	ft_free_token(&(mv->token));
 	free(mv->fd);
 	mv->fd = NULL;
@@ -67,15 +67,15 @@ int	ft_exit(t_main_vars *mv)
 	if (mv->token->next)
 	{
 		if (mv->token->next->next)
-			status = 2;
+			status = 1;
 		num = ft_exit_atoi(mv->token->next->s);
 	}
-	if (status != 2)
+	if (status != 1)
 		ft_exit_free(mv);
 	printf("exit\n");
 	if (num == -1)
-		status = ft_perror("minishell: exit: need a numeric argument\n", 1);
-	else if (status == 2)
+		status = ft_perror("minishell: exit: need a numeric argument\n", 2);
+	else if (status == 1)
 		return (ft_perror("minishell: exit: to many arguments\n", status));
 	else
 		status = num;
@@ -122,10 +122,10 @@ int	main(int ac, char **av, char **envp)
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
 		ft_main_while_free(&mv);
 		mv.line = readline(COLOR BOLD "攻殻_機動隊 > " RESET);
-		/*	
-	 	if (i == 0)
+	 	/*
+		if (i == 0)
 		{
-			mv.line = ft_strdup("asd");
+			mv.line = ft_strdup("exit 1234");
 		}
 		if (i == 1)
 		{
@@ -146,8 +146,8 @@ int	main(int ac, char **av, char **envp)
 		mv.token = ft_token(mv.line, mv.env, mv.exit, &mv);
 		if (!mv.token)
 			continue ;
-		if (ft_exit(&mv) == 2)
-			mv.exit = 2;
+		if (ft_exit(&mv) == 1)
+			mv.exit = 1;
 		else
 			ft_main_nest(&mv);
 	}
