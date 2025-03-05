@@ -15,7 +15,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-#define COLOR  "\033[94m"
+#define COLOR  "\033[0;36m"
 # define BOLD   "\x1B[1m"
 # define RESET	"\x1B[0m"
 # define SHELL	"minishell"			
@@ -55,13 +55,14 @@ typedef struct s_cmd
 
 typedef struct s_count
 {
-	int 	i;
-	int 	j;
-	int 	k;
-	int 	last;
-	int 	q;
-	int 	temp;
-	int 	end;
+	int 		i;
+	int 		j;
+	int 		k;
+	int 		last;
+	int 		q;
+	int 		temp;
+	int 		end;
+	long long	l;
 } t_count;
 
 typedef struct s_main_vars

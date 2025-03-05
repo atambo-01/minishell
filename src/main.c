@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/04 16:32:15 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/05 17:17:42 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,18 @@ void	ft_exit_free(t_main_vars *mv)
 	mv->fd = NULL;
 }
 
+int ft_convert(long long l)
+{
+	if (l < 0)
+		return (256 + (int)(l % 256));
+	else if (l > 255)
+	{	
+		return ((int)(l % 256));
+	}
+	return ((int)l);
+}
+
+
 int	ft_exit_atoi(char *str)
 {
 	t_count	c;
@@ -34,30 +46,25 @@ int	ft_exit_atoi(char *str)
 	ft_counter(&c);
 	if (!str || !*str)
 		return (-1);
-	while(*str == ' ' || *str == '\t')
+	while(*str == ' ' || *str == '\t' || *str == '"' || *str == '\'')
 		str++;
+	c.j = 1;
 	if (str[c.i] == '-' || str[c.i] == '+')
 	{
-		c.j = 1;
 		if (str[c.i] == '-')
 			c.j = -1;
 		(c.i)++;
 	}
-	while (str[c.i])
+	while (str[c.i] || str[c.i] == '"' || str[c.i] == '\'')
 	{
-		if (str[c.i] == '"' || str[c.i] == '\'')
-			(c.i)++;
-		else
-		{
-			if (str[c.i] < '0' || str[c.i] > '9')
-				return (-1);
-			c.temp = c.temp * 10 + (str[c.i] - '0');
-			if (c.temp > INT_MAX)
-				return (-1);
-		}
+		if (str[c.i] < '0' || str[c.i] > '9')
+			return (-1);
+		c.l = c.l * 10 + (str[c.i] - '0');
+		if (c.l > LONG_MAX)
+			return(-1);
 		(c.i)++;
 	}
-	return (c.j * c.temp);
+	return (ft_convert(c.j * c.l));
 }
 
 int	ft_exit(t_main_vars *mv)
@@ -69,6 +76,7 @@ int	ft_exit(t_main_vars *mv)
 	num = mv->exit;
 	if (ft_strcmp(mv->token->s, "exit") != 0)
 		return (0);
+	printf("exit\n");
 	if (mv->token->next)
 	{
 		if (mv->token->next->next)
@@ -76,18 +84,12 @@ int	ft_exit(t_main_vars *mv)
 		num = ft_exit_atoi(mv->token->next->s);
 		if (status != 1)
 			ft_exit_free(mv);
-		printf("exit\n");
 		if (num == -1)
 			exit (ft_perror("minishell: exit: need a numeric argument\n", 2));
 		else if (status == 1)
-		{
-			if (status == 0)
-				status = num;
 			return (ft_perror("minishell: exit: to many arguments\n", status));
-		}
 	}
-	status = num;
-	exit(status);
+	exit(num);
 }
 
 void	ft_main_nest(t_main_vars *mv)

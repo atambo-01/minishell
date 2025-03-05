@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/03 13:33:00 by eneto            ###   ########.fr       */
+/*   Updated: 2025/03/05 16:23:37 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void	ft_counter(t_count *c)
 	(c)->q = 0;
 	(c)->temp = 0;
 	(c)->end = 0;
+	(c)->l = 0; 
 }
 
 void	ft_add_token(char *line, t_token **p_token, t_count *c)
