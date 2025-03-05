@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/03 03:32:46 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/04 15:59:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,7 @@ int	ft_builtin(t_cmd *cmd)
 		return (ft_unset(cmd));
 	else if (ft_strcmp(cmd->n, "export") == 0)
 		return (ft_export(cmd->params, &(cmd->env)));
+	else if (ft_strcmp(cmd->n, "set_exit") == 0)
+		return (ft_atoi((cmd->params[1])));
 	return (127);
 }

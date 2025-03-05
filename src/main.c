@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/03 03:41:47 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/04 16:32:15 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,36 +29,41 @@ void	ft_exit_free(t_main_vars *mv)
 
 int	ft_exit_atoi(char *str)
 {
-	int		i;
-	long	num;
+	t_count	c;
 
-	i = 0;
-	num = 0;
-	while (str[i])
+	ft_counter(&c);
+	if (!str || !*str)
+		return (-1);
+	while(*str == ' ' || *str == '\t')
+		str++;
+	if (str[c.i] == '-' || str[c.i] == '+')
 	{
-		if (str[i] == '-' && (i == 0 || i == 1))
-			return (-1);
-		else if (str[i] == '+' && (i == 0 || i == 1))
-			i++;
-		if (str[i] == '"' || str[i] == '\'')
-			i++;
+		c.j = 1;
+		if (str[c.i] == '-')
+			c.j = -1;
+		(c.i)++;
+	}
+	while (str[c.i])
+	{
+		if (str[c.i] == '"' || str[c.i] == '\'')
+			(c.i)++;
 		else
 		{
-			if (!ft_isdigit(str[i]))
+			if (str[c.i] < '0' || str[c.i] > '9')
 				return (-1);
-			num = num * 10 + (str[i] - '0');
-			if (num > INT_MAX)
+			c.temp = c.temp * 10 + (str[c.i] - '0');
+			if (c.temp > INT_MAX)
 				return (-1);
 		}
-		i++;
+		(c.i)++;
 	}
-	return (num);
+	return (c.j * c.temp);
 }
 
 int	ft_exit(t_main_vars *mv)
 {
-	int	status;
 	int	num;
+	int	status;
 
 	status = 0;
 	num = mv->exit;
@@ -69,16 +74,19 @@ int	ft_exit(t_main_vars *mv)
 		if (mv->token->next->next)
 			status = 1;
 		num = ft_exit_atoi(mv->token->next->s);
+		if (status != 1)
+			ft_exit_free(mv);
+		printf("exit\n");
+		if (num == -1)
+			exit (ft_perror("minishell: exit: need a numeric argument\n", 2));
+		else if (status == 1)
+		{
+			if (status == 0)
+				status = num;
+			return (ft_perror("minishell: exit: to many arguments\n", status));
+		}
 	}
-	if (status != 1)
-		ft_exit_free(mv);
-	printf("exit\n");
-	if (num == -1)
-		status = ft_perror("minishell: exit: need a numeric argument\n", 2);
-	else if (status == 1)
-		return (ft_perror("minishell: exit: to many arguments\n", status));
-	else
-		status = num;
+	status = num;
 	exit(status);
 }
 
