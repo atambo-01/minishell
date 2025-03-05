@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/03 11:01:34 by eneto            ###   ########.fr       */
+/*   Updated: 2025/03/05 17:25:13 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ int	ft_print_ex(t_env **env)
 int	ft_export(char **args, t_env **envp)
 {
 	int		i;
-	char	*tmp;
 
 	i = 1;
 	if (!args[1])
@@ -68,13 +67,7 @@ int	ft_export(char **args, t_env **envp)
 	{
 		while (args[i])
 		{
-			tmp = ft_strchr(args[i], '=');
-			if (tmp == NULL && ft_is_valid_name(args[i]) == 0)
-			{
-				if (ft_getenv(*envp, args[i]) == NULL)
-					ft_add_env_node(*envp, args[i]);
-			}
-			else if (ft_is_valid_name(args[i]) == 0)
+			if (ft_is_valid_name(args[i]) == 0)
 				ft_add_env_node(*envp, args[i]);
 			i++;
 		}

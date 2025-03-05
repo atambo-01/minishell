@@ -6,38 +6,57 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/03 02:26:18 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/05 20:11:49 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-
-int ft_heredoc(t_token *token, int fd[], int *i_fd)
+void handle_heredoc_child(int fd[], int i_fd, char *delimiter)
 {
     char *line;
-    char *temp;
 
-	temp = ft_get_subtoken(token->next->s);
-    pipe(&fd[*i_fd]);
-    while ((line = readline("> ")))
+    close(fd[i_fd]); // Close read end of the pipe in child
+
+    while (g_signal == 0)
     {
-        if (ft_strcmp(line, temp) == 0) 
+        line = readline("> ");
+        if (!line || g_signal == SIGINT || strcmp(line, delimiter) == 0)
         {
             free(line);
             break;
         }
-        write(fd[*i_fd + 1], line, strlen(line));
-        write(fd[*i_fd + 1], "\n", 1);
+        write(fd[i_fd + 1], line, strlen(line));
+        write(fd[i_fd + 1], "\n", 1);
         free(line);
     }
-	free(temp);
-	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-		return (ft_perror("minshell: heredoc: dup2\n", 1));
+    close(fd[i_fd + 1]); // Close write end of the pipe
+    free(delimiter);
+    exit(0); // Exit with 130 on SIGINT
+}
+
+int ft_heredoc(t_token *token, int fd[], int *i_fd)
+{
+    pid_t pid;
+    int status;
+    char *temp = ft_get_subtoken(token->next->s);
+
+    if (pipe(&fd[*i_fd]) == -1)
+        return (ft_perror("minshell: heredoc: pipe\n", 1));
+    pid = fork();
+    if (pid == -1)
+        return (ft_perror("minshell: heredoc: fork\n", 1));
+    if (pid == 0)
+        handle_heredoc_child(fd, *i_fd, temp);
+    close(fd[*i_fd + 1]); // Close write end in parent
+    waitpid(pid, &status, 0); // Wait for child to finish
+    if (WIFEXITED(status) && WEXITSTATUS(status) == 130) // SIGINT detected
+        return (130);
+    if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
+        return (ft_perror("minshell: heredoc: dup2\n", 1));
     (*i_fd) += 2;
     return (0);
 }
-
 
 int	ft_count_redir(t_token *token)
 {
@@ -179,8 +198,8 @@ int	ft_get_redir(t_token *head, int **fd, int *count)
 	while(token)
 	{
 		r = ft_mod_fd(token, *fd, &i_fd);
-		if (r == 1)
-			return (1);
+		if (r)
+			return (r);
 		token = token->next;
 	}
 	ft_close_fd(*fd, i_fd);
