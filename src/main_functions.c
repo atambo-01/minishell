@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:49:13 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/02 01:33:03 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/06 17:26:55 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,17 +46,17 @@ void    ft_free_token(t_token **p_token)
 
 void	ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av)
 {
-        (void)ac;
-        (void)av;
-        g_signal = 0;
-        mv->token = NULL;
-        mv->cmd = NULL;
-        mv->line = NULL;
-        mv->fd = NULL;
-        mv->exit = 0;
-        mv->env = ft_envp_to_list(envp);
-        mv->fd = ft_malloc(sizeof(int) * (10000));
-        ft_bckp_fd(mv->fd);
+	(void)ac;
+	(void)av;
+	g_signal = 0;
+	mv->token = NULL;
+	mv->cmd = NULL;
+	mv->line = NULL;
+	mv->fd = NULL;
+	mv->exit = 0;
+	mv->env = ft_envp_to_list(envp);
+	mv->fd = ft_malloc(sizeof(int) * (10000));
+	ft_bckp_fd(mv->fd);
 }
 
 void    ft_free_cmd(t_cmd **p_cmd)

@@ -1,0 +1,47 @@
+==14824== Memcheck, a memory error detector
+==14824== Copyright (C) 2002-2022, and GNU GPL'd, by Julian Seward et al.
+==14824== Using Valgrind-3.22.0 and LibVEX; rerun with -h for copyright info
+==14824== Command: ./minishell
+==14824== Parent PID: 14603
+==14824== 
+==14824== 
+==14824== FILE DESCRIPTORS: 7 open (3 std) at exit.
+==14824== Open file descriptor 6: /dev/pts/4
+==14824==    at 0x49D493B: dup (syscall-template.S:120)
+==14824==    by 0x10D085: ft_bckp_fd (redir.c:151)
+==14824==    by 0x10D416: ft_shell_init (main_functions.c:59)
+==14824==    by 0x1096A5: main (main.c:49)
+==14824== 
+==14824== Open file descriptor 5: /dev/pts/4
+==14824==    at 0x49D493B: dup (syscall-template.S:120)
+==14824==    by 0x10D071: ft_bckp_fd (redir.c:150)
+==14824==    by 0x10D416: ft_shell_init (main_functions.c:59)
+==14824==    by 0x1096A5: main (main.c:49)
+==14824== 
+==14824== Open file descriptor 4: /dev/pts/4
+==14824==    at 0x49D493B: dup (syscall-template.S:120)
+==14824==    by 0x10D059: ft_bckp_fd (redir.c:149)
+==14824==    by 0x10D416: ft_shell_init (main_functions.c:59)
+==14824==    by 0x1096A5: main (main.c:49)
+==14824== 
+==14824== Open file descriptor 3: /home/atambo/42/curr/minishell/push_valgrind_log.txt
+==14824==    <inherited from parent>
+==14824== 
+==14824== 
+==14824== HEAP SUMMARY:
+==14824==     in use at exit: 239,705 bytes in 236 blocks
+==14824==   total heap usage: 661 allocs, 425 frees, 308,186 bytes allocated
+==14824== 
+==14824== LEAK SUMMARY:
+==14824==    definitely lost: 0 bytes in 0 blocks
+==14824==    indirectly lost: 0 bytes in 0 blocks
+==14824==      possibly lost: 0 bytes in 0 blocks
+==14824==    still reachable: 0 bytes in 0 blocks
+==14824==         suppressed: 239,705 bytes in 236 blocks
+==14824== 
+==14824== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--14824-- 
+--14824-- used_suppression:     79 <Readline> ./push_rl.supp:2 suppressed: 235,689 bytes in 235 blocks
+--14824-- used_suppression:      1 <Readline/AddHistory> ./push_rl.supp:10 suppressed: 4,016 bytes in 1 blocks
+==14824== 
+==14824== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)

@@ -6,21 +6,22 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/05 20:11:49 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:36:17 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void handle_heredoc_child(int fd[], int i_fd, char *delimiter)
+void handle_heredoc_child(t_main_vars *mv, int fd[], int i_fd, char *delimiter)
 {
     char *line;
-
-    close(fd[i_fd]); // Close read end of the pipe in child
-
+	char *temp;
+    close(fd[i_fd]);
     while (g_signal == 0)
     {
-        line = readline("> ");
+        temp = readline("> ");
+		line = ft_expand(temp, mv->env, mv->exit);
+		free(temp);
         if (!line || g_signal == SIGINT || strcmp(line, delimiter) == 0)
         {
             free(line);
@@ -30,32 +31,33 @@ void handle_heredoc_child(int fd[], int i_fd, char *delimiter)
         write(fd[i_fd + 1], "\n", 1);
         free(line);
     }
-    close(fd[i_fd + 1]); // Close write end of the pipe
+    close(fd[i_fd + 1]);
     free(delimiter);
-    exit(0); // Exit with 130 on SIGINT
+    exit(0);
 }
 
-int ft_heredoc(t_token *token, int fd[], int *i_fd)
+int ft_heredoc(t_main_vars *mv, t_token *token, int fd[], int *i_fd)
 {
     pid_t pid;
     int status;
     char *temp = ft_get_subtoken(token->next->s);
 
+	status = 0;
     if (pipe(&fd[*i_fd]) == -1)
         return (ft_perror("minshell: heredoc: pipe\n", 1));
     pid = fork();
     if (pid == -1)
         return (ft_perror("minshell: heredoc: fork\n", 1));
     if (pid == 0)
-        handle_heredoc_child(fd, *i_fd, temp);
-    close(fd[*i_fd + 1]); // Close write end in parent
-    waitpid(pid, &status, 0); // Wait for child to finish
-    if (WIFEXITED(status) && WEXITSTATUS(status) == 130) // SIGINT detected
-        return (130);
+        handle_heredoc_child(mv, fd, *i_fd, temp);
+    close(fd[*i_fd + 1]);
+    waitpid(pid, &status, 0);
+    if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
+        status = (130);
     if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
-        return (ft_perror("minshell: heredoc: dup2\n", 1));
+        status =  (ft_perror("minshell: heredoc: dup2\n", 1));
     (*i_fd) += 2;
-    return (0);
+    return (status);
 }
 
 int	ft_count_redir(t_token *token)
@@ -99,7 +101,6 @@ int	ft_redir_in(t_token *token, int fd[], int *i_fd)
 {
 	char *temp;
 
-	//	printf("redir in\n");
 	temp = ft_get_subtoken(token->next->s);
 	fd[*i_fd] = open(token->next->s, O_RDONLY);
 	free(temp);
@@ -127,7 +128,7 @@ int	ft_redir_append(t_token *token, int fd[], int *i_fd)
 }
 
 
-int	ft_mod_fd(t_token *token, int fd[], int *i_fd)
+int	ft_mod_fd(t_main_vars *mv, t_token *token, int fd[], int *i_fd)
 {
 	int	cop;
 
@@ -139,7 +140,7 @@ int	ft_mod_fd(t_token *token, int fd[], int *i_fd)
 	else if (cop == 4)
 	        return (ft_redir_append(token, fd, i_fd));
 	else if (cop == 5)
-		return (ft_heredoc(token, fd, i_fd));
+		return (ft_heredoc(mv, token, fd, i_fd));
 	return (0);
 }
 
@@ -182,7 +183,7 @@ void	ft_restore_fd(int fd[])
 	close(fd[2]);
 }
 
-int	ft_get_redir(t_token *head, int **fd, int *count)
+int	ft_get_redir(t_main_vars *mv, t_token *head, int **fd, int *count)
 {
 	int		r;
 	int		i_fd;
@@ -197,7 +198,7 @@ int	ft_get_redir(t_token *head, int **fd, int *count)
 	i_fd = 3;
 	while(token)
 	{
-		r = ft_mod_fd(token, *fd, &i_fd);
+		r = ft_mod_fd(mv, token, *fd, &i_fd);
 		if (r)
 			return (r);
 		token = token->next;

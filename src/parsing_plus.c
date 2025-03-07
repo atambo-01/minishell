@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/05 16:23:37 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:16:22 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,4 +112,3 @@ void	ft_add_ctrl_op(t_token **p_token, int cop)
 		curr->next = token;
 	}
 }
-

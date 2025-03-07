@@ -90,7 +90,6 @@ void	ft_free_cmd(t_cmd **p_cmd);
 void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
 void    ft_main_while_free(t_main_vars *mv);
 int     ft_exit_update(int i);
-int 	ft_exit(t_main_vars *mv);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
@@ -148,7 +147,7 @@ int		ft_cop(char *str);
 
 // env_list
 void	ft_add_env_node(t_env *env, char *str);
-void	ft_free_env(t_env **p_env);
+void	ft_free_env(t_env *p_env);
 void	ft_token_env(t_env *env);
 void	ft_remove_env_node(t_env **head, char *name);
 
@@ -169,12 +168,20 @@ void    ft_execve_sigquit_2(int sig);
 void	ft_builtin_int(int sig);
 
 //redir.c
-int		ft_get_redir(t_token *head, int **fd, int *count);
+int		ft_get_redir(t_main_vars *mv, t_token *head, int **fd, int *count);
 int 	ft_count_redir(t_token *token);
 void    ft_close_fd(int fd[], int i_fd);
 void    ft_restore_fd(int fd[]);
 
-//exit 
+//exit
+int 	ft_exit(t_main_vars *mv);
+int 	ft_exit_atoi(char *str);
+int 	handle_number(char *str, t_count *c);
+int 	handle_quotes(char *str, t_count *c);
+int		handle_space_and_signs(char *str, t_count *c);
+int 	ft_convert(long long l);
+void    ft_exit_free(t_main_vars *mv);
+
 //void	ft_minishell_exit(t_main_vars **p_mv);
 
 #endif

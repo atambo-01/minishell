@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/15 12:08:23 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/01 02:30:55 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/06 17:18:20 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ void	ft_add_env_node(t_env *env, char *str)
 }
 
 
-void    ft_free_env(t_env **p_env)
+void    ft_free_env(t_env *p_env)
 {
     t_env   *env;
     t_env   *next;
 
-    if (!p_env || !*p_env || !(*p_env)->name)
+    if (!p_env || !(p_env)->name)
         return;
-    env = *p_env;
+    env = p_env;
     while(env)
     {
         next = env->next;

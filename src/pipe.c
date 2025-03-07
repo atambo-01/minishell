@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/03 12:33:09 by eneto            ###   ########.fr       */
+/*   Updated: 2025/03/07 15:34:58 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_handle_first_fork(t_main_vars* mv, t_cmd *cmd, int *fd, t_token *token)
 		close(fd[0]);
 		close(fd[1]);
 		if (ft_count_redir(token))
-			ft_get_redir(token, &(mv->fd), &(mv->fd_c));
+			ft_get_redir(mv, token, &(mv->fd), &(mv->fd_c));
 		exit(ft_execute(cmd));
 	}
 	return (pid);
@@ -70,7 +70,7 @@ int	ft_handle_second_fork(t_main_vars *mv, t_cmd *cmd, int *fd, t_token *token)
 		else 
 		{	
 			if (ft_count_redir(token))
-				ft_get_redir(token, &(mv->fd), &(mv->fd_c));
+				ft_get_redir(mv, token, &(mv->fd), &(mv->fd_c));
 			exit(ft_execute(cmd));
 		}
 	}

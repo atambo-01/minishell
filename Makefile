@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/03/01 20:25:13 by atambo           ###   ########.fr        #
+#    Updated: 2025/03/07 14:05:35 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,9 @@ SOURCES		=	src/main.c\
 				src/ft_unset.c\
 				src/redir.c\
 				src/main_functions.c\
-				src/main_auxiliary.c
+				src/main_auxiliary.c\
+				src/exit.c\
+				src/exit_atoi.c
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft
