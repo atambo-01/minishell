@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/04 15:59:17 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/07 16:57:11 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,15 +68,41 @@ int	ft_pwd(void)
 	return (0);
 }
 
+int ft_cd_error(int error_type, char *path)
+{
+    ft_perror("minishell :cd: ", 1);
+    ft_perror(path, 1);
+    if (error_type == 1)
+        ft_perror(": No such file or directory\n", 1);
+    else if (error_type == 2)
+        ft_perror(": Not a directory\n", 1);
+    else if (error_type == 3)
+        ft_perror(": Permission denied\n", 1);
+    else if (error_type == 4)
+        ft_perror(": Failed to change directory\n", 1);
+    return (1);
+}
+
 int	ft_cd(t_cmd *cmd)
 {
-	if (cmd->params[2])
-		return (ft_perror("cd: too many arguments\n", 2));
-	if (!cmd->params[1])
-		return (0);
-	chdir(cmd->params[1]);
-	return (0);
+    struct stat path_stat;
+
+    if (!cmd->params[1])
+        return (0);
+    if (cmd->params[2])
+        return (ft_perror("minishell: cd: too many arguments\n", 2));
+    if (access(cmd->params[1], F_OK) != 0)
+        return (ft_cd_error(1, cmd->params[1]));
+    stat(cmd->params[1], &path_stat);
+    if (!S_ISDIR(path_stat.st_mode))
+        return (ft_cd_error(2, cmd->params[1]));
+    if (access(cmd->params[1], X_OK) != 0)
+        return (ft_cd_error(3, cmd->params[1]));
+    if (chdir(cmd->params[1]) == -1)
+        return (ft_cd_error(4, cmd->params[1]));
+    return (0);
 }
+
 
 int	ft_builtin(t_cmd *cmd)
 {
@@ -84,7 +110,7 @@ int	ft_builtin(t_cmd *cmd)
 		return (1);
 	if (!cmd->n)
 		return (1);
-	ft_signal((int []){0, 0, 0, 0, 0, 1});
+	ft_signal((int[]){0, 0, 0, 0, 0, 1});
 	if (ft_strcmp(cmd->n, "cd") == 0)
 		return (ft_cd(cmd));
 	else if (ft_strcmp(cmd->n, "echo") == 0)

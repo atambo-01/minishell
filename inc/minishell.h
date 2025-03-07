@@ -15,6 +15,9 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
+#include <sys/stat.h>
+#include <errno.h>
+
 #define COLOR  "\033[0;36m"
 # define BOLD   "\x1B[1m"
 # define RESET	"\x1B[0m"
@@ -123,6 +126,7 @@ int 	ft_bckp_fd(int fd[]);
 t_token *ft_get_pipe(t_token *token);
 
 // builtins.c
+int 	ft_strstr(char *str, char *str_find);
 int		ft_builtin(t_cmd *cmd);
 int		ft_mtxlen(char **mtx);
 int		ft_vfy_name(char *name, char **env);
