@@ -60,7 +60,7 @@ void	ft_add_env_node(t_env *env, char *str)
 	value = NULL;
 	if (ft_strchr(str, '=') == NULL)
 		name = ft_strdup(str);
-	if (ft_strchr(str, '=') != NULL)
+	else if (ft_strchr(str, '=') != NULL)
 	{
 		name = ft_substr(str, 0, ft_strchr(str, '=') - str);
 		value = ft_strdup(ft_strchr(str, '=') + 1);
@@ -69,10 +69,12 @@ void	ft_add_env_node(t_env *env, char *str)
 	{
 		if (ft_strcmp(env->name, name) == 0)
 		{
-			if (env->value != NULL)
+			if (value != NULL)
+			{
 				free(env->value);
-			env->value = value;
-			return ;
+				env->value = value;
+			}
+			return;
 		}
 		if (env->next == NULL)
 			break ;
