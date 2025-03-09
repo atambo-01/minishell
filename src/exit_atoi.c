@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:04:46 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/07 14:06:25 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/09 15:50:47 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	handle_number(char *str, t_count *c)
 	if (isdigit(str[c->i]))
 	{
 		c->l = c->l * 10 + (str[c->i] - '0');
-		if (c->l > LONG_MAX)
+		if (c->l > 9223372036854775806)
 			return (-1);
 		c->i++;
 		return (1);
