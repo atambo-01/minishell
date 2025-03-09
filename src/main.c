@@ -6,13 +6,25 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/07 15:33:59 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/09 22:46:43 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 int	g_signal;
+
+void	ft_ctrl_d(t_main_vars *mv)
+{
+	if (mv->line == NULL)
+	{
+		mv->token = ft_malloc(sizeof(t_token));
+		mv->token->s = ft_strdup("exit");
+		mv->token->next = NULL;
+		ft_exit(mv);
+	}
+	return ;
+}
 
 void	ft_main_nest(t_main_vars *mv)
 {
@@ -51,7 +63,7 @@ int	main(int ac, char **av, char **envp)
 	{
 		ft_signal((int []){1, 1, 0, 0, 0, 0});
 		mv.line = readline(COLOR BOLD "攻殻_機動隊 > " RESET);
-	 	ft_ctrl_d(&mv);
+		ft_ctrl_d(&mv);
 		if (ft_strlen(mv.line) == 0)
 			continue ;
 		mv.exit = ft_exit_update(mv.exit);

@@ -139,6 +139,9 @@ int		ft_cd(t_cmd *cmd);
 int		ft_pwd(void);
 int		ft_unset(t_cmd *cmd);
 
+// ft_get_path
+int  	ft_get_path(t_cmd *cmd);
+
 // execute
 int		ft_execute(t_cmd *cmd);
 

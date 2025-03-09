@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/03/07 14:05:35 by atambo           ###   ########.fr        #
+#    Updated: 2025/03/09 22:48:52 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,12 +33,14 @@ SOURCES		=	src/main.c\
 				src/env.c\
 				src/export.c\
 				src/signal.c\
+				src/signal_handlers.c\
 				src/ft_unset.c\
 				src/redir.c\
 				src/main_functions.c\
 				src/main_auxiliary.c\
 				src/exit.c\
-				src/exit_atoi.c
+				src/exit_atoi.c\
+				src/ft_get_path.c
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft
