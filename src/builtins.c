@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/07 16:57:11 by eneto            ###   ########.fr       */
+/*   Updated: 2025/03/09 16:24:59 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,26 @@
 
 int	ft_echo_flags(char *str, char *flags)
 {
-	ft_memset(flags, 0, 53);
+	int i;
+	char curr_flags[53];
+
+	ft_memset(&curr_flags, 0, 53);
+	if (!str || *str != '-' || !str[1])
+		return (0);
+	str++;
 	while (*str)
 	{
 		if (*str == 'n')
-			flags['n' - 'a'] = 1;
+			curr_flags['n' - 'a'] = 1;
 		else
-		{
-			ft_memset(flags, 0, 53);
 			return (0);
-		}
 		str++;
+	}
+	i = 0;
+	while(i < 53)
+	{
+		flags[i] = curr_flags[i];
+		i++;
 	}
 	return (1);
 }
@@ -34,23 +43,21 @@ int	ft_echo(t_cmd *cmd)
 	int		n;
 	char	flags[53];
 
+	ft_memset(&flags, 0, 53);
 	if (!cmd)
 		return (1);
 	n = 1;
-	ft_memset(flags, 0, 53);
-	if (!cmd->params[1])
-	{
-		printf("\n");
-		return (0);
-	}
-	if (cmd->params[1][0] == '-' && cmd->params[1][1])
-		n += ft_echo_flags(&(cmd->params[1][1]), flags);
 	while (cmd->params[n])
 	{
-		printf("%s", cmd->params[n]);
-		n++;
-		if (cmd->params[n])
-			printf(" ");
+		if (ft_echo_flags(cmd->params[n], flags))
+			n++;
+		else if (cmd->params[n])
+		{	
+			printf("%s", cmd->params[n]);
+			n++;
+			if (cmd->params[n])
+				printf(" ");
+		}
 	}
 	if (flags['n' - 'a'] == 0)
 		printf("\n");
