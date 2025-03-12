@@ -6,23 +6,21 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/03 03:12:46 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/10 14:03:45 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void ft_get_env_value(char *var_name, char *dest, t_env *env)
+char *ft_get_env_value(char *var_name, t_env *env)
 {
     while (env)
     {
-        if (ft_strcmp(env->name, var_name) == 0 && env->value != NULL)
-        {
-        	ft_strcpy(dest, env->value);
-			return;
-        }
+        if (ft_strcmp(env->name, var_name) == 0)
+			return (ft_strdup(env->value));
         env = env->next;
     }
+	return (NULL);
 }
 
 int	ft_check_quotes(char *line)
@@ -36,14 +34,10 @@ int	ft_check_quotes(char *line)
 		return (0);
 	while(line[i])
 	{
-		if (line[i] == '"' && q == 0)
-			q = 1;
-		else if (line[i] == '"' && q == 1)
-			q = 0;
-		if (line[i] == '\'' && q == 0)
-			q = 2;
-		else if (line[i] == '\'' && q == 2)
-			q = 0;
+	 	if ((line[i] == '"' || line[i] == '\'') && q == 0)
+            q = line[i];
+        else if ((line[i] == '"' || line[i] == '\'') && q == line[i])
+            q = 0;
 		i++;
 	}
 	if (q != 0)
@@ -51,68 +45,101 @@ int	ft_check_quotes(char *line)
 	return(0);
 }
 
-char	*ft_expand(char *line, t_env *env, const int prev_exit)
+void	ft_exp_exit(char **exp_line, t_count *c, int p_exit)
 {
-    int     i = 0, q = 0, start, end, x = 0;
-    char    *exp_line;
-    char    *var_name;
-	
-    if (!line || !env)
-        return (NULL);
-    exp_line = ft_malloc(1024);
-    if (!exp_line)
-        return (NULL);
-    while (line[i])
-    {
-        if (line[i] == '"' && q == 0)
-            q = 1;
-        else if (line[i] == '"' && q == 1)
-            q = 0;
-        if (line[i] == '\'' && q == 0)
-            q = 2;
-        else if (line[i] == '\'' && q == 2)
-            q = 0;
-        if (q == 0 && line[i] == ' ')
-        {
-            if (x > 0 && exp_line[x - 1] != ' ')
-                exp_line[x++] = ' ';
-            while (line[i + 1] == ' ')
-                i++;
-        }
-		else if (q != 2 && line[i] == '$' && line[i + 1] == '?')
-		{
-			char	*exit;		
-			exit = ft_itoa(prev_exit);
-			ft_strlcpy(&(exp_line[x]), exit, ft_strlen(exit) + 1);
-			x += ft_strlen(exit);
-			i += 1;
-			free(exit);
-		}
-     	else if (q != 2 && line[i] == '$' && ft_isalpha(line[i + 1]))
-        {
-            start = i + 1;
-            end = start;
-            while (ft_isalnum(line[end]) || line[end] == '_')
-                end++;
-            var_name = ft_malloc(sizeof(char) * (end - start + 1));
-            if (!var_name)
-            {
-                free(exp_line);
-                return (NULL);
-            }
-            strncpy(var_name, &line[start], end - start);
-            var_name[end - start] = '\0';
-            ft_get_env_value(var_name, &exp_line[x], env);
-            x += strlen(&exp_line[x]);  // Move x forward
-            free(var_name);
-            i = end - 1;  // Move past the variable
-		}
-		else
-            exp_line[x++] = line[i];
-        i++;
-    }
-    exp_line[x] = '\0';
-	return(exp_line);
+	char	*exit;
+	char 	*temp;
+
+	exit = ft_itoa(p_exit);
+	temp = ft_strjoin(*exp_line, exit);
+	free(*exp_line);
+	*exp_line = temp;
+	c->k += ft_strlen(exit);
+	c->i += 1;
+	free(exit);
+}
+
+char	*ft_exp_env(t_count *c, char *line,  char **exp_line, t_env *env)
+{
+	char    *v_name;
+	char	*v_value;
+	char	*temp;
+
+	temp = NULL;
+	v_value = NULL;
+	c->start = c->i + 1;
+	c->end = c->start;
+	while (ft_isalnum(line[c->end]) || line[c->end] == '_')
+		(c->end)++;
+	v_name = ft_malloc(sizeof(char) * (c->end - c->start + 1));
+	if (!v_name)
+	{
+		return (NULL);
+	}
+	strncpy(v_name, &line[c->start], c->end - c->start);
+	v_name[c->end - c->start] = '\0';
+	v_value = ft_get_env_value(v_name, env);
+	if (v_value && *v_value)
+	{
+		temp = ft_strjoin(*exp_line, v_value);
+		*exp_line = NULL;
+	}
+	c->k += strlen(&(*exp_line[c->k]));
+	free(v_name);
+	free(v_value);
+	c->i = c->end - 1;
+	if (temp)
+		return(temp);
+	return(NULL);
 }
 
 
+char	*ft_expand(char *line, t_env *env, const int p_exit, int s_quote)
+{
+	t_count		c;
+    char    	*exp_line;
+	char		*temp;
+	
+	ft_counter(&c);
+    if (!line || !env)
+        return (NULL);
+    exp_line = ft_calloc(sizeof(char) , strlen(line));
+    if (!exp_line)
+        return (NULL);
+    while (line[c.i])
+    {
+        if ((line[c.i] == '"' || line[c.i] == '\'') && c.q == 0)
+            c.q = line[c.i];
+        else if ((line[c.i] == '"' || line[c.i] == '\'') && c.q == line[c.i])
+            c.q = 0;
+        if (c.q == 0 && line[c.i] == ' ')
+        {
+            if (c.k > 0 && exp_line[c.k - 1] != ' ')
+                exp_line[(c.k)++] = ' ';
+            while (line[c.i + 1] == ' ')
+                (c.i)++;
+        }
+		else if ((c.q != '\'' || s_quote) && line[c.i] == '$' &&
+			 line[c.i + 1] == '?')
+		{
+			ft_exp_exit(&exp_line, &c, p_exit);
+     	}
+		else if ((c.q != '\'' || s_quote) && line[c.i] == '$' &&
+			 ft_isalpha(line[c.i + 1]))
+		{
+			temp = ft_exp_env(&c, line, &exp_line, env);
+			if (temp)
+			{
+				free(exp_line);
+				exp_line = temp;
+			}
+		}
+		else
+		{
+           exp_line[(c.k)++] = line[c.i];
+		}
+        (c.i)++;
+    }
+    exp_line[c.k] = '\0';
+	return(exp_line);
+}

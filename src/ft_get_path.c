@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:35:21 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/09 23:01:15 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/11 22:18:43 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,20 +55,20 @@ static int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 	return (1);
 }
 
-static int	ft_get_path_aux(t_cmd *cmd)
+int	ft_get_path_aux(char *path)
 {
 	struct stat	 path_stat;
 
-	if (stat(cmd->path, &path_stat))
+	if (stat(path, &path_stat))
 	{
 		ft_perror("minishell: ", 0);
-		ft_perror(cmd->path, 0);
+		ft_perror(path, 0);
 		return (ft_perror(": No such file or directory\n", 127));
 	}
-	else if (!(stat(cmd->path, &path_stat)) && S_ISDIR(path_stat.st_mode))
+	else if (!(stat(path, &path_stat)) && S_ISDIR(path_stat.st_mode))
 	{
 		ft_perror("minishell: ", 1);
-		ft_perror(cmd->path, 1);
+		ft_perror(path, 1);
 		return (ft_perror(": Is a directory\n", 126));
 	}
 	return (0);
@@ -83,7 +83,7 @@ int	ft_get_path(t_cmd *cmd)
 	if (ft_strchr(cmd->n, '/') != NULL)
 	{
 		cmd->path = ft_strdup(cmd->n);
-		return (ft_get_path_aux(cmd));
+		return (ft_get_path_aux(cmd->path));
 	}
 	r = 0;
 	path_env = ft_getenv(cmd->env, "PATH");

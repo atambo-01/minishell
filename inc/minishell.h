@@ -64,6 +64,7 @@ typedef struct s_count
 	int 		last;
 	int 		q;
 	int 		temp;
+	int			start;
 	int 		end;
 	long long	l;
 } t_count;
@@ -80,7 +81,7 @@ typedef struct s_main_vars
 } t_main_vars;
 
 // main.c +
-char	*ft_expand(char *line, t_env *env, const int prev_exi);
+char	*ft_expand(char *line, t_env *env, const int prev_exi, int s_quote);
 int		ft_check_quotes(char *line);
 int		ft_cop_syntax(char *line);
 void	ft_add_ctrl_op(t_token **p_token, int cop);
@@ -141,7 +142,7 @@ int		ft_unset(t_cmd *cmd);
 
 // ft_get_path
 int  	ft_get_path(t_cmd *cmd);
-
+int		ft_get_path_aux(char  *path);
 // execute
 int		ft_execute(t_cmd *cmd);
 
