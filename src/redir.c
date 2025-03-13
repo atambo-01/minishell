@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/12 04:14:52 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/13 14:31:13 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,8 @@ int ft_heredoc(t_main_vars *mv, t_token *token, int fd[], int *i_fd)
     if (pid == -1)
         return (ft_perror("minshell: heredoc: fork\n", 1));
     if (pid == 0)
-        handle_heredoc_child(mv, fd, *i_fd, temp);
+		handle_heredoc_child(mv, fd, *i_fd, temp);
+	free(temp);
     close(fd[*i_fd + 1]);
     waitpid(pid, &status, 0);
     if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
