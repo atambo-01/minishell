@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/07 15:34:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/15 22:07:55 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,33 +27,34 @@ t_token *ft_get_pipe(t_token *token)
 	return(NULL);
 }
 
-int	ft_handle_first_fork(t_main_vars* mv, t_cmd *cmd, int *fd, t_token *token)
+int	ft_pipe_stdout(t_main_vars *mv, int (*fd)[2], t_token *token, int i)
 {
-	pid_t	pid;
+	int status;
 
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
-	if (pid == 0)
-	{
-		dup2(fd[1], STDOUT_FILENO);
-		close(fd[0]);
-		close(fd[1]);
-		if (ft_count_redir(token))
-			ft_get_redir(mv, token, &(mv->fd), &(mv->fd_c));
-		exit(ft_execute(cmd));
-	}
-	return (pid);
+	status = 0;
+	dup2(fd[i][1], STDOUT_FILENO);
+	if (ft_count_redir(token))
+		status = ft_get_redir(mv, token, &(mv->fd), &(mv->fd_c));
+	return (status);
 }
 
+int ft_pipe_stdin(t_main_vars *mv, int (*fd)[2], t_token *token, int i)
+{
+	int status;
 
-int	ft_handle_second_fork(t_main_vars *mv, t_cmd *cmd, int *fd, t_token *token)
+	status = 0;
+	dup2(fd[i - 1][0], STDIN_FILENO);
+	if (ft_count_redir(token))
+		status = ft_get_redir(mv, token, &(mv->fd), &(mv->fd_c));
+	return (status);
+}
+
+int	ft_handle_fork(t_main_vars* mv, t_cmd *cmd, int (*fd)[2], t_token *token, int i)
 {
 	pid_t	pid;
-
+	int 	status;
+	
+	status = 0;
 	pid = fork();
 	if (pid == -1)
 	{
@@ -62,40 +63,52 @@ int	ft_handle_second_fork(t_main_vars *mv, t_cmd *cmd, int *fd, t_token *token)
 	}
 	if (pid == 0)
 	{
-		dup2(fd[0], STDIN_FILENO);
-		close(fd[1]);
-		close(fd[0]);
-		if (ft_get_pipe(token) != NULL)
-			exit(ft_pipe(mv, cmd, token));
-		else 
-		{	
-			if (ft_count_redir(token))
-				ft_get_redir(mv, token, &(mv->fd), &(mv->fd_c));
-			exit(ft_execute(cmd));
+//		ft_restore_fd(mv->fd);
+	//	if (mv->cmd != cmd)
+		if (cmd == mv->cmd)
+		{
+			printf("--------------------\n");
+			printf("i == %d\n", i);
+			printf("--------------------\n");
+			ft_cmd_ls(cmd);
+		//	status = ft_pipe_stdin(mv, fd, token, i);
 		}
+		if (cmd->nc != NULL)
+		{
+			printf("--------------------\n");
+			printf("i == %d\n", i);
+			printf("--------------------\n");
+			ft_cmd_ls(cmd);
+		//	status = ft_pipe_stdout(mv, fd, token, i);
+		}
+	//	ft_execute(cmd);
+		exit (status);
 	}
-	return(pid);
+	waitpid(pid, &status, 0);
+	return (status);
 }
 
 int	ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token)
 {
-	int	fd[2];
-	int	status;
-	pid_t	pid_0;
-	pid_t	pid_1;
+	t_cmd	*curr;
+	int		i;
+	int		status;
+	int		fd[100][2];
 
 	status = -1;
-	pid_0 = 0;
-	pid_1 = 0;
-	if (pipe(fd) == -1)
-		return(ft_perror("minishell: pipe fd error\n", 1));
-	pid_0 = ft_handle_first_fork(mv, cmd, fd, token);
-	token = ft_get_pipe(token);
-	pid_1 = ft_handle_second_fork(mv, cmd->nc->nc, fd, token);
-	ft_restore_fd(mv->fd);
-	close(fd[0]);
-	close(fd[1]);
-	waitpid(pid_0, &status, 0);
-	waitpid(pid_1, &status, 0);
+	curr = cmd;
+	i == 0;
+	while(curr)
+	{
+		if (pipe(fd[i]) == -1)
+			return(ft_perror("minishell: pipe fd error\n", 1));
+		ft_handle_fork(mv, curr, fd, token, i);
+		curr = curr->nc;
+		if (ft_cop(curr->n) == 1 && curr->nc)
+			curr = curr->nc;
+		token = ft_get_pipe(token);
+	//	ft_restore_fd(mv->fd);
+		i++;
+	}
 	return(status);
 }
