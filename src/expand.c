@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/13 14:01:33 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/17 17:36:00 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,13 @@ static void	ft_handle_space(char *line, t_count *c, char *exp_line)
 
 static void	ft_handle_quote(char *line, t_count *c)
 {
-	if (c->q == 0)
-		c->q = line[c->i];
-	else if (c->q == line[c->i])
-		c->q = 0;
+	if (line[c->i] == '"' || line[c->i] == '\'')
+	{
+		if (c->q == 0)
+			c->q = line[c->i];
+		else if (c->q == line[c->i])
+			c->q = 0;
+	}
 }
 
 static char	*ft_process_exp(char *line, t_count *c, char **exp_line, t_data *d)

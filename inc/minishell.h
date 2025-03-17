@@ -87,6 +87,15 @@ typedef struct s_data
 	t_env	*env;
 } t_data;
 
+typedef struct s_pipe_data
+{
+    int     fd[2];
+    int     prev_read_fd;
+    int     i;
+    int     cmd_count;
+    pid_t   *pids;
+} t_pipe_data;
+
 // main.c +
 int		ft_check_quotes(char *line);
 int		ft_cop_syntax(char *line);
@@ -132,10 +141,11 @@ t_cmd	*ft_get_cmd(t_token *token, t_env *env);
 t_token *ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env);
 
 // pipe.c
+t_token *ft_get_pipe(t_token *token);
+int		ft_count_cmd(t_cmd *cmd);
 int		ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token);
 void    ft_restore_fd(int fd[]);
 int 	ft_bckp_fd(int fd[]);
-t_token *ft_get_pipe(t_token *token);
 
 // builtins.c
 int 	ft_strstr(char *str, char *str_find);

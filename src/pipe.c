@@ -6,172 +6,111 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/17 11:22:47 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/17 16:28:18 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-t_token *ft_get_pipe(t_token *token)
+void	ft_handle_child(t_main_vars *mv, t_cmd *curr, t_pipe_data *data)
 {
-	if (!token)
-		return (NULL);
-	if (ft_cop(token->s) == 1)
-		token = token->next;
-	while(token)
+	(void)mv;
+	int	i;
+	int	cmd_count;
+
+	i = data->i;
+	cmd_count = data->cmd_count;
+	if (i == 0 && cmd_count > 1)
+		dup2(data->fd[1], STDOUT_FILENO);
+	else if (i > 0 && i < cmd_count - 1)
 	{
-		if (ft_cop(token->s) == 1)
-			return(token);
-		token = token->next;
+		dup2(data->prev_read_fd, STDIN_FILENO);
+		dup2(data->fd[1], STDOUT_FILENO);
+		close(data->prev_read_fd);
 	}
-	return(NULL);
+	else if (i == cmd_count - 1 && cmd_count > 1)
+	{
+		dup2(data->prev_read_fd, STDIN_FILENO);
+		close(data->prev_read_fd);
+	}
+	close(data->fd[0]);
+	close(data->fd[1]);
+	ft_execute(curr);
+	exit(EXIT_SUCCESS);
 }
 
-int	ft_pipe_stdout(t_main_vars *mv, int (*fd)[2], t_token *token, int i)
+void	ft_handle_parent(t_pipe_data *data)
 {
-	int status;
+	int	i;
+	int	cmd_count;
 
-	status = 0;
-	dup2(fd[i][1], STDOUT_FILENO);
-	if (ft_count_redir(token))
-		status = ft_get_redir(mv, token, &(mv->fd), &(mv->fd_c));
-	return (status);
+	cmd_count = data->cmd_count;
+	i = data->i;
+	if (i > 0)
+		close(data->prev_read_fd);
+	if (i < cmd_count - 1)
+	{
+		close(data->fd[1]);
+		data->prev_read_fd = data->fd[0];
+	}
 }
 
-int ft_pipe_stdin(t_main_vars *mv, int (*fd)[2], t_token *token, int i)
+int	ft_wait_children(t_pipe_data *data, int status)
 {
-	int status;
+	int	j;
 
-	status = 0;
-	dup2(fd[i - 1][0], STDIN_FILENO);
-	if (ft_count_redir(token))
-		status = ft_get_redir(mv, token, &(mv->fd), &(mv->fd_c));
-	return (status);
+	j = 0;
+	while (j < data->i)
+	{
+		waitpid(data->pids[j], &status, 0);
+		j++;
+	}
+	return (WEXITSTATUS(status));
 }
-/*
-int	ft_handle_fork(t_main_vars* mv, t_cmd *cmd, int (*fd)[2], t_token *token, int i)
+
+int	ft_init_pipe_data(t_pipe_data *data, t_cmd *cmd, t_cmd **curr, int *status)
 {
-	pid_t	pid;
-	int 	status;
-	
-	status = 0;
-	pid = fork();
-	if (pid == -1)
+	*status = 0;
+	*curr = cmd;
+	data->i = 0;
+	data->prev_read_fd = -1;
+	data->fd[0] = -1;
+	data->fd[1] = -1;
+	data->cmd_count = ft_count_cmd(cmd);
+	data->pids = malloc(sizeof(pid_t) * data->cmd_count);
+	if (!data->pids)
 	{
-		perror("fork");
-		exit(EXIT_FAILURE);
+		ft_perror("minishell: malloc error\n", 1);
+		return (1);
 	}
-	if (pid == 0)
-	{
-//		ft_restore_fd(mv->fd);
-	//	if (mv->cmd != cmd)
-		if (cmd != mv->cmd)
-		{
-			printf("--------------------\n");
-			printf("i == %d\n", i);
-			printf("--------------------\n");
-			ft_cmd_ls(cmd);
-		//	status = ft_pipe_stdin(mv, fd, token, i);
-		}
-		if (cmd->nc != NULL)
-		{
-			printf("--------------------\n");
-			printf("i == %d\n", i);
-			printf("--------------------\n");
-			ft_cmd_ls(cmd);
-		//	status = ft_pipe_stdout(mv, fd, token, i);
-		}
-	//	ft_execute(cmd);
-		exit (status);
-	}
-	waitpid(pid, &status, 0);
-	return (status);
+	return (0);
 }
 
 int	ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token)
 {
-	t_cmd	*curr;
-	int		i;
-	int		status;
-	int		fd[100][2];
+	t_cmd		*curr;
+	int			status;
+	t_pipe_data	data;
 
-	status = -1;
-	curr = cmd;
-	i == 0;
-	while(curr)
+	if (ft_init_pipe_data(&data, cmd, &curr, &status) == 1)
+		return (1);
+	while (curr && data.i < data.cmd_count)
 	{
-		if (pipe(fd[i]) == -1)
-			return(ft_perror("minishell: pipe fd error\n", 1));
-		ft_handle_fork(mv, curr, fd, token, i);
+		if (data.i < data.cmd_count - 1 && pipe(data.fd) == -1)
+			return (ft_perror("minishell: pipe fd error\n", 1));
+		data.pids[data.i] = fork();
+		if (data.pids[data.i] == -1)
+			return (ft_perror("minishell: fork error\n", 1));
+		if (data.pids[data.i] == 0)
+			ft_handle_child(mv, curr, &data);
+		ft_handle_parent(&data);
 		curr = curr->nc;
-		if (ft_cop(curr->n) == 1 && curr->nc)
+		if (curr && ft_cop(curr->n) == 1 && curr->nc)
 			curr = curr->nc;
 		token = ft_get_pipe(token);
-	//	ft_restore_fd(mv->fd);
-		i++;
+		data.i++;
 	}
-	return(status);
-}
-*/
-int ft_handle_fork(t_main_vars* mv, t_cmd *cmd, int (*fd)[2], t_token *token, int i)
-{
-    pid_t   pid;
-    int     status = 0;
-    
-    pid = fork();
-    if (pid == -1)
-    {
-        perror("fork");
-        exit(EXIT_FAILURE);
-    }
-    if (pid == 0) // Child process
-    {
-        // Handle input redirection (all except first command)
-        if (cmd != mv->cmd) 
-        {
-            status = ft_pipe_stdin(mv, fd, token, i);
-            close(fd[i-1][1]); // Close write end of previous pipe
-        }
-        
-        // Handle output redirection (all except last command)
-        if (cmd->nc != NULL)
-        {
-            status = ft_pipe_stdout(mv, fd, token, i);
-            close(fd[i][0]);   // Close read end of current pipe
-        }
-        
-        ft_execute(cmd);  // Execute the command
-        exit(status);
-    }
-    // Parent process
-    if (i > 0)
-        close(fd[i-1][0]);     // Close previous read end
-    if (cmd->nc != NULL)
-        close(fd[i][1]);       // Close current write end
-        
-    waitpid(pid, &status, 0);
-    return (WEXITSTATUS(status));
-}
-
-int ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token)
-{
-    t_cmd   *curr = cmd;
-    int     i = 0;
-    int     status = 0;
-    int     fd[100][2];
-
-    while (curr)
-    {
-        if (curr->nc && pipe(fd[i]) == -1) // Only create pipe if there's a next command
-            return (ft_perror("minishell: pipe fd error\n", 1));
-            
-        status = ft_handle_fork(mv, curr, fd, token, i);
-        
-        curr = curr->nc;
-        if (curr && ft_cop(curr->n) == 1 && curr->nc)
-            curr = curr->nc;
-        token = ft_get_pipe(token);
-        i++;
-    }
-    return (status);
+	status = ft_wait_children(&data, status);
+	free(data.pids);
+	return (status);
 }

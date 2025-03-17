@@ -6,12 +6,12 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/03/17 11:14:26 by atambo           ###   ########.fr        #
+#    Updated: 2025/03/17 16:24:55 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC		=	cc
-CFLAGS		=	-g #-Wall -Wextra -Werror
+CC			=	cc
+CFLAGS		=	-g -Wall -Wextra -Werror
 NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
@@ -41,7 +41,8 @@ SOURCES		=	src/main.c\
 				src/main_auxiliary.c\
 				src/exit.c\
 				src/exit_atoi.c\
-				src/ft_get_path.c
+				src/ft_get_path.c\
+				src/pipe_aux.c\
 
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft

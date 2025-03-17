@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/17 11:24:18 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/17 18:29:24 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,10 +67,10 @@ int	main(int ac, char **av, char **envp)
 		if (ft_strlen(mv.line) == 0)
 			continue ;
 		mv.exit = ft_exit_update(mv.exit);
-		add_history(mv.line);
 		mv.token = ft_token(mv.line, mv.env, mv.exit, &mv);
 		if (!mv.token)
 			continue ;
+		add_history(mv.line);
 		if (ft_exit(&mv) == 1)
 			mv.exit = 1;
 		else
