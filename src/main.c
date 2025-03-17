@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/13 14:39:24 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/17 11:24:18 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ void	ft_main_nest(t_main_vars *mv)
 
 	mv->cmd = ft_get_cmd(mv->token, mv->env);
 	ft_bckp_fd(mv->fd);
-	ft_cmd_ls(mv->cmd);
 	if (mv->cmd != NULL)
 	{
 		if (ft_get_pipe(mv->token) != NULL)
@@ -70,7 +69,6 @@ int	main(int ac, char **av, char **envp)
 		mv.exit = ft_exit_update(mv.exit);
 		add_history(mv.line);
 		mv.token = ft_token(mv.line, mv.env, mv.exit, &mv);
-		ft_token_ls(mv.token);
 		if (!mv.token)
 			continue ;
 		if (ft_exit(&mv) == 1)

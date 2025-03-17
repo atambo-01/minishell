@@ -80,17 +80,29 @@ typedef struct s_main_vars
 	t_env 	*env;
 } t_main_vars;
 
+typedef struct s_data
+{
+	int		p_exit;
+	int		s_quote;
+	t_env	*env;
+} t_data;
+
 // main.c +
-char	*ft_expand(char *line, t_env *env, const int prev_exi, int s_quote);
 int		ft_check_quotes(char *line);
 int		ft_cop_syntax(char *line);
 void	ft_add_ctrl_op(t_token **p_token, int cop);
 void	ft_free_token(t_token **p_token);
 void	ft_token_ls(t_token *token);
+void	ft_cmd_ls(t_cmd *cmd);
 void	ft_free_cmd(t_cmd **p_cmd);
 void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
 void    ft_main_while_free(t_main_vars *mv);
 int     ft_exit_update(int i);
+
+//expand.c 
+char	*ft_expand(char *line, t_env *env, const int p_exit, int s_quote);
+char	*ft_exp_env(t_count *c, char *line, char **exp_line, t_env *env);
+void    ft_exp_exit(char **exp_line, t_count *c, int p_exit);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);

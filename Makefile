@@ -6,12 +6,12 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/03/09 22:48:52 by atambo           ###   ########.fr        #
+#    Updated: 2025/03/17 11:14:26 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC		=	cc
-CFLAGS		=	-g -Wall -Wextra -Werror
+CFLAGS		=	-g #-Wall -Wextra -Werror
 NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iincludes
@@ -24,6 +24,7 @@ SOURCES		=	src/main.c\
 				src/get_subtoken.c\
 				src/utils.c\
 				src/expand.c\
+				src/expand_aux.c\
 				src/env_list.c\
 				src/aux_env_list.c\
 				src/aux2_env_list.c\
