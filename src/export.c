@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/05 17:25:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/18 12:17:01 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_is_valid_name(char *name)
 		ft_perror("minishell: export: ", 2);
 		ft_perror(name, 2);
 		ft_perror(": not a valid identifier\n", 2);
-		return (f);
+		return (1);
 	}
 	return (0);
 }
@@ -59,18 +59,25 @@ int	ft_print_ex(t_env **env)
 int	ft_export(char **args, t_env **envp)
 {
 	int		i;
+	int		status;
+	int 	error;
 
 	i = 1;
+	status = 0;
+	error = 0;
 	if (!args[1])
 		return (ft_print_ex(envp));
 	else
 	{
 		while (args[i])
 		{
-			if (ft_is_valid_name(args[i]) == 0)
+			status = ft_is_valid_name(args[i]);
+			if (status == 0)
 				ft_add_env_node(*envp, args[i]);
+			else
+				error = status;
 			i++;
 		}
 	}
-	return (0);
+	return (error);
 }

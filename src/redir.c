@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/13 14:31:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/18 13:01:54 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ int	ft_redir_out(t_token *token, int fd[], int *i_fd)
 	fd[*i_fd] = open(token->next->s, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", 126));
+		return (ft_perror("minshell: Permission denied\n", 1));
 	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
 		return (ft_perror("minishell: error redirecting stdout\n", 1));
 	(*i_fd)++;
@@ -111,7 +111,7 @@ int	ft_redir_in(t_token *token, int fd[], int *i_fd)
 	fd[*i_fd] = open(temp, O_RDONLY);
 	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", 126));
+		return (ft_perror("minshell: Permission denied\n", 1));
 	if (dup2(fd[*i_fd], STDIN_FILENO) == -1)
 		return (ft_perror("dup2: redirecting stdin\n", 1));
 	(*i_fd)++;
@@ -126,7 +126,7 @@ int	ft_redir_append(t_token *token, int fd[], int *i_fd)
 	fd[*i_fd] = open(temp, O_RDONLY);
 	free(temp);
 	if (fd[*i_fd] == -1)
-		return (ft_perror("minshell: Permission denied\n", 126));
+		return (ft_perror("minshell: Permission denied\n", 1));
 	if (dup2(fd[*i_fd], STDOUT_FILENO) == -1)
 		return (ft_perror("dup2: redirecting stdout\n", 1));
 	(*i_fd)++;

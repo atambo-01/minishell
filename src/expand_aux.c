@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 13:59:44 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/17 18:37:57 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/18 12:26:05 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@ char	*ft_get_env_value(char *var_name, t_env *env)
 {
 	while (env)
 	{
-		if (ft_strcmp(env->name, var_name) == 0 && env->value)
+		if (ft_strcmp(env->name, var_name) == 0 && env->value != NULL)
 			return (ft_strdup(env->value));
-		else if (ft_strcmp(env->name, var_name) == 0 && !(env->value))
-			return("");
+		else if (ft_strcmp(env->name, var_name) == 0)
+			return(ft_strdup(""));
 		 env = env->next;
 	  }
 	  return (ft_strdup(""));

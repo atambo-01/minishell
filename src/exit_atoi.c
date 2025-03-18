@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:04:46 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/09 15:50:47 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/18 11:33:42 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ int	handle_space_and_signs(char *str, t_count *c)
 	{
 		while (str[c->i] == ' ' || str[c->i] == '\t')
 			c->i++;
+		if (str[c->i + 1])
+		{
+			if (str[c->i] == 0)
+				return(1);
+		}
 	}
 	else if (str[c->i] == '-' || str[c->i] == '+')
 	{
@@ -72,13 +77,24 @@ int	handle_number(char *str, t_count *c)
 	return (0);
 }
 
+int 	ft_has_digit(char *str)
+{
+	while(*str)
+	{
+		if (*str >= '0' && *str <= '9')
+			return (1);
+		str++;
+	}
+	return(0);
+}
+
 int ft_exit_atoi(char *str)
 {
 	int		processed;
 	t_count	c;
 
 	ft_counter(&c);
-	if (!str || !*str)
+	if (!str || !*str || ft_has_digit(str) == 0)
 		return (-1);
 	c.j = 1;
 	while (str[c.i])
