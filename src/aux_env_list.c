@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   aux_env_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
+/*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:15:47 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/02 11:53:11 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/18 17:06:07 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,39 +29,42 @@ char	*ft_getenv(t_env *env, const char *name)
 	}
 	return (NULL);
 }
-
-t_env   *ft_envp_to_list(char **envp)
+void	ft_aux(t_env **head, t_env **new, t_env **cur)
 {
-    t_env   *head;
-    t_env   *new_node;
-    t_env   *current;
-    int     i;
-
-    head = NULL;
-    current = NULL;
-    i = 0;
-    if (!envp || !*envp)
-        return (NULL);
-    while (envp[i])
-    {
-        new_node = ft_create_env_node(envp[i]);
-        if (!new_node)
-            return (NULL);
-        if (!head)
-        {
-            head = new_node;
-            current = head;  // Initialize current
-        }
-        else
-        {
-            current->next = new_node;
-            current = new_node;  // Move current forward
-        }
-        i++;
-    }
-    return (head);
+	if (!(*head))
+	{
+		*head = *new;
+		*cur = *head;
+	}
+	else
+	{
+		(*cur)->next = *new;
+		*cur = *new; 
+	}
 }
 
+t_env	*ft_envp_to_list(char **envp)
+{
+	t_env	*head;
+	t_env	*new_node;
+	t_env	*current;
+	int		i;
+
+	head = NULL;
+	current = NULL;
+	i = 0;
+	if (!envp || !*envp)
+		return (NULL);
+	while (envp[i])
+	{
+		new_node = ft_create_env_node(envp[i]);
+		if (!new_node)
+			return (NULL);
+		ft_aux(&head, &new_node, &current);
+		i++;
+	}
+	return (head);
+}
 
 char	**ft_token_to_envp(t_env *env)
 {
