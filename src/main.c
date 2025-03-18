@@ -61,12 +61,12 @@ int	main(int ac, char **av, char **envp)
 	ft_shell_init(&mv, envp, ac, av);
 	while (1)
 	{
-		ft_signal((int []){1, 1, 0, 0, 0, 0});
-		mv.line = readline(COLOR BOLD "攻殻_機動隊 > " RESET);
+		ft_signal((int []){1, 1, 0, 0, 0, 0, 0});
+		mv.line = readline("@:minshell_prompt > ");
+		ft_exit_update(&(mv.exit));
 		ft_ctrl_d(&mv);
 		if (ft_strlen(mv.line) == 0)
 			continue ;
-		mv.exit = ft_exit_update(mv.exit);
 		mv.token = ft_token(mv.line, mv.env, mv.exit, &mv);
 		if (!mv.token)
 			continue ;

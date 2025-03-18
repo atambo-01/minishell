@@ -14,16 +14,20 @@
 
 void	ft_signal(int opt[])
 {
-	if (opt[0])
+	if (opt[0] == 1)
 		signal(SIGQUIT, SIG_IGN); //main
-	if (opt[1])
+	if (opt[1] == 1)
 		signal(SIGINT, ft_ctrl_c); //main
-	if (opt[2])
+	if (opt[2] == 1)
 		signal(SIGQUIT, ft_execve_sigquit); //execve
-	if (opt[3])
+	if (opt[3] == 1)
 		signal(SIGQUIT, ft_execve_sigquit_2); //execve
-	if (opt[4])
+	if (opt[4] == 1)
 		signal(SIGINT, ft_execve_sigint); //execve
-	if (opt[5])
+	if (opt[5] == 1)
 		signal(SIGINT, ft_builtin_int); //builtins
+	if (opt[6] == 1)
+		signal(SIGINT, ft_heredoc_sigint);
+	if (!opt[1] && !opt[4] && !opt[5] && !opt[6])
+		signal(SIGINT, SIG_IGN);
 }

@@ -31,12 +31,12 @@ int	ft_execve(t_cmd *cmd)
 
 	status = 0;
 	pid = fork();
-	ft_signal((int []){0, 0, 1, 1, 1, 0});
+	ft_signal((int []){0, 0, 1, 1, 1, 0, 0});
 	if (pid == -1)
 		return (ft_perror("fork", -1));
 	if (pid == 0)
 		ft_execve_child(cmd);
-	ft_signal((int []){0, 0, 0, 0, 0, 0});
+	ft_signal((int []){0, 0, 0, 0, 0, 0, 0});
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);

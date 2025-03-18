@@ -14,7 +14,7 @@
 
 void	ft_ctrl_c(int sig)
 {
-	(void)sig;
+ 	(void)sig;
 	g_signal = SIGINT;
 	write(1, "\n", 1);
 	rl_on_new_line();
@@ -48,4 +48,12 @@ void	ft_builtin_int(int sig)
 	(void)sig;
 	write(1, "\n", 1);
 	g_signal = SIGINT;
+}
+
+void	ft_heredoc_sigint(int sig)
+{
+	(void)sig;
+	write(1, "\n", 1);
+	g_signal = SIGINT;
+	exit(0);
 }

@@ -12,17 +12,17 @@
 
 #include "../inc/minishell.h"
 
-int     ft_exit_update(int i)
+void     ft_exit_update(int *i)
 {
         int     ret;
 
-        ret = i;
+        ret = *i;
         if (g_signal == SIGINT)
                 ret = 130;
         else if (g_signal == SIGQUIT)
                 ret = 131;
         g_signal = 0;
-        return (ret);
+		*i = ret;
 }
 
 void    ft_free_token(t_token **p_token)

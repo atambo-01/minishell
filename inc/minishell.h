@@ -106,7 +106,7 @@ void	ft_cmd_ls(t_cmd *cmd);
 void	ft_free_cmd(t_cmd **p_cmd);
 void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
 void    ft_main_while_free(t_main_vars *mv);
-int     ft_exit_update(int i);
+void	ft_exit_update(int *i);
 
 //expand.c 
 char	*ft_expand(char *line, t_env *env, const int p_exit, int s_quote);
@@ -192,6 +192,7 @@ void    ft_execve_sigint(int sig);
 void    ft_execve_sigquit(int sig);
 void    ft_execve_sigquit_2(int sig);
 void	ft_builtin_int(int sig);
+void	ft_heredoc_sigint(int sig);
 
 //redir.c
 int		ft_get_redir(t_main_vars *mv, t_token *head, int **fd, int *count);

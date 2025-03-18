@@ -117,7 +117,7 @@ int	ft_builtin(t_cmd *cmd)
 		return (1);
 	if (!cmd->n)
 		return (1);
-	ft_signal((int[]){0, 0, 0, 0, 0, 1});
+	ft_signal((int[]){0, 0, 0, 0, 0, 1, 0});
 	if (ft_strcmp(cmd->n, "cd") == 0)
 		return (ft_cd(cmd));
 	else if (ft_strcmp(cmd->n, "echo") == 0)
