@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/17 18:29:24 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/19 21:31:32 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,14 @@ void	ft_main_nest(t_main_vars *mv)
 		ft_get_redir(mv, mv->token, &(mv->fd), &(mv->fd_c));
 }
 
+static void	ft_add_history(char *line)
+{
+	while(*line == ' ' || *line == '\t')
+		line++;
+	if (*line)
+		add_history(line);
+}
+
 int	main(int ac, char **av, char **envp)
 {
 	t_main_vars	mv;
@@ -67,10 +75,10 @@ int	main(int ac, char **av, char **envp)
 		ft_ctrl_d(&mv);
 		if (ft_strlen(mv.line) == 0)
 			continue ;
+		ft_add_history(mv.line);
 		mv.token = ft_token(mv.line, mv.env, mv.exit, &mv);
 		if (!mv.token)
 			continue ;
-		add_history(mv.line);
 		if (ft_exit(&mv) == 1)
 			mv.exit = 1;
 		else
