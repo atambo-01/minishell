@@ -6,25 +6,25 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 16:06:04 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 17:16:57 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h" 
 
-void    ft_counter(t_count *c)
+void	ft_counter(t_count *c)
 {
-        if (!c)
-                return ;
-        (c)->i = 0;
-        (c)->j = 0;
-        (c)->k = 0;
-        (c)->last = 0;
-        (c)->q = 0;
-        (c)->start = 0;
-        (c)->temp = 0;
-        (c)->end = 0;
-        (c)->l = 0;
+	if (!c)
+		return ;
+	(c)->i = 0;
+	(c)->j = 0;
+	(c)->k = 0;
+	(c)->last = 0;
+	(c)->q = 0;
+	(c)->start = 0;
+	(c)->temp = 0;
+	(c)->end = 0;
+	(c)->l = 0;
 }
 
 void	free_on_add_env_node(char *name, char *value)

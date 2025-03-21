@@ -92,6 +92,7 @@ typedef struct s_pipe_data
     int     fd[2];
     int     prev_read_fd;
     int     i;
+	int		status;
     int     cmd_count;
     pid_t   *pids;
 	t_token	*token;
@@ -142,7 +143,7 @@ t_token *ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env);
 // get_cmd_aux.c
 t_cmd	*ft_get_tail_cmd(t_cmd *cmd);
 int		ft_count_params(t_token *token);
-void    ft_add_params_single(t_token ** token, t_cmd *cmd);
+void    ft_add_params_single(t_token **token, t_cmd *cmd);
 
 // pipe.c
 t_token *ft_get_pipe(t_token *token);
