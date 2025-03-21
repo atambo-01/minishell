@@ -6,21 +6,19 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 02:24:56 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 14:22:35 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_handle_child(t_main_vars *mv, t_cmd *curr, t_pipe_data *data)
+int	ft_pipe_child_aux(t_cmd *curr, t_pipe_data *data)
 {
-	(void)mv;
 	int	i;
 	int	cmd_count;
-	int	status;
 
-	i = data->i;
 	cmd_count = data->cmd_count;
+	i = data->i;
 	if (i == 0 && cmd_count > 1)
 		dup2(data->fd[1], STDOUT_FILENO);
 	else if (i > 0 && i < cmd_count - 1)
@@ -36,18 +34,26 @@ void	ft_handle_child(t_main_vars *mv, t_cmd *curr, t_pipe_data *data)
 	}
 	close(data->fd[0]);
 	close(data->fd[1]);
+	return (ft_execute(curr));
+}
+
+void	ft_pipe_child(t_main_vars *mv, t_cmd *curr, t_pipe_data *data)
+{
+	int	status;
+
 	if (ft_count_redir(data->token) > 0)
     {
+		ft_restore_fd(mv->fd);
         status = ft_get_redir(mv, data->token, &(mv->fd), &(mv->fd_c));
 		if (status == 0)
             status = ft_execute(curr);
     }
     else
-		status = ft_execute(curr);	
+		status = ft_pipe_child_aux(curr, data);
 	exit(status);
 }
 
-void	ft_handle_parent(t_pipe_data *data)
+void	ft_pipe_parent(t_pipe_data *data)
 {
 	int	i;
 	int	cmd_count;
@@ -113,8 +119,8 @@ int	ft_pipe(t_main_vars *mv)
 		if (data.pids[data.i] == -1)
 			return (ft_perror("minishell: fork error\n", 1));
 		if (data.pids[data.i] == 0)
-			ft_handle_child(mv, curr, &data);
-		ft_handle_parent(&data);
+			ft_pipe_child(mv, curr, &data);
+		ft_pipe_parent(&data);
 		curr = curr->nc;
 		if (curr && ft_cop(curr->n) == 1 && curr->nc)
 			curr = curr->nc;

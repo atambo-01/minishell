@@ -6,7 +6,7 @@
 /*   By: atambo <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/17 15:50:25 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/17 15:54:26 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 14:15:33 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_token	*ft_get_pipe(t_token *token)
 	while (token)
 	{
 		if (ft_cop(token->s) == 1)
-			return (token);
+			return (token->next);
 		token = token->next;
 	}
 	return (NULL);

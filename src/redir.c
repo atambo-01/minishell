@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 00:51:42 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 14:13:55 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,7 +202,7 @@ int	ft_get_redir(t_main_vars *mv, t_token *head, int **fd, int *count)
 	else 
 		*count += 3;
 	i_fd = 3;
-	while(token)
+	while(token && ft_cop(token->s) != 1)
 	{
 		r = ft_mod_fd(mv, token, *fd, &i_fd);
 		if (r)
