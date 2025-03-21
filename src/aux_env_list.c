@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 18:15:47 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/20 12:35:42 by eneto            ###   ########.fr       */
+/*   Updated: 2025/03/21 10:37:15 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,22 +44,51 @@ void	ft_aux(t_env **head, t_env **new, t_env **cur)
 	}
 }
 
-char	**ft_token_to_envp(t_env *env)
+t_env	*ft_envp_to_list(char **envp)
 {
-	char	**envp;
-	t_env	*tmp;
-	int		size;
+	t_env	*head;
+	t_env	*new_node;
+	t_env	*current;
 	int		i;
-	char	*tmp_str;
 
-	tmp = env;
+	head = NULL;
+	current = NULL;
+	i = 0;
+	if (!envp || !*envp)
+		return (NULL);
+	while (envp[i])
+	{
+		new_node = ft_create_env_node(envp[i]);
+		if (!new_node)
+			return (NULL);
+		ft_aux(&head, &new_node, &current);
+		i++;
+	}
+	return (head);
+}
+
+int	get_env_size(t_env *env)
+{
+	int		size;
+	t_env	*tmp;
+
 	size = 0;
+	tmp = env;
 	while (tmp)
 	{
 		size++;
 		tmp = tmp->next;
 	}
-	envp = (char **)ft_malloc(sizeof(char *) * (size + 1));
+	return (size);
+}
+
+char	**ft_token_to_envp(t_env *env)
+{
+	char	**envp;
+	int		i;
+	char	*tmp_str;
+
+	envp = (char **)ft_malloc(sizeof(char *) * (get_env_size(env) + 1));
 	if (!envp)
 		return (NULL);
 	i = 0;

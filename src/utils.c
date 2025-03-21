@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
+/*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/10 13:00:09 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 10:34:28 by eneto            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h" 
+
+void	free_on_add_env_node(char *name, char *value)
+{
+	free(name);
+	free(value);
+}
 
 int	ft_cop(char *str)
 {
@@ -34,33 +40,30 @@ int	ft_cop_syntax(char *line)
 {
 	int	i;
 	int	cop;
-	
+
 	i = 0;
 	cop = 0;
 	if (!line)
 		return (1);
-	while(line[i])
+	while (line[i])
 	{
 		cop = ft_cop(&line[i]);
 		if (cop >= 4)
 			i++;
 		if (cop && (!line[i + 1] || ft_cop(&line[i + 1])))
-		{
 			return (ft_perror("error: bad control operator syntax\n", 2));
-		}
-		if (cop  && line[i + 1] == ' ')
+		if (cop && line[i + 1] == ' ')
 		{
 			i++;
-			while(line[i] == ' ')
+			while (line[i] == ' ')
 				i++;
 			if (!line[i] || ft_cop(&line[i]))
-			{
 				return (ft_perror("error: bad control operator syntax\n", 2));
-			}
 		}
-	//	if (line[i] == 0 || line[i + 1] == 0)
-	//		return(1);
 		i++;
 	}
-	return(0);
+	return (0);
 }
+	//	if (line[i] == 0 || line[i + 1] == 0)
+	//		return(1);	//	if (line[i] == 0 || line[i + 1] == 0)
+	//		return(1);
