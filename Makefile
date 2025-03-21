@@ -30,7 +30,7 @@ SOURCES		=	src/main.c\
 				src/aux2_env_list.c\
 				src/execute.c\
 				src/builtins.c\
-				src/ft_aux_b.c\
+				src/aux_builtins.c\
 				src/env.c\
 				src/export.c\
 				src/signal.c\
