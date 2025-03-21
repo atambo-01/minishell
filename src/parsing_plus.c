@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/07 16:27:32 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/10 13:00:56 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 16:06:53 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,6 @@ t_token	*ft_get_tail(t_token *node)
 	while (node->next)
 		node = node->next;
 	return (node);
-}
-
-void	ft_counter(t_count *c)
-{
-	if (!c)
-		return ;
-	(c)->i = 0;
-	(c)->j = 0;
-	(c)->k = 0;
-	(c)->last = 0;
-	(c)->q = 0;
-	(c)->start = 0;
-	(c)->temp = 0;
-	(c)->end = 0;
-	(c)->l = 0; 
 }
 
 void	ft_add_token(char *line, t_token **p_token, t_count *c)
@@ -87,7 +72,6 @@ void	ft_add_pipe(t_token **p_token)
 	}
 }
 
-
 void	ft_add_ctrl_op(t_token **p_token, int cop)
 {
 	t_token	*curr;
@@ -98,11 +82,11 @@ void	ft_add_ctrl_op(t_token **p_token, int cop)
 		token->s = ft_strdup("|");
 	else if (cop == 2)
 		token->s = ft_strdup(">");
-	else if (cop == 3 ) 
+	else if (cop == 3)
 		token->s = ft_strdup("<");
 	else if (cop == 4)
 		token->s = ft_strdup(">>");
-	else if (cop == 5)	
+	else if (cop == 5)
 		token->s = ft_strdup("<<");
 	token->next = NULL;
 	if (!*p_token)

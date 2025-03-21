@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/03/21 14:40:44 by atambo           ###   ########.fr        #
+#    Updated: 2025/03/21 16:45:40 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,8 +18,10 @@ INCLUDES	=	-Iincludes
 
 SOURCES		=	src/main.c\
 				src/parsing.c\
+				src/parsing_aux.c\
 				src/parsing_plus.c\
 				src/get_cmd.c\
+				src/get_cmd_aux.c\
 				src/pipe.c\
 				src/get_subtoken.c\
 				src/utils.c\
@@ -38,6 +40,8 @@ SOURCES		=	src/main.c\
 				src/signal_handlers_2.c\
 				src/ft_unset.c\
 				src/redir.c\
+				src/redir_heredoc.c\
+				src/redir_utils.c\
 				src/main_functions.c\
 				src/main_auxiliary.c\
 				src/aux_exit.c\

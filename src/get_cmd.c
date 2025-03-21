@@ -6,40 +6,11 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/09 13:22:05 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/02 10:43:43 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 16:44:48 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
-
-t_cmd	*ft_get_tail_cmd(t_cmd *cmd)
-{
-	if (!cmd)
-		return (NULL);
-	while (cmd->nc)
-		cmd = cmd->nc;
-	return (cmd);
-}
-
-int	ft_count_params(t_token *token)
-{
-	int	i;
-	i = 0;
-	if (!token)
-		return (0);
-	while (token)
-	{
-		if (ft_cop(token->s) == 0)
-			i++;
-		else if (ft_cop(token->s) > 1)
-			token = token->next;
-		else if (ft_cop(token->s) == 1)
-			break;
-		if (token)
-			token = token->next;
-	}
-	return (i);
-}
 
 t_token	*ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env)
 {
@@ -62,7 +33,7 @@ t_token	*ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env)
 		curr->nc = new;
 		new->pc = curr;
 	}
-	return (token); // Return the last token processed
+	return (token);
 }
 
 void	ft_add_params(t_token **token, t_cmd *cmd)
@@ -70,15 +41,12 @@ void	ft_add_params(t_token **token, t_cmd *cmd)
 	int		i;
 
 	if (!*token || !cmd)
-		return;
+		return ;
 	i = ft_count_params(*token);
-	if (i == 1) // If no parameters, only include command name
+	if (i == 1)
 	{
-		cmd->params = ft_malloc(sizeof(char *) * 2);
-		cmd->params[0] = ft_get_subtoken(cmd->n);
-		cmd->params[1] = NULL;
-		*token = (*token)->next;
-		return;
+		ft_add_params_single(token, cmd);
+		return ;
 	}
 	cmd->params = ft_malloc(sizeof(char *) * (i + 2));
 	i = 0;
@@ -131,11 +99,11 @@ t_cmd	*ft_get_cmd(t_token *head, t_env *env)
 	token = head;
 	while (token && token->s)
 	{
-		if 		(ft_cop(token->s) > 1)
+		if (ft_cop(token->s) > 1)
 			token = token->next->next;
 		else if (ft_cop(token->s) == 1)
 			token = ft_add_pipe_cmd(token, &cmd, env);
-		else if (ft_cop(token->s) == 0) // Only process if it's a command
+		else if (ft_cop(token->s) == 0)
 			token = ft_add_cmd(token, &cmd, env);
 		else
 			token = token->next;

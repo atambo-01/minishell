@@ -15,10 +15,10 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-#include <sys/stat.h>
-#include <errno.h>
+# include <sys/stat.h>
+# include <errno.h>
 
-#define COLOR  "\033[0;36m"
+# define COLOR  "\033[0;36m"
 # define BOLD   "\x1B[1m"
 # define RESET	"\x1B[0m"
 # define SHELL	"minishell"			
@@ -134,12 +134,15 @@ void	ft_subtoken_handle_quotes(char *old, char *new, t_count *c);
 char	*ft_get_subtoken(char *old);
 
 // get_cmd.c
-t_cmd	*ft_get_tail_cmd(t_cmd *cmd);
 t_token	*ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env);
-int		ft_count_params(t_token *token);
 void	ft_add_params(t_token **token, t_cmd *p_cmd);
 t_cmd	*ft_get_cmd(t_token *token, t_env *env);
 t_token *ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env);
+
+// get_cmd_aux.c
+t_cmd	*ft_get_tail_cmd(t_cmd *cmd);
+int		ft_count_params(t_token *token);
+void    ft_add_params_single(t_token ** token, t_cmd *cmd);
 
 // pipe.c
 t_token *ft_get_pipe(t_token *token);
@@ -195,13 +198,26 @@ void    ft_execve_sigquit_2(int sig);
 void	ft_builtin_sigint(int sig);
 void	ft_heredoc_sigint(int sig);
 
-//redir.c
+// redir.c
 int		ft_get_redir(t_main_vars *mv, t_token *head, int **fd, int *count);
+int 	ft_redir_append(t_token *token, int fd[], int *i_fd);
+int 	ft_redir_in(t_token *token, int fd[], int *i_fd);
+int 	ft_redir_out(t_token *token, int fd[], int *i_fd);
+
+
+// redir_heredoc.c
+int     ft_heredoc(t_main_vars *mv, t_token *token, int fd[], int *i_fd);
+void    heredoc_child(t_main_vars *mv, int fd[], int i_fd, char *delimiter);
+
+// redir_utils.c
 int 	ft_count_redir(t_token *token);
+int 	ft_mod_fd(t_main_vars *mv, t_token *token, int fd[], int *i_fd);
+int 	ft_bckp_fd(int fd[]);
 void    ft_close_fd(int fd[], int i_fd);
 void    ft_restore_fd(int fd[]);
 
-//exit
+
+// exit
 int 	ft_exit(t_main_vars *mv);
 int 	ft_exit_atoi(char *str);
 int 	handle_number(char *str, t_count *c);

@@ -6,11 +6,26 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 13:56:13 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 16:06:04 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h" 
+
+void    ft_counter(t_count *c)
+{
+        if (!c)
+                return ;
+        (c)->i = 0;
+        (c)->j = 0;
+        (c)->k = 0;
+        (c)->last = 0;
+        (c)->q = 0;
+        (c)->start = 0;
+        (c)->temp = 0;
+        (c)->end = 0;
+        (c)->l = 0;
+}
 
 void	free_on_add_env_node(char *name, char *value)
 {
@@ -64,6 +79,3 @@ int	ft_cop_syntax(char *line)
 	}
 	return (0);
 }
-	//	if (line[i] == 0 || line[i + 1] == 0)
-	//		return(1);	//	if (line[i] == 0 || line[i + 1] == 0)
-	//		return(1);

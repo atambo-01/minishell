@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 02:18:26 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 16:22:44 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ void	ft_main_nest(t_main_vars *mv)
 
 	mv->cmd = ft_get_cmd(mv->token, mv->env);
 	ft_bckp_fd(mv->fd);
-	if 		(mv->cmd != NULL && ft_get_pipe(mv->token) != NULL)
+	if (mv->cmd != NULL && ft_get_pipe(mv->token) != NULL)
 		mv->exit = ft_pipe(mv);
-	else if	(ft_count_redir(mv->token) > 0)
+	else if (ft_count_redir(mv->token) > 0)
 	{
 		redir = ft_get_redir(mv, mv->token, &(mv->fd), &(mv->fd_c));
 		if (redir)
@@ -48,7 +48,7 @@ void	ft_main_nest(t_main_vars *mv)
 
 static void	ft_add_history(char *line)
 {
-	while(*line == ' ' || *line == '\t')
+	while (*line == ' ' || *line == '\t')
 		line++;
 	if (*line)
 		add_history(line);

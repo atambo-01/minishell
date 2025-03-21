@@ -6,32 +6,32 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:49:13 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/06 17:26:55 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 16:23:28 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void     ft_exit_update(int *i)
+void	ft_exit_update(int *i)
 {
-        int     ret;
+	int	ret;
 
-        ret = *i;
-        if (g_signal == SIGINT)
-                ret = 130;
-        else if (g_signal == SIGQUIT)
-                ret = 131;
-        g_signal = 0;
-		*i = ret;
+	ret = *i;
+	if (g_signal == SIGINT)
+		ret = 130;
+	else if (g_signal == SIGQUIT)
+		ret = 131;
+	g_signal = 0;
+	*i = ret;
 }
 
-void    ft_free_token(t_token **p_token)
+void	ft_free_token(t_token **p_token)
 {
-	t_token *token;
-	t_token *next;
+	t_token	*token;
+	t_token	*next;
 
 	if (!p_token || !*p_token || !(*p_token)->s)
-			return ;
+		return ;
 	token = *p_token;
 	while (token)
 	{
@@ -59,13 +59,13 @@ void	ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av)
 	ft_bckp_fd(mv->fd);
 }
 
-void    ft_free_cmd(t_cmd **p_cmd)
+void	ft_free_cmd(t_cmd **p_cmd)
 {
 	t_cmd	*cmd;
 	t_cmd	*next;
 
 	if (!p_cmd || !*p_cmd)
-			return ;
+		return ;
 	cmd = *p_cmd;
 	next = NULL;
 	while (cmd)
@@ -87,7 +87,7 @@ void    ft_free_cmd(t_cmd **p_cmd)
 	}
 }
 
-void    ft_main_while_free(t_main_vars *mv)
+void	ft_main_while_free(t_main_vars *mv)
 {
 	ft_restore_fd(mv->fd);
 	if (mv->line)
@@ -101,7 +101,7 @@ void    ft_main_while_free(t_main_vars *mv)
 		mv->token = NULL;
 	}
 	if (mv->cmd)
-	{	
+	{
 		ft_free_cmd(&(mv->cmd));
 		mv->cmd = NULL;
 	}
