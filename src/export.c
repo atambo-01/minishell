@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/18 12:17:01 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 16:57:04 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_export(char **args, t_env **envp)
 {
 	int		i;
 	int		status;
-	int 	error;
+	int		error;
 
 	i = 1;
 	status = 0;

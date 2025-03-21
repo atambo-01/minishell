@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 14:29:46 by eneto            ###   ########.fr       */
+/*   Updated: 2025/03/21 16:51:13 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	ft_echo(t_cmd *cmd)
 		if (ft_echo_flags(cmd->params[n], flags))
 			n++;
 		else if (cmd->params[n])
-		{	
+		{
 			printf("%s", cmd->params[n]);
 			n++;
 			if (cmd->params[n])

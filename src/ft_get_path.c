@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:35:21 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/11 22:18:43 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 16:56:23 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 
 int	ft_get_path_aux(char *path)
 {
-	struct stat	 path_stat;
+	struct stat	path_stat;
 
 	if (stat(path, &path_stat))
 	{

@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 02:59:16 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 16:40:42 by eneto            ###   ########.fr       */
+/*   Updated: 2025/03/21 17:13:48 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,18 @@ int	ft_check_number(char *str)
 	while (*str)
 	{
 		if (ft_isdigit(*str))
-		{	
+		{
 			i++;
 			if (i > ft_strlen("9223372036854775807"))
 				return (-1);
 			if (i == ft_strlen("9223372036854775807"))
-			{	
+			{
 				if (sign == NULL && *str > '7')
 					return (-1);
 				if (sign != NULL && *str > '8')
 					return (-1);
 			}
-		}	
+		}
 		str++;
 	}
 	return (i);

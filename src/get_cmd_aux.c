@@ -6,13 +6,13 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 16:38:44 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 16:44:08 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 16:54:50 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_add_params_single(t_token ** token, t_cmd *cmd)
+void	ft_add_params_single(t_token **token, t_cmd *cmd)
 {
 	cmd->params = ft_malloc(sizeof(char *) * 2);
 	cmd->params[0] = ft_get_subtoken(cmd->n);
@@ -43,7 +43,7 @@ int	ft_count_params(t_token *token)
 		else if (ft_cop(token->s) > 1)
 			token = token->next;
 		else if (ft_cop(token->s) == 1)
-			break;
+			break ;
 		if (token)
 			token = token->next;
 	}
