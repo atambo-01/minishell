@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/18 13:01:54 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 00:51:42 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void handle_heredoc_child(t_main_vars *mv, int fd[], int i_fd, char *delimiter)
 
 	if(dup2(fd[0], STDIN_FILENO) == -1)
 		exit(ft_perror("minishell : dup2 failed in heredoc child", 1));
-	ft_signal((int []){0, 0, 0, 0, 0, 0, 1});
+	ft_signal(0, 0);
 	close(fd[i_fd]);
 	while (g_signal != SIGINT)
 	{
@@ -194,7 +194,7 @@ int	ft_get_redir(t_main_vars *mv, t_token *head, int **fd, int *count)
 	int		i_fd;
 	t_token	*token;
 
-	ft_signal((int []){0, 0, 0, 0, 0, 0, 0});
+	ft_signal(0, 0);
 	token = head;
 	*count = ft_count_redir(token);
 	if (*count == 0)

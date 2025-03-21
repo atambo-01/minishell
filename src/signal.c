@@ -6,28 +6,29 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:14:05 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/09 22:47:20 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 00:20:33 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
-void	ft_signal(int opt[])
+void	ft_signal(int o_int, int o_quit)
 {
-	if (opt[0] == 1)
-		signal(SIGQUIT, SIG_IGN); //main
-	if (opt[1] == 1)
+	if 		(o_int == 1)
 		signal(SIGINT, ft_ctrl_c); //main
-	if (opt[2] == 1)
-		signal(SIGQUIT, ft_execve_sigquit); //execve
-	if (opt[3] == 1)
-		signal(SIGQUIT, ft_execve_sigquit_2); //execve
-	if (opt[4] == 1)
+	else if (o_int == 2)
 		signal(SIGINT, ft_execve_sigint); //execve
-	if (opt[5] == 1)
-		signal(SIGINT, ft_builtin_int); //builtins
-	if (opt[6] == 1)
-		signal(SIGINT, ft_heredoc_sigint);
-	if (!opt[1] && !opt[4] && !opt[5] && !opt[6])
-		signal(SIGINT, SIG_IGN);
+	else if (o_int == 3)
+		signal(SIGINT, ft_builtin_sigint); //builtins
+	else
+		signal(SIGINT, SIG_DFL);
+
+	if 		(o_quit == 1)
+		signal(SIGQUIT, SIG_IGN); //main
+	else if (o_quit == 2)
+		signal(SIGQUIT, ft_execve_sigquit_2); //execve
+	else if (o_quit == 3)
+		signal(SIGQUIT, ft_execve_sigquit); //execve
+	else
+		signal(SIGQUIT, SIG_DFL);
 }

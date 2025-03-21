@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 11:33:06 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/18 12:54:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 00:14:27 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,7 +117,7 @@ int	ft_builtin(t_cmd *cmd)
 		return (1);
 	if (!cmd->n)
 		return (1);
-	ft_signal((int[]){0, 0, 0, 0, 0, 1, 0});
+	ft_signal(3, 0);
 	if (ft_strcmp(cmd->n, "cd") == 0)
 		return (ft_cd(cmd));
 	else if (ft_strcmp(cmd->n, "echo") == 0)

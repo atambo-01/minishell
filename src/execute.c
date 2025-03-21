@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/09 22:47:45 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 00:17:11 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,12 @@ int	ft_execve(t_cmd *cmd)
 
 	status = 0;
 	pid = fork();
-	ft_signal((int []){0, 0, 1, 1, 1, 0, 0});
+	ft_signal(2, 2);
 	if (pid == -1)
 		return (ft_perror("fork", -1));
 	if (pid == 0)
 		ft_execve_child(cmd);
-	ft_signal((int []){0, 0, 0, 0, 0, 0, 0});
+	ft_signal(0, 0);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);

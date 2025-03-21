@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:40:19 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/09 23:01:58 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 00:49:49 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,9 @@ void	ft_builtin_int(int sig)
 	g_signal = SIGINT;
 }
 
-void	ft_heredoc_sigint(int sig)
+void	ft_builtin_sigint(int sig)
 {
 	(void)sig;
 	write(1, "\n", 1);
 	g_signal = SIGINT;
-	exit(0);
 }

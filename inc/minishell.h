@@ -94,6 +94,7 @@ typedef struct s_pipe_data
     int     i;
     int     cmd_count;
     pid_t   *pids;
+	t_token	*token;
 } t_pipe_data;
 
 // main.c +
@@ -143,7 +144,7 @@ t_token *ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env);
 // pipe.c
 t_token *ft_get_pipe(t_token *token);
 int		ft_count_cmd(t_cmd *cmd);
-int		ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token);
+int		ft_pipe(t_main_vars *mv);
 void    ft_restore_fd(int fd[]);
 int 	ft_bckp_fd(int fd[]);
 
@@ -187,11 +188,11 @@ char	**ft_token_to_envp(t_env *env);
 // signal
 void	ft_ctrl_c(int  sig);
 void	ft_ctrl_d(t_main_vars *sig);
-void	ft_signal(int opt[]);
+void	ft_signal(int o_int, int o_quit);
 void    ft_execve_sigint(int sig);
 void    ft_execve_sigquit(int sig);
 void    ft_execve_sigquit_2(int sig);
-void	ft_builtin_int(int sig);
+void	ft_builtin_sigint(int sig);
 void	ft_heredoc_sigint(int sig);
 
 //redir.c

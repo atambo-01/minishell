@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/17 16:28:18 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/21 02:24:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ void	ft_handle_child(t_main_vars *mv, t_cmd *curr, t_pipe_data *data)
 	(void)mv;
 	int	i;
 	int	cmd_count;
+	int	status;
 
 	i = data->i;
 	cmd_count = data->cmd_count;
@@ -35,8 +36,15 @@ void	ft_handle_child(t_main_vars *mv, t_cmd *curr, t_pipe_data *data)
 	}
 	close(data->fd[0]);
 	close(data->fd[1]);
-	ft_execute(curr);
-	exit(EXIT_SUCCESS);
+	if (ft_count_redir(data->token) > 0)
+    {
+        status = ft_get_redir(mv, data->token, &(mv->fd), &(mv->fd_c));
+		if (status == 0)
+            status = ft_execute(curr);
+    }
+    else
+		status = ft_execute(curr);	
+	exit(status);
 }
 
 void	ft_handle_parent(t_pipe_data *data)
@@ -64,19 +72,22 @@ int	ft_wait_children(t_pipe_data *data, int status)
 	{
 		waitpid(data->pids[j], &status, 0);
 		j++;
+		if (status)
+ 			return (WEXITSTATUS(status));
 	}
 	return (WEXITSTATUS(status));
 }
 
-int	ft_init_pipe_data(t_pipe_data *data, t_cmd *cmd, t_cmd **curr, int *status)
+int	ft_init_pipe(t_main_vars *mv, t_pipe_data *data, t_cmd **curr, int *status)
 {
+	data->token = mv->token;
+	*curr = mv->cmd;
 	*status = 0;
-	*curr = cmd;
 	data->i = 0;
 	data->prev_read_fd = -1;
 	data->fd[0] = -1;
 	data->fd[1] = -1;
-	data->cmd_count = ft_count_cmd(cmd);
+	data->cmd_count = ft_count_cmd(mv->cmd);
 	data->pids = malloc(sizeof(pid_t) * data->cmd_count);
 	if (!data->pids)
 	{
@@ -86,13 +97,13 @@ int	ft_init_pipe_data(t_pipe_data *data, t_cmd *cmd, t_cmd **curr, int *status)
 	return (0);
 }
 
-int	ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token)
+int	ft_pipe(t_main_vars *mv)
 {
 	t_cmd		*curr;
 	int			status;
 	t_pipe_data	data;
 
-	if (ft_init_pipe_data(&data, cmd, &curr, &status) == 1)
+	if (ft_init_pipe(mv, &data, &curr, &status) == 1)
 		return (1);
 	while (curr && data.i < data.cmd_count)
 	{
@@ -107,7 +118,7 @@ int	ft_pipe(t_main_vars *mv, t_cmd *cmd, t_token *token)
 		curr = curr->nc;
 		if (curr && ft_cop(curr->n) == 1 && curr->nc)
 			curr = curr->nc;
-		token = ft_get_pipe(token);
+		data.token = ft_get_pipe(data.token);
 		data.i++;
 	}
 	status = ft_wait_children(&data, status);
