@@ -208,6 +208,9 @@ int 	handle_number(char *str, t_count *c);
 int 	handle_quotes(char *str, t_count *c);
 int		handle_space_and_signs(char *str, t_count *c);
 int 	ft_convert(long long l);
+int		is_quote(char c);
+int		handle_numbers(char *str, t_count *c);
+void	handle_sign(char *str, t_count *c);
 void    ft_exit_free(t_main_vars *mv);
 
 void	free_on_add_env_node(char *name, char *value);

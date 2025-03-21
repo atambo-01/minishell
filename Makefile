@@ -40,6 +40,7 @@ SOURCES		=	src/main.c\
 				src/redir.c\
 				src/main_functions.c\
 				src/main_auxiliary.c\
+				src/aux_exit.c\
 				src/exit.c\
 				src/exit_atoi.c\
 				src/ft_get_path.c\
