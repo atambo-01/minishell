@@ -210,6 +210,8 @@ int		handle_space_and_signs(char *str, t_count *c);
 int 	ft_convert(long long l);
 void    ft_exit_free(t_main_vars *mv);
 
+void	free_on_add_env_node(char *name, char *value);
+
 //void	ft_minishell_exit(t_main_vars **p_mv);
 
 #endif
