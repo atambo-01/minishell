@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 18:20:24 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/22 16:06:37 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:26:56 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_redir_out(t_token *token, int fd[], int *i_fd)
 {
 	char	*temp;
+
 	temp = ft_get_subtoken(token->next->s);
 	fd[*i_fd] = open(token->next->s, O_CREAT | O_TRUNC | O_WRONLY, 0644);
 	free(temp);

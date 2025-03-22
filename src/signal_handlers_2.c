@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 14:40:02 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/22 12:51:27 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:32:43 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	ft_builtin_sigint(int sig)
 	g_signal = SIGINT;
 }
 
-void ft_heredoc_sigint(int sig)
+void	ft_heredoc_sigint(int sig)
 {
-    g_signal = sig;              // Set global signal flag
-    rl_replace_line("", 0);      // Clear current input
-    rl_done = 1;                 // Tell readline to finish
-    write(STDOUT_FILENO, "\n", 1);  // Newline for clean exit
+	g_signal = sig;
+	rl_replace_line("", 0);
+	rl_done = 1;
+	write(STDOUT_FILENO, "\n", 1);
 }

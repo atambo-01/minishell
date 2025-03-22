@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/22 02:41:49 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:19:25 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ int	ft_execve_child(t_cmd *cmd)
 	char	**env_p;
 
 	ft_signal(-1, -1);
-
 	env_p = ft_token_to_envp(cmd->env);
 	if (!env_p || !*env_p)
 		exit(1);
@@ -32,7 +31,6 @@ int	ft_execve(t_cmd *cmd)
 	int		status;
 
 	ft_signal(0, 0);
-
 	status = 0;
 	pid = fork();
 	if (pid == -1)
