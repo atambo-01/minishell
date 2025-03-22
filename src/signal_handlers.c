@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:40:19 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 14:41:19 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/22 12:52:25 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 void	ft_ctrl_c(int sig)
 {
-	(void)sig;
-	g_signal = SIGINT;
+	g_signal = sig;
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);

@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 14:49:18 by eneto            ###   ########.fr       */
+/*   Updated: 2025/03/22 02:41:49 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 int	ft_execve_child(t_cmd *cmd)
 {
 	char	**env_p;
+
+	ft_signal(-1, -1);
 
 	env_p = ft_token_to_envp(cmd->env);
 	if (!env_p || !*env_p)
@@ -29,14 +31,14 @@ int	ft_execve(t_cmd *cmd)
 	pid_t	pid;
 	int		status;
 
+	ft_signal(0, 0);
+
 	status = 0;
 	pid = fork();
-	ft_signal(2, 2);
 	if (pid == -1)
 		return (ft_perror("fork", -1));
 	if (pid == 0)
 		ft_execve_child(cmd);
-	ft_signal(0, 0);
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		status = WEXITSTATUS(status);

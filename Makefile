@@ -6,7 +6,7 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/03/21 16:45:40 by atambo           ###   ########.fr        #
+#    Updated: 2025/03/22 12:50:16 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -35,9 +35,9 @@ SOURCES		=	src/main.c\
 				src/aux_builtins.c\
 				src/env.c\
 				src/export.c\
-				src/signal.c\
 				src/signal_handlers.c\
 				src/signal_handlers_2.c\
+				src/signal.c\
 				src/ft_unset.c\
 				src/redir.c\
 				src/redir_heredoc.c\

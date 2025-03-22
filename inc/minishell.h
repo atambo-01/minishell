@@ -18,10 +18,11 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-# define COLOR  "\033[0;36m"
-# define BOLD   "\x1B[1m"
-# define RESET	"\x1B[0m"
-# define SHELL	"minishell"			
+# define COLOR  	"\033[0;36m"
+# define BOLD   	"\x1B[1m"
+# define RESET		"\x1B[0m"
+# define SHELL		"minishell"			
+# define HEREDOC_1	"minishell: warning: here-document at line 1 delimited by end-of-file (wanted `end')\n"
 
 extern int g_signal;
 
@@ -110,7 +111,7 @@ void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
 void    ft_main_while_free(t_main_vars *mv);
 void	ft_exit_update(int *i);
 
-//expand.c 
+// expand.c 
 char	*ft_expand(char *line, t_env *env, const int p_exit, int s_quote);
 char	*ft_exp_env(t_count *c, char *line, char **exp_line, t_env *env);
 void    ft_exp_exit(char **exp_line, t_count *c, int p_exit);
@@ -197,7 +198,7 @@ void    ft_execve_sigint(int sig);
 void    ft_execve_sigquit(int sig);
 void    ft_execve_sigquit_2(int sig);
 void	ft_builtin_sigint(int sig);
-void	ft_heredoc_sigint(int sig);
+void 	ft_heredoc_sigint(int sig);
 
 // redir.c
 int		ft_get_redir(t_main_vars *mv, t_token *head, int **fd, int *count);

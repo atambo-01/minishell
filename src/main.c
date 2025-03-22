@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 16:22:44 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/22 16:15:33 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_main_nest(t_main_vars *mv)
 		redir = ft_get_redir(mv, mv->token, &(mv->fd), &(mv->fd_c));
 		if (redir)
 			mv->exit = redir;
-		else
+		else if (mv->cmd != NULL)
 			mv->exit = ft_execute(mv->cmd);
 	}
 	else
@@ -61,7 +61,7 @@ int	main(int ac, char **av, char **envp)
 	ft_shell_init(&mv, envp, ac, av);
 	while (1)
 	{
-		ft_signal(1, 1);
+		ft_signal(1, 0);
 		mv.line = readline("@:minshell_prompt > ");
 		ft_exit_update(&(mv.exit));
 		ft_ctrl_d(&mv);
