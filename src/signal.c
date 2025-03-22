@@ -6,13 +6,14 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/16 14:14:05 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/22 12:49:29 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/22 17:46:28 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/minishell.h"
 
 /*
+
 o_int	1 main
 o_int	2 execve
 o_int	3 builtins
@@ -21,6 +22,7 @@ o_int	4 heredoc
 o_quit	1 main
 o_quit	2 execve
 o_quit	3 execve
+
 */
 
 void	ft_signal(int o_int, int o_quit)

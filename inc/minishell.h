@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/22 17:15:19 by atambo            #+#    #+#             */
+/*   Updated: 2025/03/22 17:44:04 by atambo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
@@ -18,34 +30,34 @@
 # include <sys/stat.h>
 # include <errno.h>
 
-# define COLOR  	"\033[0;36m"
-# define BOLD   	"\x1B[1m"
+# define COLOR		"\033[0;36m"
+# define BOLD		"\x1B[1m"
 # define RESET		"\x1B[0m"
 # define SHELL		"minishell"			
-# define HEREDOC_1	"minishell: warning: here-document at line 1 delimited by end-of-file (wanted `end')\n"
+# define HEREDOC_1	"minishell: warning: here-document EOF used\n"
 
-extern int g_signal;
+extern int	g_signal;
 
 typedef struct s_pipe
 {
-	int fd[2];
-	pid_t pid;
-	const char *c0;
-	const char *c1;
-} t_pipe;
+	int				fd[2];
+	pid_t			pid;
+	const char		*c0;
+	const char		*c1;
+}	t_pipe;
 
 typedef struct s_token
 {
-	char *s;
-	struct s_token *next;
-} t_token;
+	char			*s;
+	struct s_token	*next;
+}	t_token;
 
 typedef struct s_env
 {
-	char *name;
-	char *value;
-	struct s_env *next;
-} t_env;
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
 
 typedef struct s_cmd
 {
@@ -55,49 +67,49 @@ typedef struct s_cmd
 	char			*path;
 	t_env			*env;
 	char			**params;
-} t_cmd;
+}	t_cmd;
 
 typedef struct s_count
 {
-	int 		i;
-	int 		j;
-	int 		k;
-	int 		last;
-	int 		q;
-	int 		temp;
+	int			i;
+	int			j;
+	int			k;
+	int			last;
+	int			q;
+	int			temp;
 	int			start;
-	int 		end;
+	int			end;
 	long long	l;
-} t_count;
+}	t_count;
 
 typedef struct s_main_vars
 {
-	t_token *token;
-	t_cmd 	*cmd;
-	char 	*line;
+	t_token	*token;
+	t_cmd	*cmd;
+	char	*line;
 	int		*fd;
 	int		fd_c;
-	int 	exit;
-	t_env 	*env;
-} t_main_vars;
+	int		exit;
+	t_env	*env;
+}	t_main_vars;
 
 typedef struct s_data
 {
 	int		p_exit;
 	int		s_quote;
 	t_env	*env;
-} t_data;
+}	t_data;
 
 typedef struct s_pipe_data
 {
-    int     fd[2];
-    int     prev_read_fd;
-    int     i;
+	int		fd[2];
+	int		prev_read_fd;
+	int		i;
 	int		status;
-    int     cmd_count;
-    pid_t   *pids;
+	int		cmd_count;
+	pid_t	*pids;
 	t_token	*token;
-} t_pipe_data;
+}	t_pipe_data;
 
 // main.c +
 int		ft_check_quotes(char *line);
@@ -107,21 +119,21 @@ void	ft_free_token(t_token **p_token);
 void	ft_token_ls(t_token *token);
 void	ft_cmd_ls(t_cmd *cmd);
 void	ft_free_cmd(t_cmd **p_cmd);
-void    ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
-void    ft_main_while_free(t_main_vars *mv);
+void	ft_shell_init(t_main_vars *mv, char **envp, int ac, char **av);
+void	ft_main_while_free(t_main_vars *mv);
 void	ft_exit_update(int *i);
 
 // expand.c 
 char	*ft_expand(char *line, t_env *env, const int p_exit, int s_quote);
 char	*ft_exp_env(t_count *c, char *line, char **exp_line, t_env *env);
-void    ft_exp_exit(char **exp_line, t_count *c, int p_exit);
+void	ft_exp_exit(char **exp_line, t_count *c, int p_exit);
 
 // parsing.c
 void	ft_process_quotes(char ch, t_count *c);
 void	ft_handle_pipe(char *line, t_token **token, t_count *c);
 void	ft_handle_space_or_end(char *line, t_token **token, t_count *c);
 void	ft_get_token_if(char *line, t_token **p_token, t_count *c);
-char 	*ft_pre_get_token(char *line, t_env *env, int exit, t_main_vars *mv);
+char	*ft_pre_get_token(char *line, t_env *env, int exit, t_main_vars *mv);
 t_token	*ft_token(char *line, t_env *env, int prev_exit, t_main_vars *mv);
 
 // parsing_plus.c
@@ -139,22 +151,22 @@ char	*ft_get_subtoken(char *old);
 t_token	*ft_add_cmd(t_token *token, t_cmd **cmd, t_env *env);
 void	ft_add_params(t_token **token, t_cmd *p_cmd);
 t_cmd	*ft_get_cmd(t_token *token, t_env *env);
-t_token *ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env);
+t_token	*ft_add_pipe_cmd(t_token *token, t_cmd **cmd, t_env *env);
 
 // get_cmd_aux.c
 t_cmd	*ft_get_tail_cmd(t_cmd *cmd);
 int		ft_count_params(t_token *token);
-void    ft_add_params_single(t_token **token, t_cmd *cmd);
+void	ft_add_params_single(t_token **token, t_cmd *cmd);
 
 // pipe.c
-t_token *ft_get_pipe(t_token *token);
+t_token	*ft_get_pipe(t_token *token);
 int		ft_count_cmd(t_cmd *cmd);
 int		ft_pipe(t_main_vars *mv);
-void    ft_restore_fd(int fd[]);
-int 	ft_bckp_fd(int fd[]);
+void	ft_restore_fd(int fd[]);
+int		ft_bckp_fd(int fd[]);
 
 // builtins.c
-int 	ft_strstr(char *str, char *str_find);
+int		ft_strstr(char *str, char *str_find);
 int		ft_builtin(t_cmd *cmd);
 int		ft_mtxlen(char **mtx);
 int		ft_vfy_name(char *name, char **env);
@@ -169,8 +181,9 @@ int		ft_pwd(void);
 int		ft_unset(t_cmd *cmd);
 
 // ft_get_path
-int  	ft_get_path(t_cmd *cmd);
-int		ft_get_path_aux(char  *path);
+int		ft_get_path(t_cmd *cmd);
+int		ft_get_path_aux(char *path);
+
 // execute
 int		ft_execute(t_cmd *cmd);
 
@@ -182,54 +195,50 @@ void	ft_add_env_node(t_env *env, char *str);
 void	ft_free_env(t_env *p_env);
 void	ft_token_env(t_env *env);
 void	ft_remove_env_node(t_env **head, char *name);
-
 char	*ft_getenv(t_env *env, const char *name);
 t_env	*ft_create_env_node(const char *env);
 t_env	*ft_create_env_node_2(char *name, char *value);
 t_env	*ft_envp_to_list(char **envp);
-
 char	**ft_token_to_envp(t_env *env);
 
 // signal
-void	ft_ctrl_c(int  sig);
+void	ft_ctrl_c(int sig);
 void	ft_ctrl_d(t_main_vars *sig);
 void	ft_signal(int o_int, int o_quit);
-void    ft_execve_sigint(int sig);
-void    ft_execve_sigquit(int sig);
-void    ft_execve_sigquit_2(int sig);
+void	ft_execve_sigint(int sig);
+void	ft_execve_sigquit(int sig);
+void	ft_execve_sigquit_2(int sig);
 void	ft_builtin_sigint(int sig);
-void 	ft_heredoc_sigint(int sig);
+void	ft_heredoc_sigint(int sig);
 
 // redir.c
 int		ft_get_redir(t_main_vars *mv, t_token *head, int **fd, int *count);
-int 	ft_redir_append(t_token *token, int fd[], int *i_fd);
-int 	ft_redir_in(t_token *token, int fd[], int *i_fd);
-int 	ft_redir_out(t_token *token, int fd[], int *i_fd);
-
+int		ft_redir_append(t_token *token, int fd[], int *i_fd);
+int		ft_redir_in(t_token *token, int fd[], int *i_fd);
+int		ft_redir_out(t_token *token, int fd[], int *i_fd);
 
 // redir_heredoc.c
-int     ft_heredoc(t_main_vars *mv, t_token *token, int fd[], int *i_fd);
-void    heredoc_child(t_main_vars *mv, int fd[], int i_fd, char *delimiter);
+int		ft_heredoc(t_main_vars *mv, t_token *token, int fd[], int *i_fd);
+void	heredoc_child(t_main_vars *mv, int fd[], int i_fd, char *delimiter);
 
 // redir_utils.c
-int 	ft_count_redir(t_token *token);
-int 	ft_mod_fd(t_main_vars *mv, t_token *token, int fd[], int *i_fd);
-int 	ft_bckp_fd(int fd[]);
-void    ft_close_fd(int fd[], int i_fd);
-void    ft_restore_fd(int fd[]);
-
+int		ft_count_redir(t_token *token);
+int		ft_mod_fd(t_main_vars *mv, t_token *token, int fd[], int *i_fd);
+int		ft_bckp_fd(int fd[]);
+void	ft_close_fd(int fd[], int i_fd);
+void	ft_restore_fd(int fd[]);
 
 // exit
-int 	ft_exit(t_main_vars *mv);
-int 	ft_exit_atoi(char *str);
-int 	handle_number(char *str, t_count *c);
-int 	handle_quotes(char *str, t_count *c);
+int		ft_exit(t_main_vars *mv);
+int		ft_exit_atoi(char *str);
+int		handle_number(char *str, t_count *c);
+int		handle_quotes(char *str, t_count *c);
 int		handle_space_and_signs(char *str, t_count *c);
-int 	ft_convert(long long l);
+int		ft_convert(long long l);
 int		is_quote(char c);
 int		handle_numbers(char *str, t_count *c);
 void	handle_sign(char *str, t_count *c);
-void    ft_exit_free(t_main_vars *mv);
+void	ft_exit_free(t_main_vars *mv);
 
 void	free_on_add_env_node(char *name, char *value);
 
