@@ -6,7 +6,7 @@
 /*   By: atambo <atambo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 20:41:49 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/17 17:36:00 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/22 20:30:47 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,14 @@ static void	ft_init_exp(t_count *c, char **exp_line, size_t len)
 	*exp_line = ft_calloc(sizeof(char), len + 1024);
 }
 
-static void	ft_handle_space(char *line, t_count *c, char *exp_line)
+static void	ft_handle_space(char *line, t_count *c, char **exp_line)
 {
-	if (c->k > 0 && exp_line[c->k - 1] != ' ')
-		exp_line[c->k++] = ' ';
+	char	*temp;
+
+	temp = ft_strjoin(*exp_line, " ");
+	free(*exp_line);
+	*exp_line = temp;
+	c->k++;
 	while (line[c->i + 1] == ' ')
 		c->i++;
 }
@@ -55,11 +59,15 @@ static char	*ft_process_exp(char *line, t_count *c, char **exp_line, t_data *d)
 		}
 	}
 	else
-		(*exp_line)[c->k++] = line[c->i];
+	{
+		temp = ft_strjoin(*exp_line, (char []){line[c->i], 0});
+		free(*exp_line);
+		*exp_line = temp;
+	}
 	return (*exp_line);
 }
 
-char	*ft_expand(char *line, t_env *env, const int p_exit, int s_quote)
+char	*ft_expand(char *line, t_env *env, int p_exit, int s_quote)
 {
 	t_count	c;
 	char	*exp_line;
@@ -77,11 +85,10 @@ char	*ft_expand(char *line, t_env *env, const int p_exit, int s_quote)
 	{
 		ft_handle_quote(line, &c);
 		if (c.q == 0 && line[c.i] == ' ')
-			ft_handle_space(line, &c, exp_line);
+			ft_handle_space(line, &c, &exp_line);
 		else if (!ft_process_exp(line, &c, &exp_line, &d))
 			return (NULL);
 		c.i++;
 	}
-	exp_line[c.k] = '\0';
 	return (exp_line);
 }

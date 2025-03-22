@@ -89,11 +89,5 @@ int	ft_builtin(t_cmd *cmd)
 		return (ft_unset(cmd));
 	else if (ft_strcmp(cmd->n, "export") == 0)
 		return (ft_export(cmd->params, &(cmd->env)));
-	else if (ft_strcmp(cmd->n, "set_exit") == 0)
-	{
-		if (cmd->params[1])
-			return (ft_atoi((cmd->params[1])));
-		return (0);
-	}
 	return (127);
 }

@@ -159,6 +159,8 @@ int		ft_count_params(t_token *token);
 void	ft_add_params_single(t_token **token, t_cmd *cmd);
 
 // pipe.c
+int		ft_pipe_child_aux(t_cmd *curr, t_pipe_data *data);
+void	ft_pipe_child(t_main_vars *mv, t_cmd *curr, t_pipe_data *data);
 t_token	*ft_get_pipe(t_token *token);
 int		ft_count_cmd(t_cmd *cmd);
 int		ft_pipe(t_main_vars *mv);
