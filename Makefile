@@ -6,15 +6,10 @@
 #    By: atambo <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/12 18:48:12 by atambo            #+#    #+#              #
-#    Updated: 2025/03/22 12:50:16 by atambo           ###   ########.fr        #
+#    Updated: 2025/03/23 16:53:06 by atambo           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC			=	cc
-CFLAGS		=	-g -Wall -Wextra -Werror
-NAME		=	minishell
-OBJS		=	$(SOURCES:.c=.o)
-INCLUDES	=	-Iincludes
 
 SOURCES		=	src/main.c\
 				src/parsing.c\
@@ -50,11 +45,14 @@ SOURCES		=	src/main.c\
 				src/ft_get_path.c\
 				src/pipe_aux.c\
 
+CC			=	cc
+CFLAGS		=	-g -Wall -Wextra -Werror
+NAME		=	minishell
 OBJS		=	$(SOURCES:.c=.o)
 INCLUDES	=	-Iinc -Ilibft
 
-SUBDIR		=	./libft
-LIBS		=	-lreadline  ./libft/libft.a
+SUBDIR		=	./libft ./ft_printf
+LIBS		=	-lreadline  ./libft/libft.a ./ft_printf/ft_printf.a
 
 all: submake $(NAME)
 

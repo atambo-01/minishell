@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/24 14:45:22 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 17:16:57 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/23 15:05:42 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,15 +37,15 @@ int	ft_cop(char *str)
 {
 	if (!str)
 		return (0);
-	if (str[0] == '|')
+	if (str[0] == '|')							// [1]pipe
 		return (1);
-	else if (str[0] == '>' && str[1] == '>')
+	else if (str[0] == '>' && str[1] == '>')	// [4]append
 		return (4);
-	else if (str[0] == '<' && str[1] == '<')
+	else if (str[0] == '<' && str[1] == '<')	// [5]heredoc
 		return (5);
-	else if (str[0] == '>')
+	else if (str[0] == '>')						// [2]out
 		return (2);
-	else if (str[0] == '<')
+	else if (str[0] == '<')						// [3]in
 		return (3);
 	else
 		return (0);

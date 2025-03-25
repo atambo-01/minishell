@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:44:29 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/22 16:15:33 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/25 21:37:55 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	ft_main_nest(t_main_vars *mv)
 
 	mv->cmd = ft_get_cmd(mv->token, mv->env);
 	ft_bckp_fd(mv->fd);
-	if (mv->cmd != NULL && ft_get_pipe(mv->token) != NULL)
+	if (mv->cmd != NULL && ft_do_pipe(mv->token) != NULL)
 		mv->exit = ft_pipe(mv);
 	else if (ft_count_redir(mv->token) > 0)
 	{

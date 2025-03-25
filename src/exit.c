@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 14:04:30 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/17 17:39:45 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/23 13:11:40 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	ft_exit_free(t_main_vars *mv)
 {
 	if (!mv)
 		return ;
-	ft_restore_fd(mv->fd);
+	ft_restore_fd(mv->fd, 1, 1);
 	rl_clear_history();
 	free(mv->line);
 	ft_free_token(&(mv->token));

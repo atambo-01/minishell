@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/01 03:49:13 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 16:23:28 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/23 13:13:43 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	ft_free_cmd(t_cmd **p_cmd)
 
 void	ft_main_while_free(t_main_vars *mv)
 {
-	ft_restore_fd(mv->fd);
+	ft_restore_fd(mv->fd, 1, 1);
 	if (mv->line)
 	{
 		free(mv->line);

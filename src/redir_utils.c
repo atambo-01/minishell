@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/21 15:47:56 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 16:00:30 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/23 15:09:31 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,30 @@ int	ft_count_redir(t_token *token)
 	}
 	return (i);
 }
+
+int	ft_count_redir_2(t_token *token)
+{
+	int		i;
+	int		j;
+	t_token	*curr;
+
+	i = 0;
+	j = 0;
+	if (!token)
+		return (0);
+	curr = token;
+	while (curr && (ft_cop(curr->s) != 1))
+	{
+		if (ft_cop(curr->s) == 4 || ft_cop(curr->s) == 2)
+			i = 1;
+		if (ft_cop(curr->s) == 5 || ft_cop(curr->s) == 3)
+			j = 2;
+		if (curr)
+			curr = curr->next;
+	}
+	return (i + j);
+}
+
 
 int	ft_mod_fd(t_main_vars *mv, t_token *token, int fd[], int *i_fd)
 {
@@ -77,14 +101,18 @@ void	ft_close_fd(int fd[], int i_fd)
 	}
 }
 
-void	ft_restore_fd(int fd[])
+void	ft_restore_fd(int fd[], int in, int out)
 {
 	if (!fd)
 		return ;
-	dup2(fd[0], STDIN_FILENO);
-	dup2(fd[1], STDOUT_FILENO);
-	dup2(fd[2], STDERR_FILENO);
-	close(fd[0]);
-	close(fd[1]);
-	close(fd[2]);
+	if (in)
+	{
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+	}
+	if (out)
+	{
+		dup2(fd[1], STDOUT_FILENO);
+		close(fd[1]);
+	}
 }

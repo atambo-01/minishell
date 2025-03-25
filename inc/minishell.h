@@ -2,6 +2,7 @@
 # define MINISHELL_H
 
 # include "../libft/libft.h"
+# include "../ft_printf/includes/ft_printf.h"
 
 # include <fcntl.h>
 # include <stdio.h>
@@ -147,11 +148,11 @@ int		ft_count_params(t_token *token);
 void    ft_add_params_single(t_token **token, t_cmd *cmd);
 
 // pipe.c
-t_token *ft_get_pipe(t_token *token);
+t_token *ft_do_pipe(t_token *token);
+int 	ft_pipe_child_aux(t_pipe_data *data);
+void	ft_pipe_child(t_main_vars *mv, t_cmd *curr, t_pipe_data *data);
 int		ft_count_cmd(t_cmd *cmd);
 int		ft_pipe(t_main_vars *mv);
-void    ft_restore_fd(int fd[]);
-int 	ft_bckp_fd(int fd[]);
 
 // builtins.c
 int 	ft_strstr(char *str, char *str_find);
@@ -213,10 +214,11 @@ void    heredoc_child(t_main_vars *mv, int fd[], int i_fd, char *delimiter);
 
 // redir_utils.c
 int 	ft_count_redir(t_token *token);
+int		ft_count_redir_2(t_token *token); 
 int 	ft_mod_fd(t_main_vars *mv, t_token *token, int fd[], int *i_fd);
 int 	ft_bckp_fd(int fd[]);
 void    ft_close_fd(int fd[], int i_fd);
-void    ft_restore_fd(int fd[]);
+void    ft_restore_fd(int fd[], int in, int out);
 
 
 // exit

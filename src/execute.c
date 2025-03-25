@@ -6,7 +6,7 @@
 /*   By: eneto <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/01 15:05:14 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/22 16:19:25 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/25 23:00:22 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,10 @@ int	ft_execve_child(t_cmd *cmd)
 	if (!env_p || !*env_p)
 		exit(1);
 	if (execve(cmd->path, cmd->params, env_p) == -1)
+	{
+		ft_dprintf(2, "minishell: %s\n", strerror(errno));
 		exit(2);
+	}
 	return (0);
 }
 
@@ -42,12 +45,6 @@ int	ft_execve(t_cmd *cmd)
 		status = WEXITSTATUS(status);
 	else if (WIFSIGNALED(status))
 		status = 128 + WTERMSIG(status);
-	if (status == 2)
-	{
-		ft_perror("minshell: ", 0);
-		ft_perror(cmd->n, 0);
-		return (ft_perror(" : Permission denied\n", 126));
-	}
 	return (status);
 }
 
@@ -66,8 +63,8 @@ int	ft_execute(t_cmd *cmd)
 		return (ft_execve(cmd));
 	else if (1 <= status && status <= 3)
 	{
-		ft_perror(cmd->n, 1);
-		status = ft_perror(": command not found\n", 127);
+		ft_dprintf(2, "minishell: %s: command not found\n", cmd->n);
+		status = 127;
 	}
 	return (status);
 }

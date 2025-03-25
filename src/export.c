@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:15:07 by eneto             #+#    #+#             */
-/*   Updated: 2025/03/21 16:57:04 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/25 21:46:55 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ int	ft_is_valid_name(char *name)
 	}
 	if (f != 0)
 	{
-		ft_perror("minishell: export: ", 2);
-		ft_perror(name, 2);
-		ft_perror(": not a valid identifier\n", 2);
+		ft_dprintf(2, "minishell: export: %s: not a valid identifier\n", name);
 		return (1);
 	}
 	return (0);

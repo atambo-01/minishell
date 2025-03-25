@@ -6,7 +6,7 @@
 /*   By: atambo <alex.tambo.15432@gmail.com>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 22:35:21 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/21 16:56:23 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/25 21:45:11 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,26 +54,21 @@ static int	ft_test_paths(t_cmd *cmd, char ***p_paths)
 	}
 	return (1);
 }
-
 int	ft_get_path_aux(char *path)
 {
-	struct stat	path_stat;
+	if (access(path, F_OK) != 0)
+	{
+		ft_dprintf(2, "minishell : %s: %s \n", path, strerror(errno));
+		return (127);
+	}
+	if (access(path, X_OK) != 0)
+	{
+		ft_dprintf(2, "minishell : %s: %s \n", path, strerror(errno));
+		return (126);
+	}
 
-	if (stat(path, &path_stat))
-	{
-		ft_perror("minishell: ", 0);
-		ft_perror(path, 0);
-		return (ft_perror(": No such file or directory\n", 127));
-	}
-	else if (!(stat(path, &path_stat)) && S_ISDIR(path_stat.st_mode))
-	{
-		ft_perror("minishell: ", 1);
-		ft_perror(path, 1);
-		return (ft_perror(": Is a directory\n", 126));
-	}
 	return (0);
 }
-
 int	ft_get_path(t_cmd *cmd)
 {
 	int		r;

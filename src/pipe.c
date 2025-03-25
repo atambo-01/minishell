@@ -6,7 +6,7 @@
 /*   By: eneto <eneto@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 02:24:04 by atambo            #+#    #+#             */
-/*   Updated: 2025/03/22 16:21:53 by atambo           ###   ########.fr       */
+/*   Updated: 2025/03/25 23:02:13 by atambo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,7 @@ int	ft_init_pipe(t_main_vars *mv, t_pipe_data *data, t_cmd **curr, int *status)
 	data->cmd_count = ft_count_cmd(mv->cmd);
 	data->pids = malloc(sizeof(pid_t) * data->cmd_count);
 	if (!data->pids)
-	{
-		ft_perror("minishell: malloc error\n", 1);
-		return (1);
-	}
+		return (ft_perror("minishell: malloc error\n", 1));
 	return (0);
 }
 
@@ -83,7 +80,7 @@ int	ft_pipe(t_main_vars *mv)
 		curr = curr->nc;
 		if (curr && ft_cop(curr->n) == 1 && curr->nc)
 			curr = curr->nc;
-		data.token = ft_get_pipe(data.token);
+		data.token = ft_do_pipe(data.token);
 		data.i++;
 	}
 	status = ft_wait_children(&data, status);
